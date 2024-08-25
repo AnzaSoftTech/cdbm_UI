@@ -1,0 +1,179 @@
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 100px 400px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 70%; /* Increased width */
+    max-width: 800px; /* Limit maximum width */
+    height: 100%; /* Increased height */
+    max-height: 500px; /* Limit maximum height */
+    overflow: auto; /* Enable scrollbar if content exceeds height */
+    border-radius: 5px;
+}
+
+.popup-inner {
+    border: 1px solid #ccc;
+    height: 'auto'; /* Ensure inner content can expand */
+    border-radius: 5px;
+}
+
+.popup-inner table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    border: 1px solid #ccc;
+    overflow: hidden;
+    height: 80%; /* Increased height of the table */
+    max-height: 500px; /* Limit maximum height of the table */
+}
+
+.popup-inner table th,
+.popup-inner table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.popup-inner table thead {
+    background-color: rgb(224, 230, 245);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.popup-inner table tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+
+
+
+.div_header {
+    background: rgb(149, 149, 248);
+    color: white;
+    text-align: center;
+    padding: 10px 0; /* Increased padding for better appearance */
+}
+
+.div_header_warn {
+    background:  rgb(233, 186, 99);
+    color: white;
+    text-align: center;
+    padding: 10px 0; /* Increased padding for better appearance */
+}
+
+.div_padding {
+    padding: 20px; /* Increased padding for better spacing */
+}
+
+.div_overflow {
+    height: 400px; /* Adjusted height for overflow container */
+    overflow: auto;
+    border: 1px solid;
+    margin-top: 10px;
+    line-height: 1;
+}
+
+.button_search {
+    margin-left: 10px; /* Slightly increased margin */
+}
+table{
+    height: 1000px;
+}
+
+.input_margin{
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+   
+
+}
+
+.table_margin{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.margin_input{
+    margin-top: 5px;
+}
+
+.popup-inner input {
+    border: 1px solid #ccc; /* Ensure input fields have a visible border */
+    padding: 8px;
+    font-size: 14px; /* Adjust font size if needed */
+}
+.paddingScrip{
+    padding: 5px;
+}
+
+@media (max-width: 1200px) {
+    /* Styles for tablets and smaller laptops */
+    th, td {
+        font-size: 14px;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 992px) {
+    /* Styles for tablets */
+    th, td {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .popup-inner {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Styles for mobile phones */
+    th, td {
+        font-size: 10px;
+        padding: 2px;
+    }
+
+    .popup-inner {
+        padding: 5px;
+    }
+
+    .add_btn, .close_btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .text_align_table {
+        text-align: right;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Extra small devices */
+    th, td {
+        font-size: 10px;
+        padding: 1px;
+    }
+
+    .popup-inner {
+        padding: 0;
+    }
+
+    .add_btn, .close_btn {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+}
+
+
+
+

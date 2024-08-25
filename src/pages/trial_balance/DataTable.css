@@ -1,0 +1,57 @@
+/* DataTable.css */
+
+/* Custom styles for the table header */
+.custom-header {
+  background-color:#0275d8!important; /* Purple color */
+  color: white !important;
+}
+
+/* Custom styles for the table */
+.custom-table {
+  width: auto; /* Adjust table width as needed */
+}
+
+/* Custom styles for the table rows */
+/* .custom-row:hover {
+  background-color: #f50a0a ; /* Dark purple color */
+  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: rgb(82, 129, 247);
+    
+  }
+  tr {
+    margin: 0 0 1rem 0;
+  }
+
+/* Custom styles for table cells */
+.custom-cell {
+  text-align: right;
+}
+
+/* Custom styles for the table wrapper */
+.table-wrapper {
+  margin-top: 10px;
+}
+
+/* Custom styles for the pagination */
+.pagination {
+  text-align: left;
+  margin-top: 10px;
+}
+
+table#data-table {
+  /* width: 100%; */
+  border:2px solid #b5cae8;
+  
+}
+
+
+/* Custom accent color for radio buttons */
+
+
+
+.custom-table tr, .custom-table td {
+  padding: 5px !important; /* Adjust padding to reduce height */
+  line-height: 1 !important; /* Adjust line height */
+}
+
+

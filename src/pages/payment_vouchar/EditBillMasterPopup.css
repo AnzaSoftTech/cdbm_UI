@@ -1,0 +1,137 @@
+/* Popup container styles */
+.popupsearch {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid darkblue;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Adjusted shadow for a softer look */
+    z-index: 100;
+    width: 90%; /* Increased width for better visibility */
+    max-width: 900px; /* Limit maximum width */
+    height: 70%; /* Adjusted height */
+    max-height: 700px; /* Limit maximum height */
+    overflow: auto; /* Enable scrollbar if content exceeds height */
+    border-radius: 10px; /* Rounded corners */
+    background: linear-gradient(135deg, #f9f9f9 50%, #e0f7fa 100%); /* Gradient background */
+}
+
+/* Inner content of the popup */
+.popup-innersearch {
+    border: 1px solid rgb(107, 148, 238);
+    border-radius: 8px;
+    
+    background-color: #ffffff; /* White background for inner content */
+}
+
+/* Header color */
+.header_color {
+    margin-bottom: 20px;
+    color: white; /* Header text color */
+}
+
+/* Table container */
+.table-container {
+    margin-top: 20px;
+}
+
+/* Close button styles */
+.close_btn {
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px; /* Added padding for better touch targets */
+    font-size: 1rem; /* Increased font size */
+}
+
+/* Close button hover effect */
+.close_btn:hover {
+    background-color: #5a6268;
+}
+
+/* Add button styles */
+.add_button {
+    background-color: #28a745; /* Custom green color */
+    margin-top: 10px;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px; /* Added padding for better touch targets */
+    font-size: 1rem; /* Increased font size */
+    margin-right: 5px;
+    
+}
+
+.add_button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Form control styles */
+.form-control {
+    margin-right: 10px;
+    font-size: 1rem; /* Increased font size */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn-sm {
+    font-size: 0.875rem; /* Smaller font size for buttons */
+}
+
+.table-container input {
+    width: 100%; /* Full width for table inputs */
+    padding: 8px; /* Padding inside inputs */
+}
+
+/* Responsive styling */
+@media (max-width: 1200px) {
+    .popupsearch {
+        width: 95%; /* Increase width for smaller screens */
+        max-width: none; /* Remove maximum width */
+        height: auto; /* Adjust height to content */
+    }
+}
+
+@media (max-width: 768px) {
+    .popupsearch {
+        width: 100%; /* Full width for mobile devices */
+        height: auto; /* Adjust height to content */
+        max-height: none; /* Remove maximum height */
+        padding: 15px; /* Reduced padding */
+    }
+
+    .popup-innersearch {
+        padding: 15px; /* Reduced padding */
+    }
+
+    .close_btn, .add_button {
+        width: 100%; /* Full width for buttons */
+        padding: 10px; /* Larger padding for touch targets */
+        font-size: 1.1rem; /* Larger font size */
+    }
+}
+
+.vendor_width {
+    width: 170px; /* Adjusted width for smaller screens */
+    margin-left: 10px;
+    margin-right: 10px;
+    color: darkblue;
+}
+
+.label_vendor {
+    color: #0275d8;
+}
+
+/* DataTable custom styles */
+
+.input-right-align {
+    text-align: right; /* Aligns the text to the right */
+}

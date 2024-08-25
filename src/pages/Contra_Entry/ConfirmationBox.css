@@ -1,0 +1,24 @@
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    border-bottom: none;
+    height: 40px;
+    
+  }
+  
+  .modal-body {
+    font-size: 16px;
+  }
+  
+  .modal-footer {
+    border-top: none;
+  }
+  
+  .modal-button {
+    min-width: 80px;
+  }
+  
+  .modal-button:hover {
+    opacity: 0.8;
+  }
+  

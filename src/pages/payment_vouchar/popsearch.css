@@ -1,0 +1,115 @@
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 100px 400px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 70%; /* Increased width */
+    max-width: 800px; /* Limit maximum width */
+    height: 100%; /* Increased height */
+    max-height: 500px; /* Limit maximum height */
+    overflow: auto; /* Enable scrollbar if content exceeds height */
+}
+
+.popup-inner {
+    border: 1px solid #ccc;
+    height: 400px; /* Ensure inner content can expand */
+}
+
+.popup-inner .table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    border: 1px solid #ccc;
+    overflow: auto;
+    height: 80%; /* Increased height of the table */
+    max-height: 500px; /* Limit maximum height of the table */
+}
+
+.popup-inner .table .th,
+.popup-inner .table .td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.popup-inner .table .thead {
+    background-color: #0275d8;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.popup-inner .table .tbody .tr:hover {
+    background-color: #f2f2f2;
+}
+
+.popup-inner .button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color:  #0275d8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.popup-inner .button:hover {
+    background-color: #0275d8; /* Slightly darker shade on hover */
+}
+
+.div_header {
+    background:  #0275d8;
+    color: white;
+    text-align: center;
+    padding: 10px 0; /* Increased padding for better appearance */
+}
+
+.div_padding {
+    padding: 20px; /* Increased padding for better spacing */
+}
+
+.div_overflow {
+    height: 200px; /* Adjusted height for overflow container */
+    overflow: auto;
+    border: 1px solid;
+    margin-top: 10px;
+    line-height: 1;
+}
+
+.button_ {
+    margin-left: 10px; /* Slightly increased margin */
+}
+table{
+    height: 500px;
+}
+
+.input_margin{
+    margin-left: 10px;
+   
+
+}
+
+.table_margin{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.margin_input{
+    margin-top: 5px;
+}
+
+.popup-inner input {
+    border: 1px solid #ccc; /* Ensure input fields have a visible border */
+    padding: 8px;
+    font-size: 14px; /* Adjust font size if needed */
+}
+.paddingScrip{
+    padding: 5px;
+}

@@ -1,0 +1,22 @@
+/* .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:rgb(18, 8, 8);
+    color: white;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    /* z-index: 1000; */
+  }
+  
+  .logout {
+    cursor: pointer;
+    align-items: flex-end;
+  }
+
+  .btn {
+    outline:light ;    
+  }
+  
+   */

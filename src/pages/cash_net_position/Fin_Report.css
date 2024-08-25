@@ -1,0 +1,184 @@
+
+.custom-header {
+  background-color:#0275d8 !important; 
+  color: white !important;
+}
+.report-button{
+  margin-right: 5px !important;
+}
+
+
+.custom-table {
+  width: auto; 
+}
+
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: rgb(224, 230, 245);
+}
+.table-hover {
+    width:150%;
+}
+
+tr {
+    margin: 0 0 1rem 0;
+}
+
+/* Custom styles for table cells */
+.custom-cell {
+  text-align: right;
+}
+
+/* Custom styles for the table wrapper */
+.table-wrapper {
+  margin-top: 10px;
+}
+
+/* Custom styles for the pagination */
+.pagination {
+  text-align: left;
+  margin-top: 10px;
+}
+
+table#data-table {
+  /* width: 100%; */
+  border:2px solid #b5cae8;
+  
+}
+ 
+.custom-table tr, .custom-table td {
+  padding: 5px !important; /* Adjust padding to reduce height */
+  line-height: 1 !important; /* Adjust line height */
+}
+
+
+.group {
+  display: flex;
+  flex-direction: row;
+} 
+.margin_before_select{
+  margin-left:10px;
+}
+
+select.form-select-fin{
+  width: 300px;
+  line-height: 1.2;
+}
+
+
+
+div.scrollX {
+margin: 4px, 4px !important;
+padding: 0px 0px 4px 0px;
+
+/* width: 70%; */
+overflow: auto;
+white-space: nowrap;
+}
+
+.margin_form_dt{
+margin-right: 30px !important;
+}
+
+.margin_report{
+margin-right: 20px !important;
+}
+
+.input_width{
+width:207px !important;
+}
+
+.label_btn_margin{
+margin-left:70px !important;
+width: 90px;
+}
+
+.label_client_margin{
+margin-left: 31px !important;
+}
+
+.text_width{
+width: 330px !important;
+margin-left: 1px;
+margin-right: 3px;
+
+}
+.number_width{
+width:130px ;
+margin-left: 60px;
+}
+
+.client_width{
+width:8rem !important;
+margin-left: 45px;
+}
+
+.scrip_width{
+width: 250px !important;
+margin-left: 1px;
+margin-right: 3px;
+
+}
+
+.date_padding{
+padding: 4px;
+}
+
+.width_formdt{
+width:78px;
+}
+
+.width_todt{
+width:58px;
+}
+
+.branch_width{
+width: 59px;
+}
+
+.inputDate_width{
+width: 114px;
+}
+
+.labelSettleNo{
+margin-left: 110px;
+  width: 70px;
+}
+.labelmarginbtn{
+margin-left: 70px !important;
+}
+
+.align-right{
+text-align: right;
+}
+
+.css-b62m3t-container {
+width: 300px;
+}
+
+.height_branch_input{
+line-height: 20px;
+}
+
+.sc-feUYzb.Nfhbm{
+overflow-y: auto;
+max-height: 200px;
+
+
+}
+
+.form-control-fr {
+  display: block;
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bs-body-color);
+  appearance: auto;
+  background-color: var(--bs-body-bg);
+  background-clip: padding-box;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}

@@ -1,0 +1,114 @@
+/* Sidebar.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+  }
+  .main{
+    padding-left: 0;
+  }
+  .top {
+    background-color:  #113f67;
+    color: #fff;
+    height: 50px;
+  }
+
+  .sidebar {
+    margin-top: 50px; /* Adjust if needed for fixed top bar */
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #38598b;
+    color: white;
+    overflow-x: hidden;
+    transition: width 0.3s;
+    padding-top: 20px;
+    z-index: 1000; /* Ensure the sidebar is above the main content */
+    
+  }
+  
+  .sidebar.open {
+    width: 250px; /* Width when the sidebar is open */
+  }
+  
+  .sidebar h2 {
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .sidebar p {
+    padding: 0 20px;
+  }
+  
+  .togglebtn {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color:red ;
+    color: #fff;
+    border: none; /* Position button absolutely inside .main-content */
+    top: 0px; /* Adjust as needed */
+    left: 0px; /* Adjust as needed */
+    z-index: 1001; /* Ensure the button is above other content */
+  }
+  
+  .main-content {
+    padding: 20px;
+    margin-left: 0; /* Adjust based on sidebar state */
+    transition: margin-left 0.5s ease; /* Smooth transition for content */
+  }
+  
+  /* Overlay styles */
+  .overlay {
+    margin-top: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent background */
+    z-index: 999; /* Below the sidebar but above the main content */
+    display: none; /* Hidden by default */
+  }
+  
+  /* Show overlay when sidebar is open */
+  .overlay.active {
+    display: block;
+  }
+
+  .hamburger {
+    padding: 0.07 rem;
+    padding-left: 0px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-left: 1rem;
+  }
+  .submenu {
+    font-size: 1rem;
+    margin-left: 2rem;
+    padding: 15px 0;
+  }
+  
+  .submenu-item {
+    padding: 5px 0;
+    cursor: pointer;
+  }
+  
+  .submenu-item:hover {
+    background-color: white;
+    color: black;
+    font-size: 0.9rem;
+    font-weight:bold;
+  }
+  .logout {
+    cursor: pointer;
+    align-items: flex-end;
+    
+  }
+
+  .btn {
+    outline:light ;
+  }

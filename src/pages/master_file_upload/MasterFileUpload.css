@@ -1,0 +1,37 @@
+/* styles.css */
+.custom-table tr, .custom-table td {
+  padding: 5px !important; /* Adjust padding to reduce height */
+  line-height: 1 !important; /* Adjust line height */
+}
+
+.table th {
+text-align: center;
+} 
+
+.table td{
+overflow: auto;
+table-layout: auto !important;
+white-space: nowrap;
+}
+.display_flex{
+  display:flex !important;
+  justify-content: space-between;
+}
+.select_width{
+  width:150px !important;
+  height: 20px;
+  margin-left: 5px;
+
+}
+.td_hide{
+  display:none !important;
+}
+
+.master-btn {
+  margin-bottom: 8%;
+
+}
+
+.master-form{
+  width: 100%;
+}

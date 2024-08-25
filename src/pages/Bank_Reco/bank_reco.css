@@ -1,0 +1,134 @@
+.card-bank{
+    width: 950px;
+}
+
+
+.label_bank {
+    width: 152px;
+}
+
+.all_size {
+    width: 215px ;
+}
+
+.size_fileupload{
+    width: 20vh;
+}
+
+.account {
+    margin-left: 195px;
+    width: 200px;
+}
+
+.form_date {
+    width: 145px;
+}
+
+.form_date_input {
+    margin-left: 55px;
+}
+
+.to_date {
+    margin-left: 135px;
+    width: 100px;
+    
+    margin-right: 101px;
+}
+
+.toDate_size{
+    width: 216px !important;
+}
+
+
+.upload_div {
+    display: flex;
+    width: 250px;
+}
+
+.upload_input{
+    width: 215px !important;
+    margin-left: 35px !important;
+}
+
+.upload_btn {
+    
+    
+    color: white;
+    width: 100px;
+}
+
+
+
+.update_btn {
+    margin-top: 15px;
+    margin-left: 40px;
+    width: 100px;
+}
+
+.vouchar_btn{
+    width: 100px;
+     margin:10px 5px 10px 2px;
+     height:30px;
+}
+
+.card-header {
+    background: rgb(149, 149, 248);
+    color: white;
+}
+
+/* .sc-aYaIB.fzvXhU {
+    border: 1px solid blue;
+    width:900px;
+} */
+.date_to{
+    margin-left: 145px;
+}
+
+.btn_update {
+   text-align: end;
+    margin-top: 5px;
+    
+}
+
+
+.header_margin {
+    margin: 10px 0px;
+}
+
+/* .sc-gEvDqW.jDljLp.rdt_TableHead{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.sc-aYaIB.fzvXhU.rdt_Table{
+    overflow-y: scroll;
+    max-height: 200px;
+    width: 900px;
+    
+} */
+
+/* Define a custom class for selected button state */
+.btn-custom-selected {
+    background-color: #28a745; /* Green color for selected */
+    color: white; /* White text */
+    border: 1px solid #28a745; /* Matching border color */
+}
+
+/* Define a custom class for unselected button state */
+.btn-custom-unselected {
+    background-color: #dc3545; /* Red color for unselected */
+    color: white; /* White text */
+    border: 1px solid #dc3545; /* Matching border color */
+}
+
+/* Optional: Define hover effects */
+.btn-custom-selected:hover {
+    background-color: #218838; /* Darker green for hover */
+    border-color: #1e7e34; /* Darker green border for hover */
+}
+
+.btn-custom-unselected:hover {
+    background-color: #c82333; /* Darker red for hover */
+    border-color: #bd2130; /* Darker red border for hover */
+}
+

@@ -1,0 +1,14 @@
+.row {
+    background: lightgrey;
+    border: 1px solid grey;
+  }
+  
+  .border {
+    border-right: 1px solid black;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    
+  }

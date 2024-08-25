@@ -1,0 +1,136 @@
+/* styles.css */
+.label-width-pay-rcpt {
+    width: 150px; 
+    /* Adjust as needed */
+}
+
+.input-smaller {
+    margin-left: 200px;
+}
+
+.input-pay-rcpt {
+    margin-left: 100px;
+}
+
+.color_header{
+    background-color: #0275d8;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+
+.searchable-input {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    appearance: auto;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.size_input{
+    width: 210px;
+}
+
+.size_input_pay_rcpt{
+    width: 290px;
+}
+
+
+.size_input_contra{
+    width: 290px !important;
+    /* height: 35px !important; */
+}
+
+.textarea {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    resize: both;
+    min-height: 5px;
+    line-height: 5px;
+    min-width: 80px;
+  }
+
+
+  .paymentPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 100px 400px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 100%; /* Increased width */
+    max-width: 1000px; /* Limit maximum width */
+    height: 100%; /* Increased height */
+    max-height: 600px; /* Limit maximum height */
+    overflow: auto; /* Enable scrollbar if content exceeds height */
+    border-radius: 15px;
+}
+
+/* Inner content of the popup */
+.paymentPopup-inner {
+    border: 1px solid #ccc;
+    height: 500px; /* Ensure inner content can expand */
+    border-radius: 7px;
+}
+
+.save_btn{
+    background-color: SlateBlue !important;
+    margin-top: 10px !important;
+    padding: 8px 16px !important;
+    cursor: pointer !important;
+    margin-bottom:5px;
+    color: white!important;
+    border: none!important;
+    border-radius: 4px!important;
+    font-size: 14px!important;
+}
+
+.save_btn:hover {
+    background-color:rgb(67, 41, 240) !important; /* Slightly darker shade on hover */
+}
+
+.label_color{
+    color:darkblue;
+}

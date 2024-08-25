@@ -1,0 +1,445 @@
+.formgroup_flex-sr {
+    display: flex !important;
+    margin-right: 1px;
+    margin-bottom: 0rem !important;
+}
+
+.column_display-sr {
+    width: 98.5% !important;
+    padding: 0px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.padding_top-sr {
+    padding-top: 10px !important;
+}
+
+.label_width-sr {
+    width: 80px;
+    margin-right: 0rem;
+}
+
+.margin_user_id-sr {
+    margin-right: 10px !important;
+    width: 100px;
+}
+
+.label_width2-sr {
+    width: 150px;
+    margin-right: 10px;
+}
+
+.label_width3-sr {
+    width: 190px;
+    margin-right: 10px;
+}
+
+.input_width-sr {
+    width: 50px;
+    margin-right: 2px;
+}
+
+.label_width4-sr {
+    width: 90px;
+    margin-right: 10px;
+}
+
+.label_width5-sr {
+    width: 70px;
+    margin-right: 19px;
+}
+
+tr-sr {
+    margin: 0 0 1rem 0;
+}
+
+.table-wrapper-sr {
+    margin-top: 10px;
+}
+
+div.scrollX-sr {
+    margin: 4px, 4px !important;
+    padding: 0px 0px 4px 10px;
+
+    /* width: 90%; */
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.label_width6-sr {
+    width: 210px;
+    margin-right: 10px;
+}
+
+.textOnInput-sr {
+    position: relative;
+}
+
+.textOnInput-sr .label1-sr {
+    position: absolute;
+    top: -15px;
+    left: 23px;
+    padding: 2px;
+    z-index: 1;
+    color: black;
+}
+
+.label1-sr:after {
+    content: " ";
+    background-color: #fff;
+    width: 100%;
+    height: 13px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.input_width2-sr {
+    width: 200px;
+}
+
+.input_trade_prop-sr {
+    width: 105px;
+}
+
+.margin_prop-sr {
+    width: 100px;
+    margin-right: 8px;
+}
+
+.form_control1-sr {
+    display: flex;
+    width: 100% !important;
+    flex-wrap: wrap;
+    border: 1px solid #0275d8 !important;
+    border-radius: 5px;
+}
+
+.margin_top-sr {
+    margin-top: 10px !important;
+}
+
+.margin_top2-sr {
+    margin-top: 17px !important;
+    margin-right: 10px;
+}
+
+.label_text-sr {
+    margin-bottom: 2px;
+    text-align: start;
+    color: black;
+}
+
+.input_margin-1-sr {
+    width: 230px;
+}
+
+.inputbuy_margin-sr {
+    margin-left: 12px;
+}
+
+.inputSqupQty_margin-sr {
+    margin-left: 9px;
+}
+
+.labelSqTrans_width-sr {
+    width: 95px;
+}
+
+.inputBill_margin-sr {
+    width: 220px;
+}
+
+.inputClient-sr {
+    width: 220px;
+}
+
+.inputRemark_margin-sr {
+    margin-left: 45px;
+    width: 330px;
+}
+
+.labelOriginal_width-sr {
+    width: 110px;
+    margin-right: 10px;
+    margin-left: 4px;
+}
+
+.width_contract-sr {
+    width: 110px;
+}
+
+.width_client-sr {
+    width: 150px;
+}
+
+.inputOriginal-sr {
+    width: 180px;
+}
+
+.width_sq_Up_Qty-sr {
+    width: 100px;
+}
+
+.labelbill_width-sr {
+    width: 90px;
+    margin-right: 5px;
+}
+
+.form_control2-sr {
+    display: flex;
+    width: 79.4rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+    border: 1px solid #0275d8 !important;
+    border-radius: 5px;
+}
+
+.radio_btn-sr {
+    display: flex;
+    border: 1px solid #0275d8;
+    margin-bottom: 10px;
+}
+
+.radio_btn2-sr {
+    display: flex;
+    border: 0px solid #0275d8;
+    margin-bottom: 10px;
+    justify-content: end;
+}
+
+.display_flex-sr {
+    display: flex;
+    width: 250px;
+    margin-bottom: 10px;
+}
+
+.form_control_height-sr {
+    height: 265px;
+}
+
+.labelbill_width2-sr {
+    width: 90px;
+}
+
+.custom-header2-sr {
+    padding-left: 3px;
+    background-color: #0275d8 !important;
+    color: white !important;
+}
+
+.width_div-sr {
+    width: 100% !important;
+}
+
+.margin_Qty-sr {
+    margin-left: 45px;
+}
+
+.margin_trd_no-sr {
+    margin-left: 5px;
+}
+
+.margin_client_series-sr {
+    margin-left: 30px;
+}
+
+.margin_scrip-sr {
+    margin-left: 37px;
+}
+
+.div6-sr {
+    border: 1px solid #0275d8;
+    width: 220px;
+    margin-left: 90px;
+    background-color: #0275d8;
+}
+
+.div2-sr {
+    border: 0px solid #0275d8;
+    background-color: rgb(252, 252, 253);
+    display: flex;
+}
+
+.div3-sr {
+    border-right: 1px solid #0275d8;
+    width: 110px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .col_display-sr, .display_flex-sr {
+        flex-direction: column;
+    }
+
+    .label_width-sr,
+    .label_width2-sr,
+    .label_width3-sr,
+    .label_width4-sr,
+    .label_width5-sr {
+        width: 100%; /* Full width labels on smaller screens */
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .input_width-sr,
+    .input_width2-sr,
+    .inputbuy_margin-sr,
+    .inputSqupQty_margin-sr,
+    .inputMargin-sr,
+    .inputMargin2-sr,
+    .inputOriginal-sr,
+    .inputBill_margin-sr,
+    .inputRemark_margin-sr,
+    .inputwidth_margin-sr,
+    .inputMargin-2-sr {
+        width: 100%; /* Full width inputs on smaller screens */
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+.css-13cymwt-control-sr {
+    width: 160px;
+}
+
+.css-qbdosj-Input-sr {
+    width: 110px;
+}
+
+.btn1-sr {
+    margin-left: 20px;
+    line-height: 20px !important;
+}
+
+.to_margin-sr {
+    margin-left: 50px;
+}
+
+.to_margin2-sr {
+    margin-left: 140px;
+    margin-right: 95px;
+}
+
+.margin_order-sr {
+    margin-left: 135px;
+    /* width:120px !important; */
+    margin-right: 12px;
+}
+
+.number_width-sr {
+    width: 100px;
+    margin-right: 2px;
+}
+
+.number_width2-sr {
+    width: 150px;
+    margin-right: 2px;
+    margin-left: 5px;
+}
+
+.text_width-sr {
+    width: 10rem;
+    margin-left: 2px;
+}
+
+.scrip_width-sr {
+    width: 7rem !important;
+    margin-left: 80px;
+    margin-right: 2px;
+}
+
+.margin_trd-sr {
+    margin-top: 10px;
+}
+
+.padding_branch-sr {
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.tab_margin-sr {
+    margin-top: 10px;
+}
+
+.margin_before_select-sr {
+    width: 250px;
+}
+
+.setle_width-sr {
+    width: 250px;
+}
+
+.width_before_select-sr {
+    width: 150px;
+}
+
+.margin_formdt-sr {
+    margin-left: 48px !important;
+}
+
+.margin_client-sr {
+    margin-right: 74px;
+}
+
+.width_scrip-sr {
+    width: 10rem;
+    margin-left: 2px;
+}
+
+.width_trade_no-sr {
+    width: 100px;
+    margin-right: 25px;
+}
+
+.width_order-sr {
+    width: 220px;
+}
+
+.width_date-sr {
+    width: 200px;
+    text-align: center;
+}
+
+.label_width_date-sr {
+    width: 50px;
+}
+
+.input_Settle-sr {
+    width: 180px;
+}
+
+.header_gereral-sr {
+    border: 1px solid #0275d8;
+    margin: 0.5rem;
+    margin-right: 0px !important;
+    padding: 10px;
+    margin-left: 0.6rem;
+    margin-right: 0.6rem;
+    border-radius: 5px;
+    
+}
+
+.margin_left-sr {
+    margin-left: 28px;
+}
+
+.report-button-sr {
+    width: 150px;
+}
+
+.thead_color-sr {
+    background-color: #0275d8 !important;
+    color: white;
+}
+.container-common{
+    width: 100%;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+.color-sr{
+    background-color: white;
+}

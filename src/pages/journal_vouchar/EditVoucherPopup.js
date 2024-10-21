@@ -17,7 +17,7 @@ function EditVoucherPopup({ onClose ,onRowSelect }) {
     // Dropdown options (you can fetch these dynamically if needed)
 
     useEffect(() => {
-        axios.get('http://localhost:3001/bookType')
+        axios.get('http://localhost:3001/api/bookType')
             .then(response => setBookTypes(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
@@ -186,6 +186,7 @@ function EditVoucherPopup({ onClose ,onRowSelect }) {
                                 <th >Trans_Date</th>
                                 <th hidden>Effective_Date</th>
                                 <th>Account Name</th>
+                                
                                 <th>Amount</th>
                                 <th>Dr/Cr</th>
                                 <th hidden>Segment</th>
@@ -211,6 +212,7 @@ function EditVoucherPopup({ onClose ,onRowSelect }) {
                                     <td>{new Date(result.trans_date).toLocaleDateString()}</td>
                                     <td hidden>{new Date(result.eff_date).toLocaleDateString()}</td>
                                     <td>{result.act_name}</td>
+                                   
                                     <td>{result.amount}</td>
                                     <td>{result.drcr}</td>
                                     <td hidden>{result.segment}</td>

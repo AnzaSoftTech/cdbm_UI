@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
-import './journal.css';
+import './popsearch.css';
 
 const PopupSearch = ({ onSelectRow, exchange, segment }) => {
   const [searchText, setSearchText] = useState('');

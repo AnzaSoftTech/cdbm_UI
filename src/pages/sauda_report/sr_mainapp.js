@@ -29,6 +29,8 @@ function App() {
   const [tradeInfo, setTradeInfo] = useState({});
   const [Setletypes, setSetleTypes] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [settleno, setSettleNo] = useState('');
+  
   
 
   const [filters, setFilters] = useState({
@@ -70,6 +72,8 @@ function App() {
       //`http://localhost:3001/api/sauda_book
       const res = await axios.get(`${BASE_URL}/api/sauda_book?${params.toString()}`);
       setSettlements(res.data);
+      setSettleNo(res.data[0].trd_settle_no);
+      //console.log('res.data ---->', );
       //alert(JSON.stringify(res.data));
     }
     catch (error) {
@@ -78,6 +82,26 @@ function App() {
 
     }
 
+  };
+
+  const downloadCSV = () => {
+    const table = document.getElementById('my-table');
+    const rows = Array.from(table.rows);
+    
+    const csvContent = rows.map(row => {
+      const cols = Array.from(row.cells);
+      return cols.map(col => col.innerText).join(',');
+    }).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'Sauda_Report_' + settleno + '.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const handleSort = (column) => {
@@ -309,7 +333,7 @@ function App() {
     </div>
     {activeSection === 'section1' && (
   <div>
-    <Row className="mt-3">
+    {/* <Row className="mt-3">
       <Col>
         <div className="col-md-4-sr">
           <div className="textOnInput-sr">
@@ -340,6 +364,7 @@ function App() {
         </div>
       </Col>
     </Row>
+     */}
     <Row>
       <Col>
         <div className="col-md-4-sr mt-3">
@@ -357,8 +382,7 @@ function App() {
                     name='Settle_tp'
                     value={filters.settle_tp}
                     onChange={handleChange}
-                    size="sm"
-                  >
+                    size="sm">
                     <option value="">Select Settle Type</option>
                     {Setletypes.map(Setletype => (
                       <option key={Setletype.settle_tp} value={Setletype.settle_tp}>
@@ -551,6 +575,7 @@ function App() {
                   >
                     Run Report
                   </Button>
+                  <button onClick={downloadCSV}>Download CSV</button>
                 </div>
               </Col>
             </div>
@@ -858,7 +883,7 @@ function App() {
       maxHeight: '300px',
       overflowY: "scroll"
     }}>
-      <table className="table custom-table-sr table-bordered-sr table-sm-sr" style={{ width: "1300px" }}>
+      <table id="my-table" className="table custom-table-sr table-bordered-sr table-sm-sr" style={{ width: "1300px" }}>
         <thead className='table-primary-sr' style={{
           position: "sticky",
           top: "0", zIndex: 3

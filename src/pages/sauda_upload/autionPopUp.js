@@ -108,8 +108,9 @@ function AuctionTable({ onCloseClick }) {
             console.log('Payload:', payload);
            // http://localhost:3001/api
             axios.post(`${BASE_URL}/api/saveAuctionDetails`, payload)
-                .then(response => {
-                    console.log('Auction Details saved successfully:', response.data);
+                .then(response => { if (response.data.message === '90') {alert('Saved suucessfully, allocate other Scrip')}
+                                    else if (response.data.message === '99') {alert('Saved suucessfully, Allocation complete. Please upload and Process FTP file .')}
+                    //console.log('Auction Details saved successfully:', response.data);
                     //alert(response.data.message);
 
                     // Fetch the updated auction data
@@ -127,6 +128,9 @@ function AuctionTable({ onCloseClick }) {
 
                             if (validData.length > 0) {
                                 setAuctiondata(validData);
+                            }
+                            else {
+                                setAuctiondata([]);
                             }
                         })
                         .catch(error => console.error('Error fetching updated auction data:', error));
@@ -151,8 +155,8 @@ function AuctionTable({ onCloseClick }) {
             try {
                 // http://localhost:3001/api/client/${newClientCd}
                 const response = await axios.get(`${BASE_URL}/api/client/${newClientCd}`);
-                const fetchedClientName = response.data.client_name;
-                console.log('name---', fetchedClientName)
+                const fetchedClientName = response.data.name;
+                //console.log('response name---', response)
 
                 const updatedData = [...additionalTable2Data];
                 updatedData[index] = { ...updatedData[index], clientCode: newClientCd, clientName: fetchedClientName };
@@ -296,7 +300,8 @@ function AuctionTable({ onCloseClick }) {
                         <thead>
                             <tr>
                                 <th className='p-1 px-1 fw-normal text_size'>Select</th>
-                                <th className='p-1 px-1 fw-normal text_size'>Auction Item</th>
+                                <th className='p-1 px-1 fw-normal text_size'>Security</th>
+                                <th className='p-1 px-1 fw-normal text_size'>Series</th>
                                 <th className='p-1 px-1 fw-normal text_size'>Auction Qty</th>
                                 <th className='p-1 px-1 fw-normal text_size'>Allocated Qty</th>
                                 <th className='p-1 px-1 fw-normal text_size '>Balance Qty</th>
@@ -322,6 +327,7 @@ function AuctionTable({ onCloseClick }) {
                                         />
                                     </td>
                                     <td className='p-0 px-1 fw-normal text_size'>{auctiondata.symbol}</td>
+                                    <td className='p-0 px-1 fw-normal text_size'>{auctiondata.series}</td>
                                     <td className='text_align_table p-0 px-1 fw-normal text_size'>{auctiondata.total_trade_qty}</td>
                                     <td className='text_align_table p-0 px-1 fw-normal text_size'>{selectedRowIndex === index ? totalAllocatedQty : 0}</td>
                                     <td className='text_align_table p-0 px-1 fw-normal text_size'>{selectedRowIndex === index ? totalBalanceQty : 0}</td>
@@ -338,41 +344,41 @@ function AuctionTable({ onCloseClick }) {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th className='p-0 px-1 fw-normal text_size '>Rec No</th>
-                                            <th className='p-0 px-1 fw-normal text_size '>Client_cd</th>
-                                            <th className='p-0 px-1 fw-normal text_size '>Comp</th>
+                                            {/* <th className='p-0 px-1 fw-normal text_size '>Rec No</th> */}
+                                            <th className='p-0 px-1 fw-normal text_size '>Client</th>
+                                            {/* <th className='p-0 px-1 fw-normal text_size '>Comp</th>
                                             <th className='p-0 px-1 fw-normal text_size'>Exe</th>
-                                            <th className='p-0 px-1 fw-normal text_size'>Branch</th>
+                                            <th className='p-0 px-1 fw-normal text_size'>Branch</th> */}
+                                            <th className='p-0 px-1 fw-normal text_size'>Symbol</th>
+                                            <th className='p-0 px-1 fw-normal text_size'>Series</th>
                                             <th className='p-0 px-1 fw-normal text_size'>Trade No</th>
                                             <th className='p-0 px-1 fw-normal text_size'>Order No</th>
                                             <th className='p-0 px-1 fw-normal text_size'>Date</th>
                                             <th className='p-0 px-1 fw-normal text_size'>Rate</th>
                                             <th className='p-0 px-1 fw-normal text_size'>Qty</th>
                                             <th className='p-0 px-1 fw-normal text_size'>Inst Type</th>
-                                            <th className='p-0 px-1 fw-normal text_size'>Sec</th>
-                                            <th className='p-0 px-1 fw-normal text_size'>Auc</th>
-                                            <th className='p-0 px-1 fw-normal text_size'>Series</th>
-                                            <th className='p-0 px-1 fw-normal text_size'>Book Type</th>
+                                            {/* <th className='p-0 px-1 fw-normal text_size'>Auc</th> */}
+                                            {/* <th className='p-0 px-1 fw-normal text_size'>Book Type</th> */}
                                         </tr>
                                     </thead>
                                     <tbody className='select_color'>
                                         {additionalTable1Data.map((row) => (
                                             <tr key={row.recNo}>
-                                                <td className='p-0 px-1 fw-normal text_size'>{row.recNo}</td>
+                                                {/* <td className='p-0 px-1 fw-normal text_size'>{row.recNo}</td> */}
                                                 <td className='p-0 px-1 fw-normal text_size'>{row.client_id}</td>
-                                                <td className='p-0 px-1 fw-normal text_size'>{row.company}</td>
+                                                {/* <td className='p-0 px-1 fw-normal text_size'>{row.company}</td>
                                                 <td className='p-0 px-1 fw-normal text_size'>{row.exchange}</td>
-                                                <td className='p-0 px-1 fw-normal text_size'>{row.branch}</td>
+                                                <td className='p-0 px-1 fw-normal text_size'>{row.branch}</td> */}
+                                                <td className='p-0 px-1 fw-normal text_size'>{row.symbol}</td>
+                                                <td className='p-0 px-1 fw-normal text_size'>{row.security_series}</td>
                                                 <td className='p-0 px-1 fw-normal text_size'>{row.unq_trade_id}</td>
                                                 <td className='p-0 px-1 fw-normal text_size'>{row.ord_ref_no}</td>
                                                 <td className='p-0 px-1 fw-normal text_size'>{row.trade_date}</td>
                                                 <td className='p-0 px-1 fw-normal text_size text_align_table'>{parseFloat(row.price).toLocaleString('en-IN', { maximumFractionDigits: 2 })}</td>
                                                 <td className='p-0 px-1 fw-normal text_size text_align_table'>{row.trade_qty}</td>
                                                 <td className='p-0 px-1 fw-normal text_size text_align_table'>{row.inst_type}</td>
-                                                <td className='p-0 px-1 fw-normal text_size'>{row.symbol}</td>
-                                                <td className='p-0 px-1 fw-normal text_size'>{row.auc}</td>
-                                                <td className='p-0 px-1 fw-normal text_size'>{row.security_series}</td>
-                                                <td className='p-0 px-1 fw-normal text_size'>{row.bookType}</td>
+                                                {/* <td className='p-0 px-1 fw-normal text_size'>{row.auc}</td> */}
+                                                {/* <td className='p-0 px-1 fw-normal text_size'>{row.bookType}</td> */}
                                             </tr>
                                         ))}
                                     </tbody>

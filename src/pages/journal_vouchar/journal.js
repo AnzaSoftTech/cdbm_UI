@@ -48,13 +48,13 @@ function Journal({ details, setDetails }) {
     });
 
     useEffect(() => {
-        axios.get('http://localhost:3001/bookType')
+        axios.get(`${BASE_URL}/api/bookType`)
             .then(response => setBookTypes(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/exchange')
+        axios.get(`${BASE_URL}/api/exchange`)
             .then(response => setExchanges(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
@@ -75,6 +75,13 @@ function Journal({ details, setDetails }) {
 
     const handleClosePopup = () => {
         setShowPopup(false);
+    };
+
+    // Function to format number with commas
+    const formatNumber = (num) => {
+        if (!num && num !== 0) return '';
+        const [integer, decimal] = num.toString().split('.');
+        return integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (decimal ? `.${decimal}` : '');
     };
 
     const handleDeleteRow = (index) => {
@@ -277,11 +284,11 @@ function Journal({ details, setDetails }) {
             header: headerData,
             details: details,
         };
-        alert(JSON.stringify(data));
+       // alert(JSON.stringify(data));
         var resValidate = calculateTotals(details);
-        console.log('resValidate', resValidate)
+       // console.log('resValidate', resValidate)
         if (resValidate == 0) {
-            axios.post('http://localhost:3001/voucher', data)
+            axios.post(`${BASE_URL}/api/save_journal_voucher`, data)
                 .then(response => {
                     alert('Voucher saved successfully!');
                     setBookType('');
@@ -289,6 +296,9 @@ function Journal({ details, setDetails }) {
                     setEffectiveDate('');
                     setNarration('');
                     setVoucherNo('');
+                    setSegment('');
+                    setExchange('');
+                    setNormal_deposit('');
                     setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '',  narration: '', analyzer_code: '' }]);
                     setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
                 })
@@ -399,7 +409,7 @@ function Journal({ details, setDetails }) {
                         <img
                             src={searchIcon}
                             alt="Search"
-                            onClick={() => handleSearchClick(index, row.exchange, row.segment)}
+                            onClick={() => handleSearchClick(index, exchange, segment)}
                             style={{
                                 width: '1.25rem', // Adjust size as needed
                                 height: '1.25rem',
@@ -513,7 +523,7 @@ function Journal({ details, setDetails }) {
             width: '13.75rem',
         },
         {
-            name: 'Actions',
+            name: '',
             cell: (row, index) => (
                 <div className='d-flex justify-content-center align-items-center' style={{ width: '100%', height: '100%' }}>
                     <OverlayTrigger
@@ -715,9 +725,9 @@ function Journal({ details, setDetails }) {
                     </select>
                 </div>
                 <div className="col-md-6 mb-3 d-flex justify-content-end">
-                  <button className="btn btn-primary me-2" onClick={handleEditClick}>Edit Voucher</button>
+                  <button className="btn btn-primary me-2" style={{width:'9rem'}} onClick={handleEditClick}>Edit Voucher</button>
                   {showPopup && <EditVoucherPopup onClose={handleClosePopup} onRowSelect={handleVoucharRowSelect} />}
-                  <button className="btn btn-success" onClick={handleFinalSave}>Save</button>
+                  <button className="btn btn-success" style={{width:'9rem'}} onClick={handleFinalSave}>Save</button>
                 </div>
               </div>
     
@@ -727,15 +737,33 @@ function Journal({ details, setDetails }) {
                 </div>
               </div>
     
-              <div className="d-flex justify-content-end mb-2 mt-3">
-                <button className="btn btn-success" onClick={handleAddRow}>Add</button>
-              </div>
+              
     
-              <div className="d-flex justify-content-around">
-                <p className="label-color-common">Total Dr: {totals.drTotal}</p>
-                <p className="label-color-common">Total Cr: {totals.crTotal}</p>
-                <p className="label-color-common">Balance: {totals.balance}</p>
-              </div>
+                    <div className="d-flex justify-content-evenly mb-3 mt-3 ">
+                        {/* <div>
+                     <p className="label-color-common">Total Dr: {totals.drTotal}</p>
+                  </div>
+                  <div>
+                     <p className="label-color-common">Total Cr: {totals.crTotal}</p>
+                   </div>
+                   <div>
+                      <p className="label-color-common">Balance: {totals.balance}</p>
+                    </div> */}
+
+                        <div>
+                            <p>Total Dr: {formatNumber(totals.drTotal)}</p>
+                        </div>
+                        <div>
+                            <p>Total Cr: {formatNumber(totals.crTotal)}</p>
+                        </div>
+                        <div>
+                            <p><b>Balance: {formatNumber(totals.balance)}</b></p>
+                        </div>
+                        <div className="d-flex">
+                            <button className="btn btn-warning" style={{width:'7rem'}} onClick={handleAddRow}>Add Row</button>
+                        </div>
+                    </div>
+              
             </div>
           </div>
         </div>

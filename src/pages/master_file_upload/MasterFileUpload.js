@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import { ProgressBar, Form, Button, Alert } from 'react-bootstrap';
@@ -14,23 +14,42 @@ function MasterFileUpload() {
   const [data, setData] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(Array(data.length).fill(false));
 
+ // const fileInputRefSB = useRef(null);
+
   //const [items, setItems] = useState([]);
   const [files, setFiles] = useState([]);
   //const [uploadPercentage, setUploadPercentage] = useState(0);
   const [message, setMessage] = useState('');
   
-  const onChangeMasterInput = e => {
+  const onChangeMasterInput = (e, index) => {
     setFiles(e.target.files);
+
+    //const filename = document.getElementById(`master_filename_${index}`);
+    //filename.target.value = e.target.files[0].name;
+
+    //console.log(' e.target.files[0] --> ',  e.target.files[0].name);
+    //console.log('filename ---> ', filename);
+
+    // setData((prevData) =>
+    //   prevData.map((item) =>
+    //     item.index === index ? { ...item, segment: e.target.files[0].name } : item
+    //   )
+    // );
+
+    // console.log('after data ', data);
+
   };
 
-  //alert({exch_cd});
+  useEffect(() => {
+    const now = new Date();
+    const formattedDate = now.toISOString().slice(0, 10);
+    setDate(formattedDate);
+  }, []);
 
   const fetchMasterFileData = async () => {
     try {
-      //alert('Val:'+ segment.toString());
       const response = await axios.get(`${BASE_URL}/api/sauda_metadata`, {
         params: { exch_cd, segment },
-        //params: { type, section, date },
       });
       setData(response.data);
       console.log('response.data => ', response.data);
@@ -48,18 +67,20 @@ function MasterFileUpload() {
       alert('File not selected !'); // Set error state if no file selected
       return;
     }
+    
+    
+    //filename.target.value = fileInput.target.files[0];
+    var file_name = '';
     const formData = new FormData();
     //alert("files cd----",filecd)
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i]);
-      
-      
+      file_name = files[i].name;
+     //console.log('files[i] ', files[i].name);
     }
-    
-    //formData.append('file_cd', filecd);
-    //alert('filecd=>'+filecd);
+
     try {
-      const res = await axios.post(`${BASE_URL}/api/MasterFileupload?filecd=`+filecd, formData, {
+      const res = await axios.post(`${BASE_URL}/api/MasterFileupload?filecd=`+filecd+`&filename=`+file_name, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -97,7 +118,7 @@ function MasterFileUpload() {
       ]);
      // console.log('before calling exec_db_proc')
       const status = await axios.post(`${BASE_URL}/api/exec_db_Procedure`);
-      console.log('status ===> ', status);
+     // console.log('status ===> ', status);
       if (status.data.message === "0")
       {
         alert('Master file(s) processed successfully');
@@ -120,116 +141,6 @@ function MasterFileUpload() {
     }
   };
 
-
-  //--- csv file
-  // const handleButtonClick = async () => {
-
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/process-csv');
-  //     alert(response.data.message);
-  //   } catch (error) {
-  //     console.error("Error loading files:", error);
-  //     alert('Error loading files');
-  //   }
-  // };
-
-
-  //---txt file
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/process-txt');
-  //     alert(response.data.message);
-  //   } catch (error) {
-  //     console.error("Error loading files:", error);
-  //     alert('Error loading files');
-  //   }
-  // };
-
-
-  // ---ftp file
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/process-ftp');
-  //     alert(response.data.message);
-  //   } catch (error) {
-  //     console.error("Error loading files:", error);
-  //     alert('Error loading files');
-  //   }
-  // };
-
-
-  // ---Bhav copy  file
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/insert-bhav-copy-stag');
-  //     alert(response.data.message);
-  //   } catch (error) {
-  //     console.error("Error loading files:", error);
-  //     alert('Error loading files');
-  //   }
-  // };
-
-
-  //---margin csv file
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/insert-margin-stag');
-  //     alert(response.data.message);
-  //   } catch (error) {
-  //     console.error("Error loading files:", error);
-  //     alert('Error loading files');
-  //   }
-  // };
-
-  //---delivery csv file
-  // const handleButtonClick = async () => {
-  //     try {
-  //       const response = await axios.post('http://localhost:3001/insert-delivery-stag');
-  //       alert(response.data.message);
-  //     } catch (error) {
-  //       console.error("Error loading files:", error);
-  //       alert('Error loading files');
-  //     }
-  // };
-
-
-  //---Obligation  csv file
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/insert-obligation-stag');
-  //     alert(response.data.message);
-  //   } catch (error) {
-  //     console.error("Error loading files:", error);
-  //     alert('Error loading files');
-  //   }
-  // };
-
-
-  //---Penality  csv file
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/insert-penality-stag');
-  //     alert(response.data.message);
-  //   } catch (error) {
-  //     console.error("Error loading files:", error);
-  //     alert('Error loading files');
-  //   }
-  // };
-
-
-  // //---Position  csv file
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/insert-position-stag');
-  //     alert(response.data.message);
-  //   } catch (error) {
-  //     console.error("Error loading files:", error);
-  //     alert('Error loading files');
-  //   }
-  // };
-
-
-
   return (
     <div className="container-common">
       <div className="card">
@@ -240,24 +151,19 @@ function MasterFileUpload() {
           <div className='d-flex flex-wrap align-items-center mb-3'>
             <div className="form-group d-flex align-items-center me-3">
               <label htmlFor="exchangeSelect" className="form-label label-color-common mb-0 me-2">Exchange:</label>
-              <select
-                id="exchangeSelect"
+              <select id="exchangeSelect"
                 className="form-control form-control-sm"
-                value={exch_cd}
-                onChange={(e) => setExch_cd(e.target.value)}
-              >
+                value={exch_cd} onChange={(e) => setExch_cd(e.target.value)}>
                 <option value="N">NSE</option>
                 <option value="B">BSE</option>
               </select>
             </div>
             <div className="form-group d-flex align-items-center me-3">
               <label htmlFor="segmentSelect" className="form-label label-color-common mb-0 me-2">Segment:</label>
-              <select
-                id="segmentSelect"
+              <select id="segmentSelect"
                 className="form-control form-control-sm"
                 value={segment}
-                onChange={(e) => setSegment(e.target.value)}
-              >
+                onChange={(e) => setSegment(e.target.value)}>
                 <option value="C">C</option>
                 <option value="P">P</option>
               </select>
@@ -266,7 +172,7 @@ function MasterFileUpload() {
               <label htmlFor="dateInput" className="form-label label-color-common mb-0 me-2">Date:</label>
               <input
                 id="dateInput"
-                type="date"
+                type="date" 
                 className="form-control form-control-sm"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
@@ -288,7 +194,7 @@ function MasterFileUpload() {
             </div>
           </div>
 
-          <div className="table-responsive mt-3">
+           <div className="table-responsive mt-3">
           <table className="table table-striped table-bordered table-sm" style={{ width: "100%", height: "auto", verticalAlign: 'middle' }}>
               <thead className='table-info'>
               <tr>
@@ -299,14 +205,10 @@ function MasterFileUpload() {
                   <th hidden>Nomenclature</th>
                   <th hidden>File Type</th>
                   <th hidden>File Code</th>
-                  <th style={{"width":'10rem'}}> Last Upd Date</th>
+                  <th style={{"width":'10rem'}}> Last Upd Date Time</th>
                   <th hidden>Folder</th>
                   <th style={{"width":'10rem'}}> Status</th>
                   <th style={{ textAlign: "left", width: "22rem" }}>Upload</th>
-
-
-
-                  {/* Add more columns as needed */}
                 </tr>
               </thead>
               <tbody>
@@ -319,30 +221,26 @@ function MasterFileUpload() {
                     <td hidden>{item.file_nomenclature}</td>
                     <td hidden>{item.file_type}</td>
                     <td hidden>{item.file_cd}</td>
-                    <td></td>
+                    <td>{item.upd_date_time}</td>
                     <td hidden>{item.folder}</td>
-                    <td></td>
+                    <td> {item.last_status}</td>
 
                     <td><div className={'mb-3 d-flex'}>
-                      <input className="form-control form-control-sm me-2" id={`formFileSm_${index}`} accept=".csv,.txt" onChange={onChangeMasterInput} type="file" multiple />
-
-                      {/* <input className="form-control form-control-sm" id="formFileSm" accept=".csv" onChange={onChange} type="file" /> */}
-                      <button onClick={() => onSubmitMasterFile(index,item.file_cd)} className={`btn btn-outline-primary btn-sm ml-1 ${uploadStatus[index] ? 'btn-uploaded' : ''} `} style={{
+                      <input className="form-control form-control-sm me-2" id={`formFileSm_${index}`} accept=".csv,.txt" 
+                      onChange={(e) => onChangeMasterInput (e, index)} type="file" multiple />
+                      <button onClick={() => onSubmitMasterFile(index,item.file_cd)}
+                                             className={`btn btn-outline-primary btn-sm ml-1 ${uploadStatus[index] ? 'btn-uploaded' : ''} `} style={{
                         backgroundColor: uploadStatus[index] ? '#28a745' : '',
                         color: uploadStatus[index] ? '#ffffff' : ''
                       }}> {uploadStatus[index] ? 'Uploaded' : 'Upload'}</button>
                     </div>
 
                     </td>
-
-
-
-                    {/* Add more columns as needed */}
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
+          </div> 
         </div>
       </div>
     </div>

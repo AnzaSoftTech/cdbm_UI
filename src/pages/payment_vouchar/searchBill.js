@@ -28,6 +28,7 @@ function SearchBill({ onClose, onRowSelect, accountName, actCd ,vendorDetails}) 
 
 
     useEffect(() => {
+        console.log("accountName----",accountName);
         setVendorName(accountName || '');
     }, [accountName]);
 

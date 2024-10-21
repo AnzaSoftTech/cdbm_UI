@@ -10,7 +10,7 @@ const DashboardPage = () => {
   const handleMenuItemClick = (page) => {
     setCurrentPage(page);
   };
-
+  
   return (
     <div className="dashboard">
       <Header />

@@ -1,0 +1,68 @@
+/* styles.css */
+.form-control-dr-cr-1{
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    appearance: auto;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.form-label-dr-cr {
+    flex: 0 0 35%; /* Takes up 30% of the container width */
+    margin-bottom: 0.01rem;
+    text-align: left; /* Aligns text to the right */
+    margin-right: 2rem; /* Space between label and input */
+    margin-left: 2rem ;
+  }
+
+.datatable_dr_cr{
+  max-height: 14.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+  /* Input and Select Styles */
+  .form-select-dr-cr, .form-control-dr-cr {
+    flex: 1;
+    width: 100%; /* Use full width of the container */
+    max-width: 300px; /* Max width if needed */
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .form-select-dr-cr:focus, .form-control-dr-cr:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  .custom-textarea{
+    height: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .container-common{
+      width: 100%;
+      padding-left: 0rem;
+      padding-right: 0rem;
+    }
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

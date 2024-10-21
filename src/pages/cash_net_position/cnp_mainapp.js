@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap';
 import jsPDF from 'jspdf';
 import './cnp_mainapp.css';
 import CashNetPosition from './cash_net_position';
+import { BASE_URL } from ".././constants";
 
 // function formatIndianRupees(amount) {
 //   // Convert amount to number
@@ -30,7 +31,8 @@ function CNP_MainApp() {
   // }, []);
 
   const fetchItems = async () => {
-    const response = await axios.get('http://localhost:3004/api/client');
+    //const response = await axios.get('http://localhost:3004/api/client');
+    const response = await axios.get('${BASE_URL}/api/client');
     setClientItems(response.data);
   };
   // const fetchItems = async () => {

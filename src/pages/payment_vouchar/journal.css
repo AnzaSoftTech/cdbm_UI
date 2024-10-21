@@ -2,7 +2,7 @@
     flex: 0 0 35%; /* Takes up 30% of the container width */
     margin-bottom: 0.01rem;
     text-align: left; /* Aligns text to the right */
-    margin-right: 1rem; /* Space between label and input */
+    align-content: center;    margin-right: 1rem; /* Space between label and input */
     margin-left: 1rem ;
 }
 

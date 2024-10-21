@@ -18,7 +18,7 @@ function ErrorLogPopup({ onCloseClick }) {
 
     return (
         <div className="popup">
-            <div className="popup-inner">
+            <div className="popup-inner" >
             {/* <div className='div_header'><h4 className='search_header'>View Log</h4></div>
                 <div>
                 <input
@@ -29,21 +29,21 @@ function ErrorLogPopup({ onCloseClick }) {
                 />
                 <button className='button_search' onClick={handleClientSearch}>Search</button>
             </div> */}
-                <div className='div_overflow table_margin'><table>
+                <div className='div_overflow table_margin' style={{height:'430px'}} ><table>
                     <thead>
                         <tr>
+                            <th>Status</th>
                             <th>File Name</th>
                             <th>Uploaded Datetime</th>
-                            <th>Status</th>
                             <th>Uploaded By</th>
                         </tr>
                     </thead>
                     <tbody>
                         {viewlogs.map((viewlog) => (
                             <tr key={viewlog.file_name}>
+                                <td>{viewlog.status}</td>
                                 <td>{viewlog.file_name}</td>
                                 <td>{viewlog.uplod_datetime}</td>
-                                <td>{viewlog.status}</td>
                                 <td>{viewlog.upld_by}</td>
                             </tr>
                         ))}

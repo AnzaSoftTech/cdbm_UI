@@ -1,12 +1,24 @@
 /* styles.css */
 .label-width {
-    width: 120px; 
-    /* Adjust as needed */
+    flex: 0 0 30%; /* Takes up 30% of the container width */
+    margin-bottom: 0.01rem;
+    text-align: left; /* Aligns text to the right */
+    margin-right: 0rem; /* Space between label and input */
+    margin-left: 2rem ;
 }
 
 .input-smaller {
     margin-left: 200px;
 }
+
+.input-smaller_contra {
+    margin-left: 70px;
+}
+
+.size_input_contra{
+    width: 400px !important;
+}
+
 
 .color_header{
     background-color: #0275d8;
@@ -14,7 +26,7 @@
     transition: background-color 0.3s ease;
 }
 
-.form-control {
+.form-control-ce {
     display: block;
     width: 100%;
     padding: .375rem .75rem;

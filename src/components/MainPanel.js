@@ -13,9 +13,11 @@ import DRCRNOTEApp from '../pages/dr_cr_note/drcrnotesApp';
 import CONTRAENTERYApp from '../pages/Contra_Entry/contraenteryApp';
 import BANKRECOApp from '../pages/Bank_Reco/bankRecoApp';
 import OPENINGBALANCEApp from '../pages/openingBalance/openingbalanceApp';
+import CashBankMasterApp from '../pages/Cash_Bank_Master/Cash_Bank_MasterApp';
 
 
 function MainPanel() {
+  
   return (
     <div className="d-flex flex-column ">
       <Routes>
@@ -31,6 +33,7 @@ function MainPanel() {
         <Route path="Contra_Entry/contraenteryApp" element={<CONTRAENTERYApp  />}/>
         <Route path="Bank_Reco/bankRecoApp" element={<BANKRECOApp />}/>
         <Route path="openingBalance/openingbalanceApp" element={<OPENINGBALANCEApp />}/>
+        <Route path="Cash_Bank_Master/Cash_Bank_MasterApp" element={<CashBankMasterApp />}/>
         {/* <Route path="page2" element={<Page2 />} /> */}
       </Routes>
     </div>

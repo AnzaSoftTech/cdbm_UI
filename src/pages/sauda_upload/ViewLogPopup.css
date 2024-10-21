@@ -28,8 +28,8 @@
     
     border: 1px solid #ccc;
     overflow: hidden;
-    height: 80%; /* Increased height of the table */
-    max-height: 500px; /* Limit maximum height of the table */
+    height: 80%; /*80% Increased height of the table */
+    max-height: 800px; /* Limit maximum height of the table */
 }
 
 .popup-inner table th,
@@ -50,9 +50,6 @@
     background-color: #f2f2f2;
 }
 
-
-
-
 .div_header {
     background: rgb(149, 149, 248);
     color: white;
@@ -72,7 +69,7 @@
 }
 
 .div_overflow {
-    height: 400px; /* Adjusted height for overflow container */
+    height: 200px; /* Adjusted height for overflow container */
     overflow: auto;
     border: 1px solid;
     margin-top: 10px;

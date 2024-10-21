@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import './bank_reco.css';
+import '../../CommonCss.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import Payment_Voucher from './payment.js';
@@ -10,7 +11,7 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const BankReco = () => {
     const [showPopup, setShowPopup] = useState(false);
-    const[Vouchar,setVouchar]=useState([]);
+    const [Vouchar, setVouchar] = useState([]);
     const [showTable, setShowTable] = useState(false);
     const [summarydata, setSummaryData] = useState([]);
     const [selectedRowsTable1, setSelectedRowsTable1] = useState([]);
@@ -66,7 +67,7 @@ const BankReco = () => {
         }
     };
     const handleEditClick = () => {
-        
+
         if (selectedRowsTable1) {
             setShowPopup(true);
         } else {
@@ -130,18 +131,18 @@ const BankReco = () => {
 
     const handleRowSelect1 = (row) => {
         setSelectedRowsTable1([row]);
-        
+
 
     };
 
-    
+
 
 
     const handleRowSelect2 = (row) => {
         setSelectedRowsTable2([row]);
 
     };
-   
+
 
     const handleSubmitSelectedData = async () => {
         // const selectedDataTable1 = selectedRowsTable1.map(row => ({
@@ -162,7 +163,7 @@ const BankReco = () => {
         //     index: summarydata.indexOf(row),
         // }));
 
-        
+
 
 
         // Prepare the payload
@@ -183,17 +184,17 @@ const BankReco = () => {
         }
 
     };
-   
+
 
 
 
 
     const handleVoucharRowSelect = (data) => {
-        
+
         setVouchar(data);
-        
+
     };
-    
+
 
     const customStyles = {
         header: {
@@ -268,27 +269,27 @@ const BankReco = () => {
             name: 'Select',
             cell: (row) => (
                 <div className='d-flex'>
-                <OverlayTrigger
-                    placement="top"
-                    overlay={
-                        <Tooltip id={`tooltip-select-${row.amount}`}>
-                            {selectedRowsTable1.includes(row) ? 'Deselect' : 'Select'} Amount {row.amount}
-                        </Tooltip>
-                    }
-                >
-                    <button
-                        className={`btn btn-sm ${selectedRowsTable1.includes(row) ? 'btn-custom-selected' : 'btn-custom-unselected'} btn-custom-icon`}
-                        onClick={() => handleRowSelect1(row)}
-                        style={{ margin:'10px 5px 10px 0px',width:'30px',height:'30px' }}
+                    <OverlayTrigger
+                        placement="top"
+                        overlay={
+                            <Tooltip id={`tooltip-select-${row.amount}`}>
+                                {selectedRowsTable1.includes(row) ? 'Deselect' : 'Select'} Amount {row.amount}
+                            </Tooltip>
+                        }
                     >
-                        {selectedRowsTable1.includes(row) ? <FaCheck /> : <FaTimes />}
-                    </button>
-                </OverlayTrigger>
-                <Button onClick={handleEditClick} className=" btn btn-warning mr-2 vouchar_btn" size='sm' >
-                Voucher
-            </Button>
-            {showPopup && <Payment_Voucher onClose={handleClosePopup} onRowSelect={handleVoucharRowSelect} BankDetails={selectedRowsTable1} />}
-            </div>
+                        <button
+                            className={`btn btn-sm ${selectedRowsTable1.includes(row) ? 'btn-custom-selected' : 'btn-custom-unselected'} btn-custom-icon`}
+                            onClick={() => handleRowSelect1(row)}
+                            style={{ margin: '10px 5px 10px 0px', width: '30px', height: '30px' }}
+                        >
+                            {selectedRowsTable1.includes(row) ? <FaCheck /> : <FaTimes />}
+                        </button>
+                    </OverlayTrigger>
+                    <Button onClick={handleEditClick} className=" btn btn-warning mr-2 vouchar_btn" size='sm' >
+                        Voucher
+                    </Button>
+                    {showPopup && <Payment_Voucher onClose={handleClosePopup} onRowSelect={handleVoucharRowSelect} BankDetails={selectedRowsTable1} />}
+                </div>
             ),
             allowOverflow: true,
             width: '7%',
@@ -349,25 +350,25 @@ const BankReco = () => {
         {
             name: 'Select',
             cell: (row) => (
-               
-                    <OverlayTrigger
-                        placement="top"
-                        overlay={
-                            <Tooltip id={`tooltip-select-${row.amount}`}>
-                                {selectedRowsTable2.includes(row) ? 'Deselect' : 'Select'} Amount {row.amount}
-                            </Tooltip>
-                        }
+
+                <OverlayTrigger
+                    placement="top"
+                    overlay={
+                        <Tooltip id={`tooltip-select-${row.amount}`}>
+                            {selectedRowsTable2.includes(row) ? 'Deselect' : 'Select'} Amount {row.amount}
+                        </Tooltip>
+                    }
+                >
+                    <button
+                        className={`btn btn-sm ${selectedRowsTable2.includes(row) ? 'btn-custom-selected' : 'btn-custom-unselected'} btn-custom-icon`}
+                        onClick={() => handleRowSelect2(row)}
+                        style={{ marginLeft: '20px' }}
                     >
-                        <button
-                            className={`btn btn-sm ${selectedRowsTable2.includes(row) ? 'btn-custom-selected' : 'btn-custom-unselected'} btn-custom-icon`}
-                            onClick={() => handleRowSelect2(row)}
-                            style={{ marginLeft: '20px' }}
-                        >
-                            {selectedRowsTable2.includes(row) ? <FaCheck /> : <FaTimes />}
-                        </button>
-                    </OverlayTrigger>
-                    
-              
+                        {selectedRowsTable2.includes(row) ? <FaCheck /> : <FaTimes />}
+                    </button>
+                </OverlayTrigger>
+
+
             ),
             allowOverflow: true,
             width: '7%',
@@ -380,92 +381,77 @@ const BankReco = () => {
 
 
     return (
-        <div className="container ">
-            <div className=" card-bank">
-                <div className="card-header">
+        <div className="container-common">
+            <div className=" card">
+                <div className="card-header-css">
                     <h3 className="text-center">Bank Reco</h3>
                 </div>
                 <div className="card-body">
                     <Row className="mb-3">
-                        <Col xs={12} md={4}>
-                            <div className="d-flex flex-column flex-md-row align-items-md-center">
-                                <div className="mb-2 mb-md-0 me-md-5 align-middle">
-                                    <Form.Label className='label_bank'>Bank Name</Form.Label>
-                                </div>
-                                <div>
-                                    <Form.Select aria-label="Default select example " className="toDate_size" name="branchcd" value={filters.branchcd} onChange={handleChange} >
-                                        <option value="Select Branch">Select Bank Name</option>
-                                        <option value="Bank 1">Bank 1</option>
-                                        <option value="Bank 2">Bank 2</option>
-                                        <option value="Bank 3">Bank 3</option>
-                                    </Form.Select>
-                                </div>
+                        <Col xs={12} md={6}>
+                            <div className="d-flex flex-column flex-md-row align-items-center">
+                                {/* <div className="mb-2 mb-md-0 me-md-5 align-middle"> */}
+                                <Form.Label className='form-label-br'>Bank Name</Form.Label>
+                                <Form.Select aria-label="Default select example " className="form-control-br"
+                                    name="branchcd" value={filters.branchcd} onChange={handleChange} >
+                                    <option value="Select Branch">Select Bank Name</option>
+                                    <option value="Bank 1">Bank 1</option>
+                                    <option value="Bank 2">Bank 2</option>
+                                    <option value="Bank 3">Bank 3</option>
+                                </Form.Select>
                             </div>
+                            {/* </div> */}
                         </Col>
 
                         <Col xs={12} md={6}>
-                            <div className="d-flex flex-column flex-md-row align-items-md-center">
-                                <div className="mb-2 mb-md-0">
-                                    <Form.Label className="me-md-2 align-middle account">Account Number</Form.Label>
-                                </div>
-                                <div>
-                                    <Form.Select aria-label="Default select example  form-control-sm" className="all_size me-1" name='settlementNo' value={filters.settlementNo} onChange={handleChange} >
-                                        <option value="">Select Account Number</option>
-                                        <option value="Account Number 1">Account Number 1</option>
-                                        <option value="Account Number 2">Account Number 2</option>
-                                        <option value="Account Number 3">Account Number 3</option>
-                                    </Form.Select>
-                                </div>
+                            <div className="d-flex flex-column flex-md-row align-items-center">
+                                <Form.Label className="form-label-br">Account Number</Form.Label>
+                                <Form.Select aria-label="Default select example  form-control-sm"
+                                    className="form-select-br" name='settlementNo'
+                                    value={filters.settlementNo} onChange={handleChange} >
+                                    <option value="">Select Account Number</option>
+                                    <option value="Account Number 1">Account Number 1</option>
+                                    <option value="Account Number 2">Account Number 2</option>
+                                    <option value="Account Number 3">Account Number 3</option>
+                                </Form.Select>
                             </div>
                         </Col>
                     </Row>
 
                     <Row className="mb-3">
+                        <Col xs={12} md={6}>
+                            <div className="d-flex flex-column flex-md-row align-items-center">
+                                <Form.Label className='form-label-br'>Form Date</Form.Label>
+                                <Form.Control type="date" className="form-control-br" name="fromdt"
+                                    value={filters.fromdt} onChange={handleChange} />
+                            </div>
+                        </Col>
+                        <Col xs={12} md={6}>
+                            <div className="d-flex flex-column flex-md-row align-items-center">
+                                <Form.Label className='form-label-br '>To Date</Form.Label>
+                                <Form.Control type="date" className="form-control-br" name="todt"
+                                    value={filters.todt} onChange={handleChange} />
+                            </div>
+                        </Col>
+                    </Row>
+
+                    <Row>
                         <Col xs={12} md={12}>
-                            <div className="d-flex flex-column flex-md-row align-items-md-center">
-                                <div className="mb-2 mb-md-0 margin_form_dt align-middle">
-                                    <Form.Label className='form_date'>Form Date</Form.Label>
-                                </div>
-                                <div>
-                                    <Form.Control type="date" className="all_size form_date_input" name="fromdt" value={filters.fromdt} onChange={handleChange} />
-                                </div>
-                                <div className="mb-2 mb-md-0 ms-md-2 me-md-2 align-middle">
-                                    <Form.Label className='to_date '>To Date</Form.Label>
-                                </div>
-                                <div>
-                                    <Form.Control type="date" className="toDate_size " name="todt" value={filters.todt} onChange={handleChange}  />
-                                </div>
-                            </div>
+                            <div className="d-flex flex-column flex-md-row align-items-center">
+                                {/* <Form.Label className='form-label-br'>Upload Bank Statement</Form.Label> */}
+                                <input className="form-control" id="formFileSm" accept=".csv,.txt" 
+                                style={{width:'25rem', marginLeft:'2rem'}}
+                                onChange={onInputChange} type="file" size='sm' />
+                                <Button onClick={onUploadBankFileSubmit} className="btn-primary me-3" >Upload</Button>
+                            <Button style={{ width: '8rem' }} onClick={handleProcessRecoButton} className="btn-primary me-3" >
+
+                                Process Reco
+                            </Button>
+                            
+</div>
+
                         </Col>
-                    </Row>
 
-                    <Row className="mb-3">
-                        <Col xs={12} md={6} className='d-flex'>
-                            <div className="d-flex flex-column flex-md-row align-items-md-center">
-                                <div className="mb-2 mb-md-0 margin_report align-middle">
-                                    <Form.Label className=''>Upload Bank Statement</Form.Label>
-                                </div>
-                                <div className='upload_div'>
-                                    <div>
-                                    <input className="form-control upload_input  me-2" id="formFileSm" accept=".csv,.txt" onChange={onInputChange} type="file"  size='sm' />
-                                    </div>
-                                    <Button onClick={onUploadBankFileSubmit} className="mr-2 upload_btn " size='sm'>Upload</Button>
-
-                                    
-                                </div>
-                            </div>
-                        </Col>
-                        <Col xs={12} md={6}>
-                            <div className="mb-3 ">
-                               
-                                    <Button onClick={handleProcessRecoButton} className="me-2   update_btn" size='sm'>
-
-                                        Process Reco
-                                    </Button>
-
-                                    
-                            </div>
-                        </Col>
                     </Row>
 
                     {showTable && (

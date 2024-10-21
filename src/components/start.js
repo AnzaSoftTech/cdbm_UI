@@ -27,8 +27,6 @@ const DashboardPage = () => {
 
   const [openMenus, setOpenMenus] = useState({});
 
-
-
   const toggleMenu = (menuName) => {
     setOpenMenus({
       ...openMenus,
@@ -96,6 +94,7 @@ const DashboardPage = () => {
               </div>
               {openMenus.financial && (
                 <div className="submenu">
+                  <div className="submenu-item"><Link to="/dashboard/Cash_Bank_Master/CashBankMasterApp " className="nav-link">Cash/Bank Master</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/payment_vouchar/Payment_voucharApp" className="nav-link"> Payment/Receipt Vouchers</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/journal_vouchar/JOURNALApp " className="nav-link">Journal Voucher</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/dr_cr_note/drcrnotesApp " className="nav-link">Debit/Credit Notes</Link></div>

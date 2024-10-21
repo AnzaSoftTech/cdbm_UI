@@ -53,10 +53,10 @@ const DataTable = ({ columns, data }) => {
   return (
     <Container className="align-items-center">
       <Row className="mb-3">
-      <Col xs={12} md={6} className="d-flex align-items-center">
+      <Col xs={12} md={6} className="d-flex align-items-center label-color-common">
           <Form.Check
             type="radio"
-            label="Part"
+            label="Party"
             name="reportType"
             value="part"
             id="partRadio"
@@ -77,7 +77,7 @@ const DataTable = ({ columns, data }) => {
           />
         </Col>
         <Col xs={12} md={6} className="d-flex align-items-center">
-          <Form.Label className="margin-right mb-0  " style={{width:"25%"}}>Account Name </Form.Label>
+          <Form.Label className="margin-right mb-0 label-color-common " style={{width:"25%"}}>Account Name </Form.Label>
           <Form.Control
             type="text"
             value={accountName}

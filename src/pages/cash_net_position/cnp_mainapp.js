@@ -25,9 +25,9 @@ function CNP_MainApp() {
   
 
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  // useEffect(() => {
+  //   fetchItems();
+  // }, []);
 
   const fetchItems = async () => {
     const response = await axios.get('http://localhost:3004/api/client');

@@ -5,7 +5,7 @@ import BankReco from './bank_reco';
 
 function BANKRECOApp() {
   return (
-    <div className="container">    
+    <div>    
             
       <BankReco />
     </div>

@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef  } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import { ProgressBar, Form, Button, Alert } from 'react-bootstrap';
@@ -10,10 +10,15 @@ import Client_Popup from './clientPopUp'
 import ConfirmationBox from './ConfirmationBox'; 
 import AuctionTable from './autionPopUp';  
 import { BASE_URL } from ".././constants";
+import ProcessingDialog from './ProcessingDialog';
+
+//import './Busyicon.css'
 
 //import Table from 'react-bootstrap/Table';
 
 function FileUpload() {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState(false);
   const [isButtonDisabled_ClntExcLink, setIsButtonDisabled_ClntExcLink] = useState(false);
   const [isButtonDisabled_client, setIsButtonDisabled_client] = useState(false);
   const [isButtonDisabled_auction, setIsButtonDisabled_auction] = useState(false);
@@ -31,6 +36,7 @@ function FileUpload() {
   const[ClientPopup,setShowClientPopup] = useState(false);
   const[AuctionPopup,setShowAuctionPopup] = useState(false);
   const [wrongClients, setWrongClients] = useState(['','']);
+  const fileInputRefSB = useRef(null);
   
   const handle_radio_change = (e) => {
     setSelectedRadioOpt(e.target.value);
@@ -72,7 +78,7 @@ function FileUpload() {
   const [oblig_status, setOblig_Status] = useState([]);
   const [tradeFileName, setTradeFileName] = useState("");
 
-  const onChange = e => {
+  const onSaudaFileSelect = e => {
     setFiles(e.target.files);
     setTradeFileName(e.target.files[0]);
   };
@@ -90,13 +96,32 @@ function FileUpload() {
   useEffect(() => {
 
     //axios.get('http://localhost:3001/api/last_upd_date_status').then
+    // axios.get(`${BASE_URL}/api/last_upd_date_status`).then
+    //   (response => {
+    //     setLastUpload_Date(response.data[0].last_upld_datetime); setLastUpload_Status(response.data[0].last_status);
+    //     setOblig_Upd_Date(response.data[1].last_upld_datetime); setOblig_Status(response.data[1].last_status)
+    //   })
+    //   .catch(error => { console.error("Error in calling sauda_upload_history", error) })
+    onpageload();
+  }, []);
+
+  const onpageload = async () => {
+    try {
+      fileInputRefSB.current.value = '';
+      setSelectedRadioOpt('');
+      setShow_auct_price(false);
     axios.get(`${BASE_URL}/api/last_upd_date_status`).then
       (response => {
         setLastUpload_Date(response.data[0].last_upld_datetime); setLastUpload_Status(response.data[0].last_status);
-        setOblig_Upd_Date(response.data[1].last_upld_datetime); setOblig_Status(response.data[1].last_status)
+        setOblig_Upd_Date(response.data[1].last_upld_datetime); setOblig_Status(response.data[1].last_status);
       })
-      .catch(error => { console.error("Error in calling sauda_upload_history", error) })
-  }, []);
+      .catch(error => { console.error("Error in calling sauda_upload_history", error) });
+    }
+    catch (err) {
+      console.error(err);
+    }
+
+  }
 
 
   const fetchData = async () => {
@@ -315,7 +340,7 @@ function FileUpload() {
   // ***********************************************************************************************************
 
   //--- Processing Trade File
-  const handleButtonClick = async (selectedRadioOpt, isTradeFileUploaded) => {
+  const handleProcessTradeFileClick = async (selectedRadioOpt, isTradeFileUploaded) => {
     try {
 
       const tradefileinput = document.getElementById('formFileSm');
@@ -339,9 +364,22 @@ function FileUpload() {
         alert('Please Upload the selected Trade !');
         return;
       }
+
+      const isConfirmed = window.confirm("Sure you want to process the file ?");
+
+      if (!isConfirmed)
+      {
+        return;
+      }
+
+      setIsProcessing(true);
+
       // `http://localhost:3001/process-trade-file
       const response = await axios.post(`${BASE_URL}/api/process-trade-file?selectedRadioOpt=` + selectedRadioOpt + `&TradeDate=` + date + `&TradeFileName=` + tradeFileName.name);
       const reply = response.data.message;
+      setIsProcessing(false);
+      onpageload();
+
       if (reply === "0") {
         alert('Trade File Processed succussfully !');
         
@@ -366,6 +404,7 @@ function FileUpload() {
 
       //setShowModal(true); /// show confirmation box 
     } catch (error) {
+      setIsProcessing(false);
       console.error("Error loading file:", error);
       alert('Error loading file');
       setIsButtonDisabled_ClntExcLink(true);
@@ -466,8 +505,10 @@ function FileUpload() {
         style={{ height: '35px', maxWidth: '550px' }} 
         id="formFileSm" 
         accept=".csv,.txt" 
-        onChange={onChange} 
+        //onChange={onChange} 
+        onChange={onSaudaFileSelect} 
         type="file" 
+        ref={fileInputRefSB}
       />
     </div>
 
@@ -513,10 +554,8 @@ function FileUpload() {
       <button 
         className="btn btn-success btn-sm mt-4" 
         style={{ height: '35px', width: '150px' }} 
-        onClick={() => handleButtonClick(selectedRadioOpt, isTradeFileUploaded)}
-      >
-        Process Trade File
-      </button>
+        onClick={() => handleProcessTradeFileClick(selectedRadioOpt, isTradeFileUploaded)}>Process Trade File</button>
+        {isProcessing && <ProcessingDialog isOpen={isProcessing} />}
     </div>
   </div>
 </div>

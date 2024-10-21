@@ -14,7 +14,7 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { BASE_URL } from "../constants";
 
 function Payment_Voucher({ details, setDetails }) {
-
+    const [drCrType, setDrCrType] = useState('');
     const [cbaccount, setCBAccount] = useState();
     const [cbaccounts, setCBAccounts] = useState([]);
     const [paymentMode, setPaymentMode] = useState();
@@ -31,7 +31,7 @@ function Payment_Voucher({ details, setDetails }) {
     const [bookType, setBookType] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [bookTypes, setBookTypes] = useState([]);
-    const [exchanges, setExchanges] = useState([]);
+    //const [exchanges, setExchanges] = useState([]);
     const [voucherDate, setVoucherDate] = useState('');
     const [voucherNo, setVoucherNo] = useState('');
     const [effectiveDate, setEffectiveDate] = useState('');
@@ -47,10 +47,20 @@ function Payment_Voucher({ details, setDetails }) {
     const [showBillPopup, setShowBillPopup] = useState(false);
     const [vendorDetails, setVendorDetails] = useState(null);
     const [TransactionType, setTransactionType] = useState('');
+    const [segment, setSegment] = useState();
+    const [hdractivitycode, setHdrActivityCode] = useState();
+
+    const [activitycode, setActivityCode] = useState('');
+    const [activitycodes, setActivityCodes] = useState([]);
+    const [segments, setSegments] = useState([]);
+
+    const [fin_year, setFin_Year] = useState();
 
     useEffect(() => {
-        setdr_cr(TransactionType === 'Payment' ? 'Cr' : 'Dr');
-    }, [TransactionType]);
+        axios.get(`${BASE_URL}/api/get_segment`)
+            .then(response => setSegments(response.data))
+            .catch(error => console.error('Error fetching segment:', error));
+    }, []);
 
     useEffect(() => {
         //'http://localhost:3001/api/cash_bank_master
@@ -62,13 +72,19 @@ function Payment_Voucher({ details, setDetails }) {
     useEffect(() => {
         axios.get(`${BASE_URL}/api/bookType`)
             .then(response => setBookTypes(response.data))
-            .catch(error => console.error('Error fetching accounts:', error));
+            .catch(error => console.error('Error fetching book type:', error));
     }, []);
-
+/*
     useEffect(() => {
         axios.get(`${BASE_URL}/api/exchange`)
             .then(response => setExchanges(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
+    }, []);
+*/
+    useEffect(() => {
+        axios.get(`${BASE_URL}/api/get_activity_cd`)
+            .then(response => setActivityCodes(response.data))
+            .catch(error => console.error('Error fetching activity:', error));
     }, []);
 
     useEffect(() => {
@@ -99,12 +115,12 @@ function Payment_Voucher({ details, setDetails }) {
     useState(() => {
         //console.log('details', details);
         if (details.length === 0) {
-            setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', segment: '', exchange: '', noraml_deposit: '', narration: '', analyzer_code: '', nse_clnt_analyzer_code: '' }]);
+            setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', segment: '', activity_cd: '', noraml_deposit: '', narration: '', analyzer_code: '', nse_clnt_analyzer_code: '' }]);
         }
     });
 
     const handleAddRow = () => {
-        setDetails([...details, { act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', segment: '', exchange: '', noraml_deposit: '', narration: '', analyzer_code: '',  nse_clnt_analyzer_code: ''  }]);
+        setDetails([...details, { act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', segment: '', activity_cd: '', noraml_deposit: '', narration: '', analyzer_code: '', nse_clnt_analyzer_code: '' }]);
     };
 
     const handleEditClick = () => {
@@ -115,12 +131,20 @@ function Payment_Voucher({ details, setDetails }) {
         setShowBillPopup(true);
     };
 
+    const handleTypeChange = (index, type) => {
+        const newDetails = [...details];
+        newDetails[index].dr_cr = type;
+        if (type === 'Dr') {
+            newDetails[index].cr_amount = '';
+        } else if (type === 'Cr') {
+            newDetails[index].dr_amount = '';
+        }
+        setDetails(newDetails);
+        setDrCrType(type);
+    };
+
     const handleBillRowSelect = (row) => {
-        // Handle row selection
-        //console.log('Selected row:', row);
         setVendorDetails(row);
-
-
     };
 
     const handleClosePopup = () => {
@@ -150,7 +174,7 @@ function Payment_Voucher({ details, setDetails }) {
     const handleInputChange = (index, field, value) => {
         const newDetails = [...details];
         newDetails[index][field] = value;
-        newDetails[index].dr_cr = dr_cr;
+
 
 
         if (value === '') {
@@ -166,7 +190,7 @@ function Payment_Voucher({ details, setDetails }) {
 
             let drTotal3 = 0;
             let crTotal4 = 0;
-            const DrCr = (TransactionType === 'Payment' ? 'Dr' : 'Cr')
+            const DrCr = (TransactionType === 'Payment' ? 'Cr' : 'Dr')
             if (DrCr === 'Dr') {
                 drTotal3 = parsedAmount;
             } else if (DrCr === 'Cr') {
@@ -184,9 +208,10 @@ function Payment_Voucher({ details, setDetails }) {
         setDetails(newDetails);
     };
 
-    const handleSearchClick = (index, exchange, segment) => {
-        if (!exchange) {
-            alert('Please select Exchange.');
+    const handleSearchClick = (index, activity_cd, segment) => {
+        
+        if (!activity_cd) {
+            alert('Please select Activity Code.');
             return;
         }
         if (!segment) {
@@ -201,39 +226,138 @@ function Payment_Voucher({ details, setDetails }) {
         TransactionType === 'Receipt' ? 'Receipt Voucher' :
             'Payment / Receipt Voucher';
 
-    const handleVoucharRowSelect = (fin_year, voucher_no, book_type, trans_date, eff_date, cb_act_cd, amount, drcr, segment, exchange, branch_cd, cmp_cd, normal_deposit, act_cd, narration, narr_code) => {
-        setBookType(book_type);
-        setEffectiveDate(eff_date);
-        setVoucherDate(trans_date);
-        setVoucherNo(voucher_no);
-        const newDetails = [...details];
-        const selectedRow = newDetails[selectedRowIndex];
-
-        selectedRow.segment = segment;
-        selectedRow.exchange = exchange;
-        selectedRow.noraml_deposit = normal_deposit;
-        selectedRow.act_name = cb_act_cd;
-        selectedRow.dr_cr = drcr;
-        if (drcr === 'Dr') {
-            selectedRow.dr_amount = amount;
-            selectedRow.cr_amount = '';
-        } else {
-            selectedRow.cr_amount = amount;
-            selectedRow.dr_amount = '';
-        }
-        selectedRow.narration = narration;
-        selectedRow.analyzer_code = narr_code;
-
-        setDetails(newDetails);
-        // console.log('segment', segment);
-        // console.log('exc_cd', exc_cd);
-        // console.log('nor_depos', nor_depos);
-        // console.log('cb_act_cd', cb_act_cd);
-        // console.log('drcr', drcr);
-        // console.log('drcr', amount);
-        // console.log('drcr', narration);
-        // console.log('drcr', narr_code)
+    const formatDate = (isoString) => {
+        if (!isoString) return ''; // Return empty string if input is empty or undefined
+        const date = new Date(isoString);
+        if (isNaN(date.getTime())) return ''; // Return empty string if date is invalid
+        return date.toISOString().split('T')[0]; // Formats as YYYY-MM-DD
     };
+
+
+
+    const handleVoucharRowSelect = (vouchers) => {
+       // console.log('vouchers----', vouchers); // Check the structure of vouchers here
+    
+        const detailData = vouchers.detailData;
+        const headerDataArray = vouchers.headerData;
+       // console.log('detailData', detailData);
+       
+       setShowPopup(false);
+        // Ensure detailData is an array and headerDataArray is also an array
+        if (Array.isArray(detailData) && Array.isArray(headerDataArray)) {
+            const parseAmount = (value) => {
+                const number = parseFloat(value);
+                return isNaN(number) ? 0 : number;
+            };
+    
+            // Map over headerDataArray to format the data
+            const formattedHeaderData = headerDataArray.map(header => ({
+                cbaccount: header.cb_act_cd || '',
+                fin_year: header.fin_year || '', 
+                voucherNo: header.voucher_no || 0,
+                voucherDate: formatDate(header.trans_date) || null,
+                effectiveDate: formatDate(header.eff_date) || null,
+                paymentMode: header.payment_mode || '',
+                payeeName: header.payer_payee || '',
+                refNo: header.reference_no || '',
+                chequeNo: header.cheque_no || '',
+                nsebankanalyzerCode: header.nse_narr_code || '',
+                analyzerCode: header.narr_code || '',
+                amount: parseAmount(header.amount || '0'),
+                narration: header.narration || '',
+                bookType: header.book_type || '',
+                seg_code: header.segment,
+                TransactionType: header.trans_type || '',
+                activity_cd: header.activity_cd
+            }));
+    
+            // Assuming you want to set the first header data to state
+            const firstHeaderData = formattedHeaderData[0] || {};
+    
+            setBookType(firstHeaderData.bookType);
+            setFin_Year(firstHeaderData.fin_year);
+            setEffectiveDate(firstHeaderData.effectiveDate);
+            setVoucherDate(firstHeaderData.voucherDate);
+            setVoucherNo(firstHeaderData.voucherNo);
+            setCBAccount(firstHeaderData.cbaccount);
+            setPaymentMode(firstHeaderData.paymentMode);
+            setPayeeName(firstHeaderData.payeeName);
+            setRefNo(firstHeaderData.refNo);
+            setChequeNo(firstHeaderData.chequeNo);
+            setNSEBankAnalyzerCode(firstHeaderData.nsebankanalyzerCode);
+            setAnalyzerCode(firstHeaderData.analyzerCode);
+            setAmount(firstHeaderData.amount);
+            setTransactionType(firstHeaderData.TransactionType);
+            setNarration(firstHeaderData.narration);
+            setSegment(firstHeaderData.seg_code);
+            setActivityCode(firstHeaderData.activity_cd);
+           
+    
+            const newDetails = detailData.map(details => ({
+                act_name: details.act_name || '',
+                dr_cr: details.drcr || '',
+                dr_amount:details.drcr === 'Dr' ? parseAmount(details.amount) : 0,
+              
+                cr_amount: details.drcr === 'Cr' ? parseAmount(details.amount) : 0,
+                segment: details.segment || '',
+                activity_cd: details.activity_cd || '',
+                noraml_deposit: details.nor_depos || '',
+                narration: details.narration || '',
+                analyzer_code: details.narr_code || '',
+                fin_year: details.fin_year || '',
+                branch_cd: details.branch_cd || '',
+                act_cd: details.act_cd || '',
+                cmp_cd: details.cmp_cd || '',
+                nse_clnt_analyzer_code:details.nse_narr_code ||''
+
+            }));
+    
+            // Log the new details array
+          //  console.log('New Details Array:', newDetails);
+    
+            // Update details state
+            console.log('formattedHeaderData', formattedHeaderData);
+            setDetails(newDetails);
+            setHeader(formattedHeaderData);
+           
+            const drTotal1 = newDetails
+                .filter((item) => item.dr_cr === 'Dr')
+                .reduce((sum, item) => sum + parseFloat(item.dr_amount), 0);
+              
+            console.log('drtotal',drTotal1);
+           
+            const crTotal2 = newDetails
+                .filter((item) => item.dr_cr === 'Cr')
+                .reduce((sum, item) => sum + parseFloat(item.cr_amount), 0);
+    
+            const parsedAmount = parseFloat(firstHeaderData.amount || '0');
+            console.log('amount', parsedAmount);
+    
+            let drTotal3 = 0;
+            let crTotal4 = 0;
+            const DrCr = (firstHeaderData.TransactionType === 'Payment' ? 'Cr' : 'Dr');
+            if (DrCr === 'Dr') {
+                drTotal3 = parsedAmount;
+            } else if (DrCr === 'Cr') {
+                crTotal4 = parsedAmount;
+            }
+            //console.log(drTotal1 + drTotal3);
+            const drTotal = drTotal1 + drTotal3;
+            //console.log('dr total',drTotal);
+            const crTotal = crTotal2 + crTotal4;
+    
+            const balance = drTotal - crTotal;
+            setTotals({ drTotal, crTotal, balance });
+    
+            setShowModal(false);
+            // Log modal state update
+            console.log('Modal Closed');
+        } else {
+            console.error('Invalid vouchers array:', vouchers);
+        }
+    };
+    
+    console.log('header',header);
 
     const handleSelectRow = (rowData) => {
         const { act_name, act_cd, branch_cd, cmp_cd, type_cd } = rowData;
@@ -260,17 +384,16 @@ function Payment_Voucher({ details, setDetails }) {
         // console.log('details.segment', details[0].segment);
         // console.log('details.length', details.length);
 
-        var lv_row_cnt = details.length;   
-        var lv_sr_no = 1;   
+        var lv_row_cnt = details.length;
+        var lv_sr_no = 1;
         var lv_msg_txt = '';
 
         // **************************************************
         // Start : Data table validations
         // **************************************************
-       // console.log('details ----> ', details);
-       
-        for (let i = 0; i < lv_row_cnt; i++)
-        {
+        // console.log('details ----> ', details);
+
+        for (let i = 0; i < lv_row_cnt; i++) {
 
             if (!details[i].segment) {
                 lv_msg_txt = 'Please select Segment at Sr No. ' + lv_sr_no;
@@ -278,9 +401,8 @@ function Payment_Voucher({ details, setDetails }) {
                 return;
             }
 
-            if (!details[i].exchange) {
-                lv_msg_txt = 'Please select Exchange at Sr No. ' + lv_sr_no;
-                //console.log('exchange',details[i].exchange)
+            if (!details[i].activity_cd) {
+                lv_msg_txt = 'Please select Activity at Sr No. ' + lv_sr_no;
                 alert(lv_msg_txt, ' lv_row_cnt ', lv_row_cnt);
                 return;
             }
@@ -391,10 +513,17 @@ function Payment_Voucher({ details, setDetails }) {
         //// End : Header validation 
         //// **************************************************
 
+        const isConfirmed = window.confirm("Sure you want to Save the record ?");
+
+        if (!isConfirmed) {
+            return;
+        }
+
         setUserId(1);
 
         const headerData = {
             cbaccount,
+            fin_year,
             voucherNo,
             voucherDate,
             effectiveDate,
@@ -407,6 +536,8 @@ function Payment_Voucher({ details, setDetails }) {
             amount,
             narration,
             bookType,
+            segment,
+            hdractivitycode,
             userId,
             TransactionType
         };
@@ -416,26 +547,64 @@ function Payment_Voucher({ details, setDetails }) {
             details: details,
             vendorDetails: vendorDetails,
         };
-        alert(JSON.stringify(data));
+        //alert(JSON.stringify(data));
         var resValidate = calculateTotals(details);
 
-        console.log('resValidate before save ', resValidate)
+       // console.log('resValidate before save ', resValidate)
 
         if (resValidate == 0) {
-            axios.post(`${BASE_URL}/api/voucher`, data)
-                .then(response => {
-                    alert('Voucher saved successfully!');
-                    // Reset form state after successful save
-                    setBookType('');
-                    setVoucherDate('');
-                    setEffectiveDate('');
-                    setNarration('');
-                    setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', segment: '', exchange: '', noraml_deposit: '', narration: '', analyzer_code: '' }]);
-                    setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
-                    setVendorDetails('');
-                })
-                .catch(error => console.error('Error saving voucher:', error));
-
+            if (!voucherNo) {
+                axios.post(`${BASE_URL}/api/voucher`, data)
+                    .then(response => {
+                        alert('Voucher saved successfully!');
+                        // Reset form state after successful save
+                        setBookType('');
+                        setSegment('');
+                        setHdrActivityCode('');
+                        setVoucherDate('');
+                        setEffectiveDate('');
+                        setNarration('');
+                        setVoucherNo('');
+                        setTransactionType('');
+                        setPaymentMode('');
+                        setPayeeName('');
+                        setRefNo('');
+                        setChequeNo('');
+                        setAnalyzerCode('');
+                        setNSEBankAnalyzerCode('');
+                        setAmount('');
+                        setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', segment: '', activity_cd: '', noraml_deposit: '', narration: '', analyzer_code: '' }]);
+                        setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
+                        setVendorDetails('');
+                        setCBAccount('');
+                    })
+                    .catch(error => console.error('Error saving voucher:', error));
+            }
+            else { /// edit voucher
+                axios.post(`${BASE_URL}/api/voucher_edit`, data)
+                    .then(response => {
+                        alert('Voucher saved successfully!');
+                        // Reset form state after successful save
+                        setBookType('');
+                        setVoucherDate('');
+                        setEffectiveDate('');
+                        setNarration('');
+                        setVoucherNo('');
+                        setTransactionType('');
+                        setPaymentMode('');
+                        setPayeeName('');
+                        setRefNo('');
+                        setChequeNo('');
+                        setAnalyzerCode('');
+                        setNSEBankAnalyzerCode('');
+                        setAmount('');
+                        setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', segment: '', activity_cd: '', noraml_deposit: '', narration: '', analyzer_code: '' }]);
+                        setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
+                        setVendorDetails('');
+                        setCBAccount('');
+                    })
+                    .catch(error => console.error('Error saving voucher:', error));
+            }
         }
         else {
             alert('The difference between the two values is non-zero. Exiting without saving.');
@@ -452,11 +621,11 @@ function Payment_Voucher({ details, setDetails }) {
             .reduce((sum, item) => sum + parseFloat(item.cr_amount), 0);
 
         const parsedAmount = parseFloat(amount || '0');
-      //  console.log('amount', parsedAmount)
+        //  console.log('amount', parsedAmount)
 
         let drTotal3 = 0;
         let crTotal4 = 0;
-        let DrCr = (TransactionType === 'Payment' ? 'Dr' : 'Cr')
+        let DrCr = (TransactionType === 'Payment' ? 'Cr' : 'Dr')
         if (DrCr === 'Dr') {
             drTotal3 = parsedAmount;
         } else if (DrCr === 'Cr') {
@@ -471,17 +640,17 @@ function Payment_Voucher({ details, setDetails }) {
         setTotals({ drTotal, crTotal, balance });
 
         const difference = Math.abs(balance);
-       // console.log('dr', drTotal);
-       // console.log('cr', crTotal);
-       // console.log('total', balance);
+        // console.log('dr', drTotal);
+        // console.log('cr', crTotal);
+        // console.log('total', balance);
         return difference;
 
         // Add your save logic here
         //alert('Values are equal. Saving data...');
     };
 
-     // Function to format number with commas
-     const formatNumber = (num) => {
+    // Function to format number with commas
+    const formatNumber = (num) => {
         if (!num && num !== 0) return '';
         const [integer, decimal] = num.toString().split('.');
         return integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (decimal ? `.${decimal}` : '');
@@ -495,34 +664,36 @@ function Payment_Voucher({ details, setDetails }) {
 
 
     const handleAmountChange = (e) => {
-        setAmount(e.target.value);
-
+        const amount = e.target.value;
+        setAmount(amount);  // Update state with the new amount
+        fetchdata(amount);  // Pass the amount to fetchdata
     };
 
-    useEffect(() => {
+    const fetchdata = (amount) => {
+        console.log('test',amount,TransactionType);
 
         const parsedAmount = parseFloat(amount || '0');
-       // console.log('parsedAmount', parsedAmount);
-       // console.log('total', totals);
+        console.log('parsedAmount', parsedAmount);
+        console.log('total', totals);
         let drTotal = totals.drTotal;
         let crTotal = totals.crTotal;
 
-        let DrCr = (TransactionType === 'Payment' ? 'Dr' : 'Cr')
+        let DrCr = (TransactionType === 'Payment' ? 'Cr' : 'Dr')
         //console.log('DrCr', DrCr);
         if (DrCr === 'Dr') {
-            drTotal = 0;
+           drTotal=0;
             drTotal += parsedAmount;
             //console.log('drTotal----', drTotal);
         } else if (DrCr === 'Cr') {
-            crTotal = 0;
+            crTotal=0;
             crTotal += parsedAmount;
-           // console.log('crTotal---', crTotal);
+            // console.log('crTotal---', crTotal);
         }
 
 
         const balance = Math.abs(drTotal - crTotal);
         setTotals({ drTotal, crTotal, balance });
-    }, [amount, TransactionType]);
+    };
 
 
 
@@ -531,7 +702,6 @@ function Payment_Voucher({ details, setDetails }) {
             //console.log('handleCashBank actDrCode =>>>>> ', p_cb_act_code);
             getCurrDate();
 
-
             setCBAccount(p_cb_act_code);
             //setBankBalance((100000.25).toLocaleString('hi') + ' Cr');
 
@@ -539,16 +709,17 @@ function Payment_Voucher({ details, setDetails }) {
 
             if (response.data.length === 1) {
                 //setBranchCode(response.data[0].branch_cd);
-                //setSegment(response.data[0].segment);
                 setBookType(response.data[0].book_type);
-                //setExchangeCode(response.data[0].exc_cd);
+                setSegment(response.data[0].segment);
+                setHdrActivityCode(response.data[0].activity_cd);
             }
             else {
                 //setBranchCode('');
                 //setSegment('');
                 setBookType('');
+                setSegment('');
+                setHdrActivityCode('');
                 setBankBalance(0);
-                //setExchangeCode('');
             }
 
         } catch (error) {
@@ -578,7 +749,10 @@ function Payment_Voucher({ details, setDetails }) {
                     onChange={e => handleInputChange(index, 'segment', e.target.value)}
                     className="form-control">
                     <option value="">Select Segment</option>
-                    <option value="C">Cash Market</option>
+                    {segments.map(seg => (
+                        <option key={seg.seg_code} value={seg.seg_code}>{seg.seg_name}</option>
+                    ))}
+                    {/* <option value="C">Cash Market</option> */}
                     {/* <option value="2">Segment 2</option> */}
                     {/* Add more options as needed */}
                 </select>
@@ -586,17 +760,16 @@ function Payment_Voucher({ details, setDetails }) {
             width: '100px',
         },
         {
-            name: 'Exchange',
-            selector: row => row.exchange,
+            name: 'Activity',
+            selector: row => row.activity_cd,
             cell: (row, index) => (
                 <select
-                    value={row.exchange}
-                    onChange={e => handleInputChange(index, 'exchange', e.target.value)}
-                    className="form-control"
-                >
-                    <option value="">Select Exchange</option>
-                    {exchanges.map(exchange => (
-                        <option key={exchange.exc_cd} value={exchange.exc_cd}>{exchange.exc_name}</option>
+                    value={row.activity_cd}
+                    onChange={e => handleInputChange(index, 'activity_cd', e.target.value)}
+                    className="form-control">
+                    <option value="">Select Activity</option>
+                    {activitycodes.map(actcd => (
+                        <option key={actcd.activity_cd} value={actcd.activity_cd}>{actcd.act_name}</option>
                     ))}
                 </select>
             ),
@@ -639,13 +812,11 @@ function Payment_Voucher({ details, setDetails }) {
                         overlay={
                             <Tooltip id={`tooltip-search-${index}`}>
                                 Search Account
-                            </Tooltip>
-                        }
-                    >
+                            </Tooltip>} >
                         <img
                             src={searchIcon}
                             alt="Search"
-                            onClick={() => handleSearchClick(index, row.exchange, row.segment)}
+                            onClick={() => handleSearchClick(index, row.activity_cd, row.segment)}
                             style={{
                                 width: '20px', // Adjust size as needed
                                 height: '20px',
@@ -658,7 +829,7 @@ function Payment_Voucher({ details, setDetails }) {
                             <Modal.Title >Search and Select Account</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <PopupSearch onSelectRow={handleSelectRow} exchange={row.exchange} segment={row.segment} />
+                            <PopupSearch onSelectRow={handleSelectRow} activity_cd={row.activity_cd} segment={row.segment} />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => setShowModal(false)}>
@@ -675,13 +846,15 @@ function Payment_Voucher({ details, setDetails }) {
             name: 'Dr/Cr',
             selector: (row, index) => (
 
-                <input
-                    type="text"
-                    value={dr_cr}
-                    //onChange={e => handleTypeChange(index, e.target.value)}
+                <select
+                    value={row.dr_cr}
+                    onChange={e => handleTypeChange(index, e.target.value)}
                     className="form-control"
-                    readOnly
-                />
+                >
+                    <option value="">Select Dr/Cr</option>
+                    <option value="Dr">Dr</option>
+                    <option value="Cr">Cr</option>
+                </select>
             ),
             width: '70px',
         },
@@ -704,7 +877,7 @@ function Payment_Voucher({ details, setDetails }) {
                         }}
                         className="form-control"
                         style={{ textAlign: 'right' }}
-                        disabled={dr_cr !== 'Dr'} // Disable if not 'Cr' is selected
+                        disabled={row.dr_cr !== 'Dr'} // Disable if not 'Cr' is selected
                     />
                 );
             },
@@ -728,7 +901,7 @@ function Payment_Voucher({ details, setDetails }) {
                         }}
                         className="form-control"
                         style={{ textAlign: 'right' }}
-                        disabled={dr_cr !== 'Cr'} // Disable if not 'Cr' is selected
+                        disabled={row.dr_cr !== 'Cr'} // Disable if not 'Cr' is selected
                     />
                 );
             },
@@ -876,165 +1049,165 @@ function Payment_Voucher({ details, setDetails }) {
 
     return (
         <div className="container-common">
-    <div className="card">
-        <div className="card-header-css">
-            <h3>{headerText}</h3>
+            <div className="card">
+                <div className="card-header-css">
+                    <h3>{headerText}</h3>
+                </div>
+                <div className="card-body">
+                    {/*  Cash/Bank Account and Voucher No */}
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="TransactionTypeCode" className="form-label form-label-pv label-color-common">Transaction Type</label>
+                            <select id="TransactionTypeCode" className="form-select form-control-standard" name='TransactionType' value={TransactionType}
+                                onChange={(e) => setTransactionType(e.target.value)}>
+                                <option value="">Select Transaction Type</option>
+                                <option value="Payment">Payment Voucher</option>
+                                <option value="Receipt">Receipt Voucher</option>
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="bookType" className="form-label form-label-pv label-color-common">Book Type</label>
+                            <select id="bookType" className="form-select form-control-standard" name='bookType' value={bookType}
+                                onChange={(e) => setBookType(e.target.value)} disabled>
+                                <option value="">Select Book Type</option>
+                                {bookTypes.map(BookTypes => (
+                                    <option key={BookTypes.book_type} value={BookTypes.book_type}>{BookTypes.book_type}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="cbaccount" className="form-label form-label-pv label-color-common">Cash/Bank A/c</label>
+                            <select id="cbaccount" className="form-select form-control-standard" name='cbaccount' value={cbaccount}
+                                onChange={(e) => handleCashBank(e.target.value)}>
+                                <option value="">Select Cash Bank A/c</option>
+                                {cbaccounts.map(CB_Act => (
+                                    <option key={CB_Act.cb_act_cd} value={CB_Act.cb_act_cd}>{CB_Act.bank_ac_name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="voucherNo" className="form-label form-label-pv label-color-common">Voucher No</label>
+                            <input id="voucherNo" type="number" className="form-control form-control-standard" value={voucherNo} onChange={(e) => setVoucherNo(e.target.value)} readOnly />
+                        </div>
+                    </div>
+                    {/*  Voucher and Effective Date */}
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="voucherDate" className="form-label form-label-pv label-color-common">Voucher Date</label>
+                            <input id="voucherDate" type="date" className="form-control form-control-standard" value={voucherDate} onChange={(e) => setVoucherDate(e.target.value)} />
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="effectiveDate" className="form-label form-label-pv label-color-common">Effective Date</label>
+                            <input id="effectiveDate" type="date" className="form-control form-control-standard" value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} />
+                        </div>
+                    </div>
+                    {/*  Payment Mode and Payee Name */}
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="paymentMode" className="form-label form-label-pv label-color-common">Payment Mode</label>
+                            <select id="paymentMode" className="form-select form-control-standard" name='paymentMode' value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
+                                <option value="CHQ">Cheque</option>
+                                <option value="NEFT">NEFT</option>
+                                <option value="IMPS">IMPS</option>
+                                <option value="RTGS">RTGS</option>
+                                <option value="UPI">UPI</option>
+                                <option value="FTRAN">Funds Transfer</option>
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="payeeName" className="form-label form-label-pv label-color-common">Payee Name</label>
+                            <input id="payeeName" type="text" className="form-control form-control-standard" value={payeeName} onChange={(e) => setPayeeName(e.target.value)} />
+                        </div>
+                    </div>
+                    {/*  Reference No. and Cheque No. */}
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="refNo" className="form-label form-label-pv label-color-common">Reference No.</label>
+                            <input id="refNo" type="text" className="form-control form-control-standard" value={refNo} onChange={(e) => setRefNo(e.target.value)} />
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="chequeNo" className="form-label form-label-pv label-color-common">Cheque No.</label>
+                            <input id="chequeNo" type="text" className="form-control form-control-standard" value={chequeNo} onChange={(e) => setChequeNo(e.target.value)} />
+                        </div>
+                    </div>
+                    {/*  NSE Bank Analyzer Codes and SSL Analyzer Code */}
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="nsebankanalyzerCode" className="form-label form-label-pv label-color-common">NSE Bank Analyzer</label>
+                            <select id="nsebankanalyzerCode" className="form-select form-control-standard" name='nsebankanalyzerCode' value={nsebankanalyzerCode}
+                                onChange={(e) => setNSEBankAnalyzerCode(e.target.value)}>
+                                <option value="">Select NSE Bank Analyzer Code</option>
+                                {nsebankanalyzerCodes.map(NB_Analy_Cd => (
+                                    <option key={NB_Analy_Cd.narr_code} value={NB_Analy_Cd.narr_code}>{NB_Analy_Cd.narr_desc}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="analyzerCode" className="form-label form-label-pv    label-color-common">SSL Analyzer</label>
+                            <select id="analyzerCode" className="form-select form-control-standard" name='analyzerCode' value={analyzerCode}
+                                onChange={(e) => setAnalyzerCode(e.target.value)}>
+                                <option value="">Select SSL Analyzer Code</option>
+                                {analyzerCodes.map(Analyzer_Code => (
+                                    <option key={Analyzer_Code.narr_code} value={Analyzer_Code.narr_code}>{Analyzer_Code.narr_desc}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    {/*  Amount and Narration */}
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="amount" className="form-label form-label-pv label-color-common">Amount ({TransactionType === 'Payment' ? 'Cr' : 'Dr'})</label>
+                            <input id="amount" type="number" className="form-control form-control-standard" value={amount}
+                                onChange={handleAmountChange} placeholder={TransactionType === 'Payment' ? 'Enter Cr amount' : 'Enter Dr amount'} />
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="narration" className="form-label form-label-pv label-color-common">Narration</label>
+                            <input id="narration" type="text" className="form-control form-control-standard" value={narration} onChange={(e) => setNarration(e.target.value)} />
+                        </div>
+                    </div>
+                    {/*  Bank Balance and Book Type */}
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="bankBalance" className="form-label form-label-pv label-color-common">Bank Balance</label>
+                            <input id="bankBalance" type="text" className="form-control form-control-standard" value={bankBalance}
+                                readOnly style={{ backgroundColor: 'lightgray', fontWeight: 'bold', fontSize: '16px', textAlign: 'end' }} />
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex justify-content-end">
+                            <button className="btn btn-primary me-2" onClick={handleBillClick} disabled={!isAccountNamePresent} hidden>Vendor Bill</button>
+                            {showBillPopup && <SearchBill onClose={handleBillClosePopup} onRowSelect={handleBillRowSelect} accountName={details[selectedRowIndex]?.act_name || ''}
+                                actCd={details[selectedRowIndex]?.act_cd || ''} vendorDetails={vendorDetails} />}
+
+                            <button className="btn btn-primary me-2" style={{width:'9rem'}} onClick={handleEditClick}>Edit Voucher</button>
+                            {showPopup && <EditVoucherPopup onClose={handleClosePopup} onRowSelect={handleVoucharRowSelect} />}
+
+                            <button className="btn btn-success" style={{width:'9rem'}} onClick={handleFinalSave}>Save</button>
+                        </div>
+                    </div>
+                    {/*  Save and Edit Buttons */}
+                    <div className="row">
+                        <div className="col">
+                            <DataTable columns={columns} data={details} customStyles={customStyles} responsive />
+                        </div>
+                    </div>
+                    <div className="d-flex justify-content-evenly mb-3 mt-3">
+                        <div>
+                            <p className='label-color-common'>Total Dr: {formatNumber(totals.drTotal)}</p>
+                        </div>
+                        <div>
+                            <p className='label-color-common'>Total Cr: {formatNumber(totals.crTotal)}</p>
+                        </div>
+                        <div>
+                            <p className='label-color-common'><b>Balance: {formatNumber(totals.balance)}</b></p>
+                        </div>
+                        <div className="d-flex">
+                           <p><button className="btn btn-warning" style={{width:'7rem'}} onClick={handleAddRow}>Add Row</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div className="card-body">
-            {/*  Cash/Bank Account and Voucher No */}
-            <div className="row">
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="TransactionTypeCode" className="form-label form-label-pv label-color-common">Transaction Type</label>
-                    <select id="TransactionTypeCode" className="form-select form-control-standard" name='TransactionType' value={TransactionType}
-                        onChange={(e) => setTransactionType(e.target.value)}>
-                        <option value="">Select Transaction Type</option>
-                        <option value="Payment">Payment Type</option>
-                        <option value="Receipt">Receipt Type</option>
-                    </select>
-                </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="bookType" className="form-label form-label-pv label-color-common">Book Type</label>
-                    <select id="bookType" className="form-select form-control-standard" name='bookType' value={bookType}
-                        onChange={(e) => setBookType(e.target.value)}>
-                        <option value="">Select Book Type</option>
-                        {bookTypes.map(BookTypes => (
-                            <option key={BookTypes.book_type} value={BookTypes.book_type}>{BookTypes.book_type}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="cbaccount" className="form-label form-label-pv label-color-common">Cash/Bank A/c</label>
-                    <select id="cbaccount" className="form-select form-control-standard" name='cbaccount' value={cbaccount}
-                        onChange={(e) => handleCashBank(e.target.value)}>
-                        <option value="">Select Cash Bank A/c</option>
-                        {cbaccounts.map(CB_Act => (
-                            <option key={CB_Act.cb_act_cd} value={CB_Act.cb_act_cd}>{CB_Act.bank_ac_name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="voucherNo" className="form-label form-label-pv label-color-common">Voucher No</label>
-                    <input id="voucherNo" type="number" className="form-control form-control-standard" value={voucherNo} onChange={(e) => setVoucherNo(e.target.value)} readOnly />
-                </div>
-            </div>
-            {/*  Voucher and Effective Date */}
-            <div className="row">
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="voucherDate" className="form-label form-label-pv label-color-common">Voucher Date</label>
-                    <input id="voucherDate" type="date" className="form-control form-control-standard" value={voucherDate} onChange={(e) => setVoucherDate(e.target.value)} />
-                </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="effectiveDate" className="form-label form-label-pv label-color-common">Effective Date</label>
-                    <input id="effectiveDate" type="date" className="form-control form-control-standard" value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} />
-                </div>
-            </div>
-            {/*  Payment Mode and Payee Name */}
-            <div className="row">
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="paymentMode" className="form-label form-label-pv label-color-common">Payment Mode</label>
-                    <select id="paymentMode" className="form-select form-control-standard" name='paymentMode' value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
-                        <option value="CHQ">Cheque</option>
-                        <option value="NEFT">NEFT</option>
-                        <option value="IMPS">IMPS</option>
-                        <option value="RTGS">RTGS</option>
-                        <option value="UPI">UPI</option>
-                        <option value="FTRAN">Funds Transfer</option>
-                    </select>
-                </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="payeeName" className="form-label form-label-pv label-color-common">Payee Name</label>
-                    <input id="payeeName" type="text" className="form-control form-control-standard" value={payeeName} onChange={(e) => setPayeeName(e.target.value)} />
-                </div>
-            </div>
-            {/*  Reference No. and Cheque No. */}
-            <div className="row">
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="refNo" className="form-label form-label-pv label-color-common">Reference No.</label>
-                    <input id="refNo" type="text" className="form-control form-control-standard" value={refNo} onChange={(e) => setRefNo(e.target.value)} />
-                </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="chequeNo" className="form-label form-label-pv label-color-common">Cheque No.</label>
-                    <input id="chequeNo" type="text" className="form-control form-control-standard" value={chequeNo} onChange={(e) => setChequeNo(e.target.value)} />
-                </div>
-            </div>
-            {/*  NSE Bank Analyzer Codes and SSL Analyzer Code */}
-            <div className="row">
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="nsebankanalyzerCode" className="form-label form-label-pv label-color-common">NSE Bank Analyzer</label>
-                    <select id="nsebankanalyzerCode" className="form-select form-control-standard" name='nsebankanalyzerCode' value={nsebankanalyzerCode}
-                        onChange={(e) => setNSEBankAnalyzerCode(e.target.value)}>
-                        <option value="">Select NSE Bank Analyzer Code</option>
-                        {nsebankanalyzerCodes.map(NB_Analy_Cd => (
-                            <option key={NB_Analy_Cd.narr_code} value={NB_Analy_Cd.narr_code}>{NB_Analy_Cd.narr_desc}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="analyzerCode" className="form-label form-label-pv    label-color-common">SSL Analyzer</label>
-                    <select id="analyzerCode" className="form-select form-control-standard" name='analyzerCode' value={analyzerCode}
-                        onChange={(e) => setAnalyzerCode(e.target.value)}>
-                        <option value="">Select SSL Analyzer Code</option>
-                        {analyzerCodes.map(Analyzer_Code => (
-                            <option key={Analyzer_Code.narr_code} value={Analyzer_Code.narr_code}>{Analyzer_Code.narr_desc}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            {/*  Amount and Narration */}
-            <div className="row">
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="amount" className="form-label form-label-pv label-color-common">Amount ({TransactionType === 'Payment' ? 'Dr' : 'Cr'})</label>
-                    <input id="amount" type="number" className="form-control form-control-standard" value={amount}
-                        onChange={handleAmountChange} placeholder={TransactionType === 'Payment' ? 'Enter Dr amount' : 'Enter Cr amount'} />
-                </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="narration" className="form-label form-label-pv label-color-common">Narration</label>
-                    <input id="narration" type="text" className="form-control form-control-standard" value={narration} onChange={(e) => setNarration(e.target.value)} />
-                </div>
-            </div>
-            {/*  Bank Balance and Book Type */}
-            <div className="row">
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="bankBalance" className="form-label form-label-pv label-color-common">Bank Balance</label>
-                    <input id="bankBalance" type="text" className="form-control form-control-standard" value={bankBalance}
-                        readOnly style={{ backgroundColor: 'lightgray', fontWeight: 'bold', fontSize: '16px', textAlign: 'end' }} />
-                </div>
-                <div className="col-md-6 mb-2 d-flex justify-content-end">
-                    <button className="btn btn-primary me-2" onClick={handleBillClick} disabled={!isAccountNamePresent}>Vendor Bill</button>
-                    {showBillPopup && <SearchBill onClose={handleBillClosePopup} onRowSelect={handleBillRowSelect} accountName={details[selectedRowIndex]?.act_name || ''}
-                        actCd={details[selectedRowIndex]?.act_cd || ''} vendorDetails={vendorDetails} />}
-                    
-                    <button className="btn btn-primary me-2" onClick={handleEditClick}>Edit Voucher</button>
-                    {showPopup && <EditVoucherPopup onClose={handleClosePopup} onRowSelect={handleVoucharRowSelect} />}
-                    
-                    <button className="btn btn-success" onClick={handleFinalSave}>Save</button>
-                </div>
-            </div>
-            {/*  Save and Edit Buttons */}
-            <div className="row">
-                <div className="col">
-                    <DataTable columns={columns} data={details} customStyles={customStyles} responsive />
-                </div>
-            </div>
-            <div className="d-flex justify-content-evenly mb-3 mt-3">
-                <div>
-                    <p>Total Dr: {formatNumber(totals.drTotal)}</p>
-                </div>
-                <div>
-                    <p>Total Cr: {formatNumber(totals.crTotal)}</p>
-                </div>
-                <div>
-                    <p><b>Balance: {formatNumber(totals.balance)}</b></p>
-                </div>
-                <div className="d-flex">
-                    <button className="btn btn-success" onClick={handleAddRow}>Add</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
     );

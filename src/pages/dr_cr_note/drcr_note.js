@@ -3,10 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import DataTable from 'react-data-table-component';
 import { Modal, Button } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
-import './journal.css'; // Import custom styles
+import './drcr.css'; // Import custom styles
 import axios from 'axios';
 import PopupSearch from './popsearch';
 import EditVoucherPopup from './EditVoucherPopup.js';
+import { BASE_URL } from "../constants";
+import searchIcon from '../../image/search.png';
+import deleteIcon from '../../image/delete.png';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+
 
 function DrCr_Note({ details, setDetails }) {
     const [bookType, setBookType] = useState('');
@@ -25,14 +30,15 @@ function DrCr_Note({ details, setDetails }) {
     const [transType, setTransType] = useState('Dr Note');
     const [userId, setUserId] = useState(1);
 
+
     useEffect(() => {
-        axios.get('http://localhost:3001/bookType')
+        axios.get(`${BASE_URL}/api/bookType`)
             .then(response => setBookTypes(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/exchange')
+        axios.get(`${BASE_URL}/api/exchange`)
             .then(response => setExchanges(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
@@ -183,7 +189,7 @@ function DrCr_Note({ details, setDetails }) {
         var resValidate = calculateTotals(details);
         console.log('resValidate', resValidate)
         if (resValidate == 0) {
-            axios.post('http://localhost:3001/voucher', data)
+            axios.post(`${BASE_URL}/api/save_dr_cr_note`, data)
                 .then(response => {
                     alert('Voucher saved successfully!');
                     // Reset form state after successful save
@@ -223,11 +229,11 @@ function DrCr_Note({ details, setDetails }) {
     };
 
     const columns = [
-        {
-            name: 'Index',
-            selector: (row, index) => index + 1,
-            sortable: true,
-        },
+        // {
+        //     name: 'Index',
+        //     selector: (row, index) => index + 1,
+        //     sortable: true,
+        // },
         {
             name: 'Segment',
             selector: row => row.segment,
@@ -235,14 +241,14 @@ function DrCr_Note({ details, setDetails }) {
                 <select
                     value={row.segment}
                     onChange={e => handleInputChange(index, 'segment', e.target.value)}
-                    className="form-control">
+                    className="form-control form-control-dr-cr-1">
                     <option value="">Select Segment</option>
                     <option value="C">Cash Market</option>
                     {/* <option value="2">Segment 2</option> */}
                     {/* Add more options as needed */}
                 </select>
             ),
-            width: '180px',
+            width: '8rem',
         },
         {
             name: 'Exchange',
@@ -251,7 +257,7 @@ function DrCr_Note({ details, setDetails }) {
                 <select
                     value={row.exchange}
                     onChange={e => handleInputChange(index, 'exchange', e.target.value)}
-                    className="form-control"
+                    className="form-control form-control-dr-cr-1"
                 >
                     <option value="">Select Exchange</option>
                     {exchanges.map(exchange => (
@@ -259,7 +265,7 @@ function DrCr_Note({ details, setDetails }) {
                     ))}
                 </select>
             ),
-            width: '180px',
+            width: '8rem',
         },
         {
             name: 'Normal/Deposit',
@@ -268,7 +274,7 @@ function DrCr_Note({ details, setDetails }) {
                 <select
                     value={row.noraml_deposit}
                     onChange={e => handleInputChange(index, 'noraml_deposit', e.target.value)}
-                    className="form-control"
+                    className="form-control form-control-dr-cr-1"
                 >
                     <option value="">Select Normal/Deposit</option>
                     <option value="N">Normal</option>
@@ -276,7 +282,7 @@ function DrCr_Note({ details, setDetails }) {
                     {/* Add more options as needed */}
                 </select>
             ),
-            width: '230px',
+            width: '8rem',
         },
         {
             name: 'Account Name',
@@ -288,18 +294,29 @@ function DrCr_Note({ details, setDetails }) {
                         type="text"
                         value={row.act_name}
                         onChange={e => handleInputChange(index, 'act_name', e.target.value)}
-                        className="form-control"
+                        className="form-control form-control-dr-cr-1"
 
                     />
-                    <Button
-                        className='btn btn-primary'
-                        variant="primary"
-                        onClick={() => handleSearchClick(index, row.exchange, row.segment)}
-                        style={{ marginLeft: '10px', width: '110px' }}
-
+                    <OverlayTrigger
+                        placement="top" // Position the tooltip above the button
+                        overlay={
+                            <Tooltip id={`tooltip-search-${index}`}>
+                                Search Account
+                            </Tooltip>
+                        }
                     >
-                        Search
-                    </Button>
+                        <img
+                            src={searchIcon}
+                            alt="Search"
+                            onClick={() => handleSearchClick(index, row.exchange, row.segment)}
+                            style={{
+                                width: '20px', // Adjust size as needed
+                                height: '20px',
+                                marginTop: '7px',
+                                marginLeft: '2px'
+                            }}
+                        />
+                    </OverlayTrigger>
                     <Modal show={showModal} onHide={() => setShowModal(false)} className="custom-modal">
                         <Modal.Header style={{ backgroundColor: '#0275d8', color: 'white' }} closeButton>
                             <Modal.Title >Search and Select Account</Modal.Title>
@@ -316,7 +333,7 @@ function DrCr_Note({ details, setDetails }) {
                 </div>
 
             ),
-            width: '350px',
+            width: '16rem',
         },
         {
             name: 'Dr/Cr',
@@ -324,56 +341,44 @@ function DrCr_Note({ details, setDetails }) {
                 <select
                     value={row.dr_cr}
                     onChange={e => handleTypeChange(index, e.target.value)} // Note: Using index here
-                    className="form-control"
+                    className="form-control form-control-dr-cr-1"
                 >
                     <option value="">Select Dr/Cr</option>
                     <option value="Dr">Dr</option>
                     <option value="Cr">Cr</option>
                 </select>
             ),
-            width: '100px',
+            width: '5rem',
         },
         {
             name: 'Debit Amount',
             selector: row => row.dr_amount,
             cell: (row, index) => (
                 <input
-                    type="text"
+                    type="number"
+                    style={{textAlign:'right'}}
                     value={row.dr_amount}
                     onChange={e => handleInputChange(index, 'dr_amount', e.target.value)}
-                    className="form-control"
+                    className="form-control form-control-dr-cr-1"
                     disabled={row.dr_cr !== 'Dr'} // Disable if not 'Dr' is selected
                 />
             ),
-            width: '150px',
+            width: '10rem',
         },
         {
             name: 'Credit Amount',
             selector: row => row.cr_amount,
             cell: (row, index) => (
                 <input
-                    type="text"
+                    type="number"
+                    style={{textAlign:'right'}}
                     value={row.cr_amount}
                     onChange={e => handleInputChange(index, 'cr_amount', e.target.value)}
-                    className="form-control"
+                    className="form-control form-control-dr-cr-1"
                     disabled={row.dr_cr !== 'Cr'} // Disable if not 'Cr' is selected
                 />
             ),
-            width: '150px',
-        },
-        {
-            name: 'Narration',
-            selector: row => row.narration,
-            cell: (row, index) => (
-                <input
-                    type="text"
-                    value={row.narration}
-                    onChange={e => handleInputChange(index, 'narration', e.target.value)}
-                    className="form-control"
-
-                />
-            ),
-            width: '200px',
+            width: '10rem',
         },
 
         {
@@ -383,7 +388,7 @@ function DrCr_Note({ details, setDetails }) {
                 <select
                     value={row.analyzer_code}
                     onChange={e => handleInputChange(index, 'analyzer_code', e.target.value)}
-                    className="form-control"
+                    className="form-control form-control-dr-cr-1"
                 >
                     <option value="">Select Analyzer Code</option>
                     <option value="1">Code 1</option>
@@ -392,84 +397,216 @@ function DrCr_Note({ details, setDetails }) {
                     {/* Add more options as needed */}
                 </select>
             ),
-            width: '220px',
+            width: '6.25rem',
         },
 
         {
-            name: 'Actions',
+            name: 'Narration',
+            selector: row => row.narration,
             cell: (row, index) => (
-                <button className="btn btn-danger btn-sm" onClick={() => handleDeleteRow(index)}>Delete</button>
+                <textarea
+                    value={row.narration}
+                    onChange={e => handleInputChange(index, 'narration', e.target.value)}
+                    className="form-control custom-textarea"
+                    rows={3}/>
+            ),
+            width: '10rem',
+        },
+
+        {
+            name: '',
+            cell: (row, index) => (
+                <OverlayTrigger
+                    placement="top" // Position the tooltip above the button
+                    overlay={
+                        <Tooltip id={`tooltip-delete-${index}`}>
+                            Delete
+                        </Tooltip>
+                    }
+                >
+                    <img
+                        src={deleteIcon}
+                        alt="Delete"
+                        onClick={() => handleDeleteRow(index)}
+                        style={{
+                            width: '20px', // Adjust size as needed
+                            height: '20px',
+                            marginTop: '7px',
+                            marginLeft: '16px'
+                        }}
+                    />
+                </OverlayTrigger>
             ),
             allowOverflow: true,
-            width: '100px',
+            width: '4.125rem',
         },
     ];
+    
+    const customStyles = {
+        header: {
+            style: {
+                minHeight: '56px',
+            },
+        },
+        headRow: {
+            style: {
+                borderTopStyle: 'solid',
+                borderTopWidth: '1px',
+                borderTopColor: 'purple',
+                backgroundColor: '#99bcef',
+                color: 'black',
+                fontWeight: 'bold',
+                position: 'sticky',
+                top: 0,
+                zIndex: 1,
+                minHeight: '40px',
+                paddingLeft: '3px',
+                paddingRight: '3px',
+            },
+        },
+        headCells: {
+            style: {
+                borderRightStyle: 'solid',
+                borderRightWidth: '1px',
+                borderRightColor: 'black',
+                paddingLeft: '3px',
+                paddingRight: '3px',
+                // Hide the border on the last head cell
+                '&:last-child': {
+                    borderRightStyle: 'none',
+                },
+            },
+        },
+        cells: {
+            style: {
+                borderRightStyle: 'solid',
+                borderRightWidth: '1px',
+                borderRightColor: 'blue',
+                paddingLeft: '3px',
+                paddingRight: '3px',
+                // Hide the border on the last cell
+                '&:last-child': {
+                    borderRightStyle: 'none',
+                },
+            },
+        },
+        rows: {
+            style: {
+                paddingLeft: '3px',
+                paddingRight: '3px',
+            },
+        },
+        actionsHeader: {
+            style: {
+                borderRightStyle: 'none', // Remove border-right for Actions column header
+            },
+        },
+        actionsCell: {
+            style: {
+                borderRightStyle: 'none', // Remove border-right for Actions column cells
+                paddingLeft: '3px',
+                paddingRight: '3px',
+            },
+        },
+    };
+    
     return (
-        <div className="container">
+        <div className="container-common">
             <div className="card">
-                <div className="card-header text-center color_header">
-                    <h5>Debit/Credit Notes</h5>
+                <div className="card-header-css">
+                    <h3>Debit/Credit Notes</h3>
                 </div>
                 <div className="card-body">
-                    <div className="row ">
-                        <div className="col-md-6 mb-3 d-flex">
-                            <label htmlFor="bookType" className="form-label label-width">Book Type</label>
-                            <select id="bookType" className="form-select  size_input" name='bookType' value={bookType} onChange={(e) => setBookType(e.target.value)}>
-                                <option value=" ">Select Book type</option>
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="bookType" className="form-label-dr-cr">Book Type</label>
+                            <select
+                                id="bookType"
+                                className="form-select-dr-cr"
+                                name='bookType'
+                                value={bookType}
+                                onChange={(e) => setBookType(e.target.value)}
+                            >
+                                <option value="">Select Book type</option>
                                 {bookTypes.map(BookTypes => (
-                                    <option key={BookTypes.book_type} value={BookTypes.book_type}>{BookTypes.book_type}</option>
+                                    <option key={BookTypes.book_type} value={BookTypes.book_type}>
+                                        {BookTypes.book_type}
+                                    </option>
                                 ))}
                             </select>
                         </div>
-                        <div className="col-md-6 mb-3 d-flex">
-                            <label htmlFor="voucherDate" className="form-label label-width input-smaller">Voucher Date </label>
-                            <input id="voucherDate" type="date" className="form-control size_input" value={voucherDate} onChange={(e) => setVoucherDate(e.target.value)} />
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="voucherDate" className="form-label-dr-cr">Voucher Date</label>
+                            <input
+                                id="voucherDate"
+                                type="date"
+                                className="form-control-dr-cr"
+                                value={voucherDate}
+                                onChange={(e) => setVoucherDate(e.target.value)}
+                            />
                         </div>
                     </div>
-                    <div className="row ">
-                        <div className="col-md-6 mb-3 d-flex">
-                            <label htmlFor="voucherNo" className="form-label label-width">Voucher No</label>
-                            <input id="voucherNo" type="number" className="form-control size_input " value={voucherNo} onChange={(e) => setVoucherNo(e.target.value)} readOnly />
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="voucherNo" className="form-label-dr-cr">Voucher No</label>
+                            <input
+                                id="voucherNo"
+                                type="number"
+                                className="form-control-dr-cr"
+                                value={voucherNo}
+                                onChange={(e) => setVoucherNo(e.target.value)}
+                                readOnly
+                            />
                         </div>
-                        <div className="col-md-6 mb-3 d-flex">
-                            <label htmlFor="effectiveDate" className="form-label label-width input-smaller">Effective Date </label>
-                            <input id="effectiveDate" type="date" className="form-control size_input" value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} />
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="effectiveDate" className="form-label-dr-cr">Effective Date</label>
+                            <input
+                                id="effectiveDate"
+                                type="date"
+                                className="form-control-dr-cr"
+                                value={effectiveDate}
+                                onChange={(e) => setEffectiveDate(e.target.value)}
+                            />
                         </div>
                     </div>
-                    <div className="row ">
-                        <div className="col-md-6 mb-3 d-flex">
-                           <label htmlFor="transType" className="form-label label-width">Dr/Cr Note</label>
-                            {/* <label htmlFor="narration" className="form-label label-width">Narration</label>
-                            <input id="narration" type="text" className="form-control " value={narration} onChange={(e) => setNarration(e.target.value)} /> */}
-                            <select id="transType" className="form-select  size_input" name='transType' value={transType} onChange={(e) => setTransType(e.target.value)}>
-                                  <option value="Dr Note">Debit Note</option>
-                                  <option value="Cr Note">Credit Note</option>
+                    <div className="row">
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="transType" className="form-label-dr-cr">Dr/Cr Note</label>
+                            <select
+                                id="transType"
+                                className="form-select-dr-cr"
+                                name='transType'
+                                value={transType}
+                                onChange={(e) => setTransType(e.target.value)}
+                            >
+                                <option value="Dr Note">Debit Note</option>
+                                <option value="Cr Note">Credit Note</option>
                             </select>
                         </div>
-                        <div className="col-md-6 mb-3 d-flex  justify-content-end ">
-                            <button className="btn  btn-primary me-2" onClick={handleEditClick}>Edit Voucher</button>
+                        <div className="col-md-6 mb-2 d-flex justify-content-end">
+                            <button className="btn btn-primary me-2" style={{ width: '9rem' }} onClick={handleEditClick}>Edit Voucher</button>
                             {showPopup && <EditVoucherPopup onClose={handleClosePopup} onRowSelect={handleVoucharRowSelect} />}
-                            <button className="btn btn-success " onClick={handleFinalSave}>Save</button>
-                        </div>
-
-                    </div>
-                    <div className="row ">
-                        <div className="col">
-                            <DataTable columns={columns} data={details} responsive />
+                            <button className="btn btn-success" style={{ width: '9rem' }} onClick={handleFinalSave}>Save</button>
                         </div>
                     </div>
-                    <div className="d-flex justify-content-end mb-3 mt-3">
-                        <button className="btn btn-success" onClick={handleAddRow}>Add</button>
+                    <div className="row">
+                        <div className="container-datatable mt-2">
+                            <div className="datatable_dr_cr">
+                                <DataTable columns={columns} data={details} customStyles={customStyles} responsive />
+                            </div>
+                        </div>
                     </div>
-                    <div className='d-flex justify-content-around'>
-                        <p>Total Dr: {totals.drTotal}</p>
-                        <p>Total Cr: {totals.crTotal}</p>
-                        <p>Balance: {totals.balance}</p>
+                    <div className='d-flex justify-content-center align-items-center flex-column mt-4'>
+                        <div className='d-flex justify-content-around w-100'>
+                            <p className='label-color-common mt-2'>Total Dr: {totals.drTotal}</p>
+                            <p className='label-color-common mt-2'>Total Cr: {totals.crTotal}</p>
+                            <p className='label-color-common mt-2'>Balance: {totals.balance}</p>
+                            <p class><button className="btn btn-success" style={{ width: '7rem' }} onClick={handleAddRow}>Add</button></p>
+                        </div>
                     </div>
 
                 </div>
             </div>
-
         </div>
     );
 };

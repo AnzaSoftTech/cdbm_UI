@@ -93,8 +93,9 @@ const exportToPDFAll = () => {
   // );
 
   return (
-    <div className="container">    
-    <div className=" ledger-header">
+    <div className="container-common">   
+    <div className='card'>
+    <div className=" card-header-css">
       <h3>Ledger</h3>
     </div>        
       <DataTable columns={columns} data={items} />
@@ -102,6 +103,7 @@ const exportToPDFAll = () => {
         Api PDF
       </Button></div>
     </div>
+    </div> 
 
   );
 }

@@ -10,9 +10,9 @@
     box-shadow: 0 0 100px 400px rgba(0, 0, 0, 0.1);
     z-index: 100;
     width: 70%; /* Increased width */
-    max-width: 800px; /* Limit maximum width */
+    /* Limit maximum width  max-width: 800px; */
     height: 100%; /* Increased height */
-    max-height: 600px; /* Limit maximum height */
+     /* Limit maximum height max-height: 600px; */
     overflow: auto; /* Enable scrollbar if content exceeds height */
     border-radius: 15px;
 }
@@ -20,7 +20,7 @@
 /* Inner content of the popup */
 .voucherPopup-inner {
     border: 1px solid #ccc;
-    height: 500px; /* Ensure inner content can expand */
+    height: 40rem; /* Ensure inner content can expand */
     border-radius: 7px;
 }
 
@@ -30,8 +30,8 @@
     border-collapse: collapse;
     border: 1px solid #ccc;
     overflow: auto;
-    height: 80%; /* Increased height of the table */
-    max-height: 500px; /* Limit maximum height of the table */
+    height: 100%; /* Increased height of the table */
+     /* Limit maximum height of the table max-height: 500px;*/
 }
 
 .voucherPopup-inner table th,
@@ -107,7 +107,7 @@
 }
 
 .voucher_width {
-    width: 90px;
+    width: 130px;
     margin-bottom: 10px;
 }
 
@@ -152,7 +152,8 @@
 }
 
 .btn_height {
-    height: 40px;
+    width: 8.1rem;
+    height: 2.7rem;
 }
 
 .booktype_input {
@@ -164,10 +165,11 @@
     width: 280px;
 }
 
-.table-container {
+.table-container-search {
     overflow-x: auto;
     overflow-y: auto;
-    max-height: 200px; /* Adjust height as needed */
+    max-height: 400px; /* Adjust height as needed */
+    height: 400px;
 }
 
 .table-wrapper {
@@ -175,6 +177,54 @@
     overflow: auto;
 }
 
-.close_btn {
-    margin-top: 10px;
+.close_btn-2{
+    background-color: rgb(255, 194, 80) !important;
+    color: black !important;
+    margin-top: 4px;
+}
+
+
+.label-prop {
+    /*flex: 0 0 35%; /* Takes up 30% of the container width */
+    width: 8rem;
+    margin-bottom: 0.01rem;
+    text-align: left; /* Aligns text to the right */
+    align-content: center !important;    
+    height: 2.8rem !important;
+    /*margin-right: 1rem; /* Space between label and input */
+    margin-left: 1rem ;
+}
+
+.ddl_prop {
+    width: 18rem !important;
+    align-content: center !important; 
+    height: 2.7rem !important;
+}
+
+.ddl_prop9 {
+    width: 9rem !important;
+    align-content: center !important; 
+    height: 2.7rem !important;
+}
+
+
+.input_prop {
+    width: 18rem !important;
+    align-content: center !important; 
+    height: 2.7rem !important;
+}
+
+.input_date_prop {
+    width: 8.6rem !important;
+    align-content: center !important; 
+    height: 2.7rem !important;
+}
+
+.margin_prop5 {
+    margin-left: 5rem ;
+
+}
+
+.tab_row_search {
+    height: 1rem !important;
 }

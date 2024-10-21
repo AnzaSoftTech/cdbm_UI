@@ -5,14 +5,14 @@ import axios from 'axios';
 import './popsearch.css'; 
 
 
-const PopupSearch = ({ onSelectRow, exchange, segment }) => {
+const PopupSearch = ({ onSelectRow, activity_cd, segment }) => {
   const [searchText, setSearchText] = useState('');
   const [searchData, setSearchData] = useState([]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get('http://localhost:3001/api/searchAccount', {
-        params: { name: searchText, exchange: exchange, segment: segment },
+        params: { name: searchText, activity_cd: activity_cd, segment: segment },
       });
       setSearchData(response.data); 
     } catch (error) {

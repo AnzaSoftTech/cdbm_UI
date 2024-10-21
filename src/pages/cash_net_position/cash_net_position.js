@@ -32,6 +32,9 @@ const CashNetPosition = () => {
     const [summarydata, setSummaryData] = useState([]);
     const [pending, setPending] = useState(false);
     const [data, setData] = useState([]);
+    
+    const [settleNo, setSettleNo] = useState('');
+
     const [filters, setFilters] = useState({
         clientcd: '',
         scripcd: '',
@@ -48,6 +51,27 @@ const CashNetPosition = () => {
             [e.target.name]: e.target.value
         });
     };
+
+    const downloadCSV = (data) => {
+        const csv = convertToCSV(data);
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'Net_Position_' + settleNo + '.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
+      const convertToCSV = (data) => {
+        const header = Object.keys(data[0]).join(',') + '\n';
+        const rows = data
+          .map((row) => Object.values(row).join(','))
+          .join('\n');
+        return header + rows;
+      };
 
     // const handleRowSelect = (name,code) => {
     //     setClientName(name);
@@ -124,8 +148,12 @@ const CashNetPosition = () => {
             setData(response.data);
 
             //alert(JSON.stringify(response.data));
+
+            setSettleNo(response.data[0].delv_settle_no);
+
+            //console.log('response.data ---> ', response.data[0].delv_settle_no);
             
-            setShowInputs(true)
+            setShowInputs(true);
 
         } catch (err) {
             console.error(err);
@@ -598,6 +626,7 @@ const CashNetPosition = () => {
                 <Col xs={12} md={8}>
                     <div className="d-flex justify-content-end align-items-end mb-3 labelmarginbtn">
                         <div>
+                        <button onClick={() => downloadCSV(data)}>Download CSV</button>
                             <Button
                                 variant="primary"
                                 onClick={fetchData}

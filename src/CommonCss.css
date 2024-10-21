@@ -38,7 +38,9 @@
     height:"20px";
   }
   
-  
+  .busy {
+    cursor: wait; /* Change to 'progress' if you prefer */
+  }  
   
   /* Responsive Styles */
   @media (max-width: 768px) {

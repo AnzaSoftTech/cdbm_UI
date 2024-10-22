@@ -1,31 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'; // Import the CSS file for styles
+import { FaBars, FaAngleDown, FaAngleRight, FaFileUpload, FaMoneyCheck, FaChartPie, FaFolderOpen } from "react-icons/fa";
+import { Link, useNavigate } from 'react-router-dom';
 import MainPanel from './MainPanel';
-import { useNavigate } from 'react-router-dom';
-import { FaBars, FaAngleDown, FaAngleRight } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import './App.css'; // Import the CSS file for styles
+// import MainPanel from './MainPanel';
+// import { useNavigate } from 'react-router-dom';
+// import { FaBars, FaAngleDown, FaAngleRight } from "react-icons/fa";
+// import { Link } from 'react-router-dom';
 
 const DashboardPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [openMenus, setOpenMenus] = useState({});
   const [currentPage, setCurrentPage] = useState('page1');
 
-  const handleMenuItemClick = (page) => {
-    setCurrentPage(page);
-  };
-
-  // Toggle sidebar visibility
   const toggleSidebar = () => {
-    setIsSidebarOpen(prevState => !prevState);
+    setIsSidebarOpen(!isSidebarOpen);
   };
-
-  // Handle clicks outside the sidebar
-  const handleClickOutside = (event) => {
-    if (isSidebarOpen && !event.target.closest('.sidebar') && !event.target.closest('.togglebtn')) {
-      setIsSidebarOpen(false);
-    }
-  };
-
-  const [openMenus, setOpenMenus] = useState({});
 
   const toggleMenu = (menuName) => {
     setOpenMenus({
@@ -34,98 +24,97 @@ const DashboardPage = () => {
     });
   };
 
-  // Add and clean up event listener for clicks outside the sidebar
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isSidebarOpen]);
-
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Perform logout logic
     navigate('/');
   };
 
   return (
-    <div className='top'>
-      <div className='d-flex justify-content-between '>
-        <div>
-           <button className="togglebtn" onClick={toggleSidebar}>
-              {isSidebarOpen ? '✖' : '☰'}
-          </button>
-        </div>
-        <div className='pt-2'>
-           <h4>Sodhani Securities Ltd.</h4>
-        </div>
-        <div className='pt-2'>
-             <button className="btn btn-outline-light" onClick={handleLogout}>Logout</button> &nbsp;
-        </div>
-      </div>
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="flex justify-between items-center p-2 bg-blue-600 text-white shadow">
+        <h4 className="text-lg font-semibold">Sodhani Securities Ltd.</h4>
 
-      {/* Sidebar */}
-      <div>
-        <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-          <div className="menu">
+        {/* Sidebar Toggle Button */}
+        <button className="togglebtn" onClick={toggleSidebar}>
+          {isSidebarOpen ? '✖' : '☰'}
+        </button>
 
+        <button className="btn btn-outline-light text-white border border-white px-4 py-1 rounded" onClick={handleLogout}>
+          Logout
+        </button>
+      </header>
+
+      <div className="flex">
+        {/* Sidebar */}
+        <aside
+          className={`sidebar bg-blue-800 text-white w-64 h-screen fixed top-0 left-0 z-1 transition-transform duration-300 transform ${
+            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          <div className="menu space-y-4 mt-8">
+            {/* Dashboard */}
             <div className="menu-item">
-              <div className="menu-title hamburger" onClick={() => toggleMenu("dashboard")}>
-                <Link to="/dashboard" className="nav-link active">Dashboard</Link>
+              <div className="menu-title flex items-center px-4 py-2 hover:bg-blue-600" onClick={() => toggleMenu("dashboard")}>
+                <FaChartPie className="mr-2" />
+                <Link to="/dashboard" className="nav-link">Dashboard</Link>
               </div>
             </div>
-            <div className="menu-item hamburger">
-              <div className="menu-title" onClick={() => toggleMenu("uploads")}>
-                CDBM Uploads {openMenus.uploads ? <FaAngleDown /> : <FaAngleRight />}
+
+            {/* CDBM Uploads */}
+            <div className="menu-item">
+              <div className="menu-title flex items-center justify-between px-4 py-2 hover:bg-blue-600 cursor-pointer" onClick={() => toggleMenu("uploads")}>
+                <span className="flex items-center"><FaFileUpload className="mr-2" /> CDBM Uploads</span>
+                {openMenus.uploads ? <FaAngleDown /> : <FaAngleRight />}
               </div>
               {openMenus.uploads && (
-                <div className="submenu">
-                  <div className="submenu-item"><Link to="/dashboard/sauda_upload/su_mainapp" className="nav-link">Sauda Upload</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/main_file_upload/mf_mainapp" className="nav-link">Master File Upload</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/cash_net_position/cnp_mainapp" className="nav-link">Cash Net Position</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/sauda_report/sr_mainapp" className="nav-link">Sauda Report</Link></div>
+                <div className="submenu space-y-4 pl-16">
+                  <div className="submenu-item"><Link to="/dashboard/sauda_upload/su_mainapp" className="nav-link hover:text-gray-300">Sauda Upload</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/main_file_upload/mf_mainapp" className="nav-link hover:text-gray-300">Master File Upload</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/cash_net_position/cnp_mainapp" className="nav-link hover:text-gray-300">Cash Net Position</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/sauda_report/sr_mainapp" className="nav-link hover:text-gray-300">Sauda Report</Link></div>
                 </div>
               )}
             </div>
-            <div className="menu-item hamburger">
-              <div className="menu-title" onClick={() => toggleMenu("financial")}>
-                Finance {openMenus.financial ? <FaAngleDown /> : <FaAngleRight />}
+
+            {/* Finance */}
+            <div className="menu-item">
+              <div className="menu-title flex items-center justify-between px-4 py-2 hover:bg-blue-600 cursor-pointer" onClick={() => toggleMenu("financial")}>
+                <span className="flex items-center"><FaMoneyCheck className="mr-2" /> Finance</span>
+                {openMenus.financial ? <FaAngleDown /> : <FaAngleRight />}
               </div>
               {openMenus.financial && (
-                <div className="submenu">
-                  <div className="submenu-item"><Link to="/dashboard/Cash_Bank_Master/CashBankMasterApp " className="nav-link">Cash/Bank Master</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/payment_vouchar/Payment_voucharApp" className="nav-link"> Payment/Receipt Vouchers</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/journal_vouchar/JOURNALApp " className="nav-link">Journal Voucher</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/dr_cr_note/drcrnotesApp " className="nav-link">Debit/Credit Notes</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/Contra_Entry/contraenteryApp " className="nav-link"> Contra Entry</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/Bank_Reco/bankRecoApp " className="nav-link"> Bank Reconciliation</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/openingBalance/openingbalanceApp " className="nav-link">Opening Balance</Link></div>
-
+                <div className="submenu space-y-2 pl-16">
+                  <div className="submenu-item"><Link to="/dashboard/Cash_Bank_Master/CashBankMasterApp" className="nav-link hover:text-gray-300">Cash/Bank Master</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/payment_vouchar/Payment_voucharApp" className="nav-link hover:text-gray-300">Payment/Receipt Vouchers</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/journal_vouchar/JOURNALApp" className="nav-link hover:text-gray-300">Journal Voucher</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/dr_cr_note/drcrnotesApp" className="nav-link hover:text-gray-300">Debit/Credit Notes</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/Contra_Entry/contraenteryApp" className="nav-link hover:text-gray-300">Contra Entry</Link></div>
                 </div>
               )}
             </div>
-            <div className="menu-item hamburger">
-              <div className="menu-title" onClick={() => toggleMenu("reports")}>
-                Reports {openMenus.reports ? <FaAngleDown /> : <FaAngleRight />}
+
+            {/* Reports */}
+            <div className="menu-item">
+              <div className="menu-title flex items-center justify-between px-4 py-2 hover:bg-blue-600 cursor-pointer" onClick={() => toggleMenu("reports")}>
+                <span className="flex items-center"><FaFolderOpen className="mr-2" /> Reports</span>
+                {openMenus.reports ? <FaAngleDown /> : <FaAngleRight />}
               </div>
               {openMenus.reports && (
-                <div className="submenu">
-                  <div className="submenu-item"><Link to="/dashboard/trial_balance/tb_mainapp" className="nav-link">Trial Balance</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/ledger/l_mainapp" className="nav-link">Ledger</Link></div>
-                  {/* <div className="submenu-item" ><Link to="/dashboard/page2" className="nav-link">page 2</Link></div> */}
+                <div className="submenu space-y-2 pl-16">
+                  <div className="submenu-item"><Link to="/dashboard/trial_balance/tb_mainapp" className="nav-link hover:text-gray-300">Trial Balance</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/ledger/l_mainapp" className="nav-link hover:text-gray-300">Ledger</Link></div>
                 </div>
               )}
             </div>
           </div>
-        </div>
-      </div>
+        </aside>
 
-      {/* Overlay */}
-      <div className={`overlay ${isSidebarOpen ? 'active' : ''}`}></div>
-
-      <div className='main'>
-        <MainPanel page={currentPage} />
+        {/* Main Content */}
+        <main className={`overlay flex-1 pl-1 bg-white ${isSidebarOpen ? 'ml-64' : ''}`}>
+          <MainPanel page={currentPage} />
+        </main>
       </div>
     </div>
   );

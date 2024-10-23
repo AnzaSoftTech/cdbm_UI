@@ -1,23 +1,33 @@
-# Use an official Node.js runtime as the base image
-FROM node:18
+# Step 1: Build the React app using a Node.js alpine image
+FROM node:18-alpine AS build
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
-# Copy the package.json and package-lock.json (if available)
+# Install dependencies
 COPY package*.json ./
+RUN npm install --silent
 
-# Install dependencies (and ensure bcrypt is rebuilt)
-RUN npm install && npm rebuild bcrypt --build-from-source
-
-# Copy the rest of the application code
+# Copy the rest of the application files
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 3001
+# Increase memory limit and build the app
+RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
-# Set environment variables (optional)
-ENV NODE_ENV=production
+# Step 2: Serve the built app using Node.js
+FROM node:18-alpine
 
-# Start the application
-CMD ["node", "server.js"]
+# Set the working directory
+WORKDIR /app
+
+# Install a simple HTTP server for serving static files
+RUN npm install -g serve
+
+# Copy the build artifacts from the build stage
+COPY --from=build /app/build ./build
+
+# Expose the port the app will run on
+EXPOSE 3000
+
+# Start the server and serve the app
+CMD ["serve", "-s", "build", "-l", "3000"]

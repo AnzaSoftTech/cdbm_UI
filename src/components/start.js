@@ -25,12 +25,12 @@ const DashboardPage = () => {
 
 //   const [openMenus, setOpenMenus] = useState({});
 
-  const toggleMenu = (menuName) => {
-    setOpenMenus({
-      ...openMenus,
-      [menuName]: !openMenus[menuName],
-    });
+const toggleMenu = (menuName) => {
+    setOpenMenus((prevOpenMenus) => ({
+      [menuName]: !prevOpenMenus[menuName]
+    }));
   };
+
 
   // Add and clean up event listener for clicks outside the sidebar
   useEffect(() => {

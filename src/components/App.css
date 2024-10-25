@@ -38,18 +38,18 @@ body {
   .menu {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0px;
   }
   
   .menu-item {
     cursor: pointer;
     padding: 10px 20px;
-    color: #ccc;
+    color: #f7f4f4;
     transition: background 0.3s ease;
   }
   
   .menu-item:hover {
-    color: #97bfe4;
+    color: #f1f3f5;
     background: #918f8f2f;
     border-radius: 6px;
   }
@@ -68,14 +68,13 @@ body {
   }
   
   .submenu-item {
-    padding: 11px 20px;
+    padding: 12px 20px;
     color: #bbb;
-    transition: color 0.1s ease;
   }
   
   .submenu-item:hover {
     color: #fff;
-    background: #75737391;
+    background: #7d7f8191;
     border-radius: 6px;
   }
   

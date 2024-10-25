@@ -6,6 +6,7 @@ const Page2 = () => {
   return (
     <div className="container ml-auto">
     <div className="row d-flex align-items-center border">
+        hascshjd
       <div className="col-12 border">
         One of three columns
       </div>      

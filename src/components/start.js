@@ -113,6 +113,7 @@ const DashboardPage = () => {
                 <div className="submenu">
                   <div className="submenu-item"><Link to="/dashboard/trial_balance/tb_mainapp" className="nav-link">Trial Balance</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/ledger/l_mainapp" className="nav-link">Ledger</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/pdfGenerate/pdfFile" className="nav-link">pdf</Link></div>
                   {/* <div className="submenu-item" ><Link to="/dashboard/page2" className="nav-link">page 2</Link></div> */}
                 </div>
               )}

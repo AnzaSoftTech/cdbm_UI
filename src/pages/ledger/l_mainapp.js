@@ -96,7 +96,7 @@ const exportToPDFAll = () => {
     <div className="container-common">   
     <div className='card'>
     <div className=" card-header-css">
-      <h3>Ledger</h3>
+      <h3>Ledger </h3>
     </div>        
       <DataTable columns={columns} data={items} />
       <div hidden><Button variant="primary" onClick={exportToPDFAll}>

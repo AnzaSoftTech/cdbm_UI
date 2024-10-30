@@ -1186,9 +1186,18 @@ function Payment_Voucher({ details, setDetails }) {
                         </div>
                     </div>
                     {/*  Save and Edit Buttons */}
+                    
+
                     <div className="row">
-                        <div className="col">
-                            <DataTable columns={columns} data={details} customStyles={customStyles} responsive />
+                        <div className="col" style={{ maxHeight: '350px', overflowY: 'auto' }}>
+                            <DataTable
+                                columns={columns}
+                                data={details}
+                                customStyles={customStyles}
+                                responsive
+                                fixedHeader
+                                fixedHeaderScrollHeight="350px"
+                            />
                         </div>
                     </div>
                     <div className="d-flex justify-content-evenly mb-3 mt-3">

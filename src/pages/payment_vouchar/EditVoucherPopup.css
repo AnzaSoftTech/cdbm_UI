@@ -1,4 +1,3 @@
-/* Popup container styles */
 .voucherPopup {
     position: fixed;
     top: 50%;
@@ -9,20 +8,48 @@
     border: 1px solid #ccc;
     box-shadow: 0 0 100px 400px rgba(0, 0, 0, 0.1);
     z-index: 100;
-    width: 70%; /* Increased width */
-    /* Limit maximum width  max-width: 800px; */
-    height: 100%; /* Increased height */
-     /* Limit maximum height max-height: 600px; */
-    overflow: auto; /* Enable scrollbar if content exceeds height */
+    width: 70%;
+    max-width: 800px;
+    max-height: 80%;
+    overflow: auto;
     border-radius: 15px;
 }
 
-/* Inner content of the popup */
 .voucherPopup-inner {
-    border: 1px solid #ccc;
-    height: 40rem; /* Ensure inner content can expand */
-    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
 }
+
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.label-prop {
+    min-width: 00px;
+    text-align: right;
+    padding-right: 0px;
+    font-weight: bold;
+}
+
+.input_date_prop, .ddl_prop, .input_prop {
+    flex: 1;
+    min-width: 260px;
+    margin: 0 5px;
+}
+
+.btn_height {
+    height: 38px;
+    margin-left: 10px;
+}
+
+.table-container-search {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
 
 /* Table styles inside the popup */
 .voucherPopup-inner table {
@@ -180,7 +207,7 @@
 .close_btn-2{
     background-color: rgb(255, 194, 80) !important;
     color: black !important;
-    margin-top: 4px;
+    margin-top: 74px;
 }
 
 
@@ -196,7 +223,7 @@
 }
 
 .ddl_prop {
-    width: 18rem !important;
+    width: 1rem !important;
     align-content: center !important; 
     height: 2.7rem !important;
 }
@@ -209,7 +236,7 @@
 
 
 .input_prop {
-    width: 18rem !important;
+    width: 8rem !important;
     align-content: center !important; 
     height: 2.7rem !important;
 }
@@ -221,7 +248,7 @@
 }
 
 .margin_prop5 {
-    margin-left: 5rem ;
+    margin-left: rem ;
 
 }
 

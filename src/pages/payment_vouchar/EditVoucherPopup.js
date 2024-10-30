@@ -91,104 +91,59 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
 
     return (
         <div className="voucherPopup">
-            <div className="voucherPopup-inner">
-                <h4 className='header_color'>Edit Voucher</h4>
-                <div className='d-flex '> 
-                {/* justify-content-between */}
-                    {/* <div className="form-group d-flex">
-                        <label className='label-prop'>Branch Name:</label>
-                        <select
-                            className="form-control ddl_prop"
-                            value={branchNamecd}
-                            onChange={(e) => setBranchName(e.target.value)}
-                            size="sm"
-                        >
-                            <option value="">Select Branch</option>
-                            {branches.map(branch => (
-                                <option key={branch.branch_cd} value={branch.branch_cd}>{branch.branch_name}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="form-group d-flex">
-                        <label className='label-prop margin_prop5'>Voucher No:</label>
-                        <input
-                            type="text"
-                            className="form-control input_prop"
-                            value={voucherNo}
-                            onChange={(e) => setVoucherNo(e.target.value)}
-                            size="sm"
-                        />
-                    </div> */}
-
-                </div>
-                <div className='d-flex '>
-                    <div className="form-group d-flex">
-                        <label className='label-prop'>From/To Date:</label>
-                        <input
-                            type="date"
-                            className="form-control input_date_prop"
-                            value={fromDate}
-                            onChange={(e) => setFromDate(e.target.value)}
-                            size="sm"
-                        />
-                        {/* <label className='todate_width'>To Date:</label> */}
-                        <input
-                            type="date"
-                            className="form-control input_date_prop"
-                            value={toDate}
-                            onChange={(e) => setToDate(e.target.value)}
-                            size="sm"
-                        />
-                    </div>
-
-                    <div className="form-group d-flex">
-                        <label className='label-prop margin_prop5'>Book Type:</label>
-                        <select
-                            id="bookType"
-                            className="form-select ddl_prop"
-                            name='bookType'
-                            value={bookType}
-                            onChange={(e) => setBookType(e.target.value)}
-                        >
-                            <option value="">Select Book Type</option>
-                            {bookTypes.map(BookTypes => (
-                                <option key={BookTypes.book_type} value={BookTypes.book_type}>{BookTypes.book_type}</option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-                <div className='d-flex '>
-                    <div className="form-group d-flex">
-                        <label className='label-prop'>Account Name:</label>
-                        <input type="text" className="form-control input_prop" value={accountName}  onChange={(e) => setAccountName(e.target.value)} size="sm" />
-                        {/* <select
-                            className="form-control accountName_input mb-3"
-                            value={accountNamecd}
-                            onChange={(e) => setAccountName(e.target.value)}
-                            size="sm"
-                        >
-                            <option value="">Select Account</option>
-                            {accountNames.map(AccountName => (
-                                <option key={AccountName.act_cd} value={AccountName.act_cd}>{AccountName.act_name}</option>
-                            ))}
-                        </select> */}
-                    </div>
-                    <div className="form-group d-flex">
-                        <label className='label-prop margin_prop5'>Transaction Type:</label>
-                        <select id="TransactionTypeCode" className="form-control ddl_prop9" name='TransactionType' value={TransactionType}
-                                onChange={(e) => setTransactionType(e.target.value)}>
-                                
-                                <option value="Payment">Payment</option>
-                                <option value="Receipt">Receipt</option>
-                            </select>
-                            <button className="btn btn-primary btn_height" onClick={handleSearch}>Search</button>
-                    </div>
-                   
-                </div>
-                {/* <div className='d-flex justify-content-end'>
-                        
-                    </div> */}
-                <div className='table-container-search'>
+    <div className="voucherPopup-inner">
+        <h4 className='header_color'>Edit Voucher</h4>
+        <div className='d-flex flex-wrap justify-content-between'>
+            <div className="form-group">
+                <label className='label-prop'>From/To Date:</label>
+                <input
+                    type="date"
+                    className="form-control input_date_prop"
+                    value={fromDate}
+                    onChange={(e) => setFromDate(e.target.value)}
+                />
+                <input
+                    type="date"
+                    className="form-control input_date_prop"
+                    value={toDate}
+                    onChange={(e) => setToDate(e.target.value)}
+                />
+            </div>
+            <div className="form-group">
+                <label className='label-prop margin_prop5'>Book Type:</label>
+                <select
+                    className="form-select ddl_prop"
+                    value={bookType}
+                    onChange={(e) => setBookType(e.target.value)}
+                >
+                    <option value="">Select Book Type</option>
+                    {bookTypes.map(BookTypes => (
+                        <option key={BookTypes.book_type} value={BookTypes.book_type}>{BookTypes.book_type}</option>
+                    ))}
+                </select>
+            </div>
+        </div>
+        <div className='d-flex flex-wrap justify-content-between'>
+            <div className="form-group">
+                <label className='label-prop'>Account Name:</label>
+                <input 
+                    type="text" 
+                    className="form-control input_prop" 
+                    value={accountName}  
+                    onChange={(e) => setAccountName(e.target.value)} 
+                    
+                />
+            </div>
+            <div className="form-group">
+                <label className='label-prop '>Transaction Type:</label>
+                <select className="form-control input_prop " value={TransactionType} onChange={(e) => setTransactionType(e.target.value)}>
+                    <option value="Payment">Payment</option>
+                    <option value="Receipt">Receipt</option>
+                </select>
+                <button className="btn btn-primary btn_height" onClick={handleSearch}>Search</button>
+            </div>
+        </div>
+        <div className='table-container-search'>
                     <table className="table mt-0 table-wrapper">
                         <thead className='table-primary'>
                             <tr>
@@ -237,10 +192,10 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                         </tbody>
                     </table>
                 </div>
-                <button className="btn-warning close_btn-2" onClick={onClose}>Close</button>
-            </div>
-  
-        </div>
+        <button className="btn-warning close_btn-2" onClick={onClose}>Close</button>
+    </div>
+</div>
+
     );
 }
 

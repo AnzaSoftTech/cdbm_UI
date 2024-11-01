@@ -1,18 +1,20 @@
-# Use a smaller base image and multi-stage build
+# Use a larger base image for building
 FROM node:18-alpine AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy package files first
 COPY package*.json ./
-RUN npm ci
 
-# Copy source files
+# Update and install dependencies
+RUN npm install
+
+# Copy source files after installing dependencies
 COPY . .
 
-# Build the application with less memory-intensive options
-RUN NODE_OPTIONS=--max_old_space_size=256 npm run build
+# Increase memory limit for build process
+RUN NODE_OPTIONS=--max_old_space_size=512 npm run build
 
 # Production stage
 FROM node:18-alpine

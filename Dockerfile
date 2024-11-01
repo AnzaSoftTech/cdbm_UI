@@ -1,28 +1,31 @@
 # Use a larger base image for building
 FROM node:18-alpine AS builder
 
+# Install pnpm globally in the builder stage
+RUN npm install -g pnpm
+
 # Set working directory
 WORKDIR /app
 
-# Copy package files first
-COPY package*.json ./
+# Copy package and lock files
+COPY package*.json pnpm-lock.yaml ./
 
-# Update and install dependencies
-RUN npm install
+# Install dependencies with pnpm
+RUN pnpm install
 
 # Copy source files after installing dependencies
 COPY . .
 
 # Increase memory limit for build process
-RUN NODE_OPTIONS=--max_old_space_size=512 npm run build
+RUN pnpm run build --max_old_space_size=4096
 
 # Production stage
 FROM node:18-alpine
 
-# Install serve with minimal dependencies
-RUN npm install -g serve
+# Install pnpm and serve globally in the production stage
+RUN npm install -g pnpm serve
 
-# Copy only necessary files from build stage
+# Set working directory and copy build files
 WORKDIR /app
 COPY --from=builder /app/build ./build
 

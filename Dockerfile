@@ -1,33 +1,33 @@
-# Step 1: Build the React app using a Node.js alpine image
-FROM node:18-alpine AS build
+# Use a larger base image for building
+FROM node:18-alpine AS builder
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy package files first
 COPY package*.json ./
-RUN npm install --silent
 
-# Copy the rest of the application files
+# Update and install dependencies
+RUN npm install
+
+# Copy source files after installing dependencies
 COPY . .
 
-# Build the app for production
-RUN npm run build
+# Increase memory limit for build process
+RUN NODE_OPTIONS=--max_old_space_size=512 npm run build
 
-# Step 2: Serve the built app using Node.js
+# Production stage
 FROM node:18-alpine
 
-# Set the working directory
-WORKDIR /app
-
-# Install a simple HTTP server for serving static files
+# Install serve with minimal dependencies
 RUN npm install -g serve
 
-# Copy the build artifacts from the build stage
-COPY --from=build /app/build ./build
+# Copy only necessary files from build stage
+WORKDIR /app
+COPY --from=builder /app/build ./build
 
-# Expose the port the app will run on
+# Expose port
 EXPOSE 3000
 
-# Start the server and serve the app
+# Use a process manager for better resource management
 CMD ["serve", "-s", "build", "-l", "3000"]

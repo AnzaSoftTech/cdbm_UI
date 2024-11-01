@@ -1189,14 +1189,14 @@ function Payment_Voucher({ details, setDetails }) {
                     
 
                     <div className="row">
-                        <div className="col" style={{ maxHeight: '350px', overflowY: 'auto' }}>
+                        <div className="col" style={{ maxHeight: '300px', overflowY: 'auto' }}>
                             <DataTable
                                 columns={columns}
                                 data={details}
                                 customStyles={customStyles}
                                 responsive
                                 fixedHeader
-                                fixedHeaderScrollHeight="350px"
+                                fixedHeaderScrollHeight="300px"
                             />
                         </div>
                     </div>

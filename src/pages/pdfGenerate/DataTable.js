@@ -71,7 +71,7 @@ const DataTable = ({ columns, data }) => {
 
 
             setCompanyDetails(companyResponse.data[0]);
-            setExcDetails(excResponse.data[0]);
+            setExcDetails(excResponse.data);
             setContractNotes(contractNotesResponse.data);
             setSecuritySummary(securitySummaryResponse.data);
             setTaxSummary(taxSummaryResponse.data);

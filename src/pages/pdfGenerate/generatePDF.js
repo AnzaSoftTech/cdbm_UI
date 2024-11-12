@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         fontSize: 6,
         fontWeight: 'bold',
         marginRight: 5,
-        width: '16.6%',
+        width: '20.6%',
         textAlign: 'center',
     },
     tableRow: {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     tableCell: {
         fontSize: 5,
         marginRight: 5,
-        width: '16.6%',
+        width: '20.6%',
         textAlign: 'center',
     },
     contentContainer: {
@@ -133,14 +133,14 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails,contractNotes }) 
 
                 {/* Table Rows - Display excDetails */}
                 {excDetails ? (
-                    <View style={styles.tableRow}>
-                        <Text style={styles.tableCell}>{excDetails.exc_name || "N/A"}</Text>
-                        <Text style={styles.tableCell}>{excDetails.segment || "N/A"}</Text>
-                        <Text style={styles.tableCell}>{excDetails.clearing_no || "N/A"}</Text>
-                        <Text style={styles.tableCell}>{excDetails.sebi_reg || "N/A"}</Text>
-                        <Text style={styles.tableCell}>{excDetails.trading_no || "N/A"}</Text>
-                        <Text style={styles.tableCell}>{excDetails.cmbp_id || "N/A"}</Text>
-                    </View>
+                    excDetails.map((item,index)=><View style={styles.tableRow}>
+                        <Text style={styles.tableCell}>{item.exc_name || "N/A"}</Text>
+                        <Text style={styles.tableCell}>{item.segment || "N/A"}</Text>
+                        <Text style={styles.tableCell}>{item.clearing_no || "N/A"}</Text>
+                        <Text style={styles.tableCell}>{item.sebi_reg || "N/A"}</Text>
+                        <Text style={styles.tableCell}>{item.trading_no || "N/A"}</Text>
+                        <Text style={styles.tableCell}>{item.cmbp_id || "N/A"}</Text>
+                    </View>)
                 ) : (
                     <Text style={styles.leftText}>No data available</Text>
                 )}
@@ -155,6 +155,113 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails,contractNotes }) 
                 ))}
             </View>
 
+
+
+                    {/* New Table for security_summary */}
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={{ fontSize: 8, marginBottom: 5 }}>Security Summary: </Text>
+                        <View style={styles.tableHeader}>
+                            <Text style={styles.tableHeaderText}>ISIN</Text>
+                            <Text style={styles.tableHeaderText}>Brok Per Share</Text>
+                            <Text style={styles.tableHeaderText}> Buy Qty</Text>
+                            <Text style={styles.tableHeaderText}>Buy Wap</Text>
+                            <Text style={styles.tableHeaderText}>Buy WAP Aft Brok</Text>
+                            <Text style={styles.tableHeaderText}>Net Oblig</Text>
+                            <Text style={styles.tableHeaderText}>Net Qty</Text>
+                            <Text style={styles.tableHeaderText}>sale_brok_per_share</Text>
+                            <Text style={styles.tableHeaderText}>Sale Qty</Text>
+                            <Text style={styles.tableHeaderText}>Sale Wap Aft Brok</Text>
+                            <Text style={styles.tableHeaderText}>series</Text>
+                            <Text style={styles.tableHeaderText}>tot_buy_aft_brok</Text>
+                            <Text style={styles.tableHeaderText}>tot_sale_aft_brok</Text>
+                        </View>
+                        {note.security_summary?.map((summary, summaryIndex) => (
+                            <View key={summaryIndex} style={styles.tableRow}>
+                                <Text style={styles.tableCell}>{summary.isin || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.buy_brok_per_share || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.buy_qty || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.buy_wap || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.buy_wap_aft_brok || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.net_oblig || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.net_qty || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.sale_brok_per_share || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.sale_qty || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.sale_wap || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.sale_wap_aft_brok || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.series || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.tot_buy_aft_brok || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.tot_sale_aft_brok || '0.000'}</Text>
+                            </View>
+                        ))}
+                    </View>
+                    {/* New Table for GST */}
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={{ fontSize: 8, marginBottom: 5 }}>GST Summary: </Text>
+                        <View style={styles.tableHeader}>
+                            <Text style={styles.tableHeaderText}>Brok CGST</Text>
+                            <Text style={styles.tableHeaderText}>Brok IGST</Text>
+                            <Text style={styles.tableHeaderText}>Brok SGST</Text>
+                            <Text style={styles.tableHeaderText}>ISIN</Text>
+                            <Text style={styles.tableHeaderText}>Net Oblig</Text>
+                            <Text style={styles.tableHeaderText}>Other Charge</Text>
+                            <Text style={styles.tableHeaderText}>Script CD</Text>
+                            <Text style={styles.tableHeaderText}>SEBI Turnover</Text>
+                            <Text style={styles.tableHeaderText}>Series</Text>
+                            <Text style={styles.tableHeaderText}>STT Charg</Text>
+                            <Text style={styles.tableHeaderText}>Taxable Val</Text>
+                        </View>
+                        {note.GST_summary?.map((summary, summaryIndex) => (
+                            <View key={summaryIndex} style={styles.tableRow}>
+                                <Text style={styles.tableCell}>{summary.brok_cgst || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.brok_igst || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.brok_sgst || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.isin || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.net_oblig || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.other_chrg || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.scrip_cd || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.sebi_turnover || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.series || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.stamp_duty || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.stt_chrg || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.taxable_val || '0.000'}</Text>
+                            </View>
+                        ))}
+                    </View>
+                    {/* New Table for Detailed */}
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={{ fontSize: 8, marginBottom: 5 }}>Detailed: </Text>
+                        <View style={styles.tableHeader}>
+                            <Text style={styles.tableHeaderText}>Brok Per Unit</Text>
+                            <Text style={styles.tableHeaderText}>Buy Sell</Text>
+                            <Text style={styles.tableHeaderText}>Gross Rate</Text>
+                            <Text style={styles.tableHeaderText}>ISIN</Text>
+                            <Text style={styles.tableHeaderText}>Net Raye</Text>
+                            <Text style={styles.tableHeaderText}>Order Time</Text>
+                            <Text style={styles.tableHeaderText}>Trade Time</Text>
+                            <Text style={styles.tableHeaderText}>Trd No</Text>
+                            <Text style={styles.tableHeaderText}>Trd Qty</Text>
+                            <Text style={styles.tableHeaderText}>Trd Sec CD</Text>
+                            <Text style={styles.tableHeaderText}>Trd Series</Text>
+                            <Text style={styles.tableHeaderText}>Ord No</Text>
+                        </View>
+                        {note.Detailed?.map((summary, summaryIndex) => (
+                            <View key={summaryIndex} style={styles.tableRow}>
+                                <Text style={styles.tableCell}>{summary.brok_per_unit || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.buy_sell || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.gross_rate || 'N/A'}</Text>
+                                <Text style={styles.tableCell}>{summary.isin || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.net_rate || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.order_time || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.trade_time || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.trd_no || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.trd_qty || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.trd_sec_cd || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.trd_series || '0.000'}</Text>
+                                <Text style={styles.tableCell}>{summary.ord_no || '0.000'}</Text>
+                            </View>
+                        ))}
+                    </View>
+                
                 {/* Footer Section */}
                 <View style={styles.line} />
                 <View style={styles.row}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
 import { Table, Button, Container, Form, Row, Col } from 'react-bootstrap';
@@ -17,7 +17,6 @@ const formatDate = (dateString) => {
 };
 
 const DataTable = ({ columns, data }) => {
-    const [accountName, setAccountName] = useState('');
     const [showTable, setShowTable] = useState(false);
     const [companyDetails, setCompanyDetails] = useState(null);
     const [excDetails, setExcDetails] = useState(null);
@@ -67,7 +66,7 @@ const DataTable = ({ columns, data }) => {
                 axios.get('http://localhost:3001/api/contract_notes?p_transaction_date=03/06/2024')
             ]);
 
-            console.log("contractNotesResponse",contractNotesResponse)
+            // console.log("contractNotesResponse",contractNotesResponse)
 
 
             setCompanyDetails(companyResponse.data[0]);

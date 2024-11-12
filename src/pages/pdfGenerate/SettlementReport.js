@@ -20,15 +20,15 @@ function formatIndianRupees(amount) {
 
 
 function PDF_FILE() {
-  const [items, setItems] = useState([]);
+  const [items,] = useState([]);
   useEffect(() => {
-    fetchItems();
+    // fetchItems();
   }, []);
 
-  const fetchItems = async () => {
-    const response = await axios.get('http://localhost:3001/api/ledger');
-    setItems(response.data);
-  };
+//   const fetchItems = async () => {
+//     const response = await axios.get('http://localhost:3001/api/ledger');
+//     setItems(response.data);
+//   };
 
 const exportToPDFAll = () => {
     const doc = new jsPDF();

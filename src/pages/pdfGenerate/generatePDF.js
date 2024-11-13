@@ -48,11 +48,29 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: '#f0f0f0',
-        padding: 10,
+        padding: 8,
         borderBottomWidth: 1,
         borderColor: '#ccc',
     },
-    newHeaderColumn: {
+    newHeaderColumn1: {
+        flex: 1,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 10,
+    },
+    newHeaderColumn2: {
+        flex: 3,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 10,
+    },
+    newHeaderColumn3: {
+        flex: 3,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 10,
+    },
+    newHeaderColumn4: {
         flex: 1,
         textAlign: 'center',
         fontWeight: 'bold',
@@ -65,7 +83,7 @@ const styles = StyleSheet.create({
     tableHeader: {
         flexDirection: 'row',
         backgroundColor: '#e0e0e0',
-        padding: 5,
+        padding: 6,
         borderBottomWidth: 1,
         borderColor: '#ccc',
     },
@@ -73,7 +91,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 8,
+        fontSize: 10,
     },
     tableRow: {
         flexDirection: 'row',
@@ -91,7 +109,7 @@ const styles = StyleSheet.create({
 const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes }) => (
     <Document>
         {contractNotes.map((note, index) => (
-            <Page key={index} style={styles.page} size={{  width: 955, height: 610.28 }}  orientation="portrait">
+            <Page key={index} style={styles.page} size={{  width: 995, height: 610.28 }}  orientation="portrait">
                 {/* Header Section */}
                 <View fixed style={styles.row}>
                     <View style={{ width: '30%' }}>
@@ -191,12 +209,12 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 <View style={{ marginTop: 10 }}>
     <Text style={{ fontSize: 8, marginBottom: 5 }}>Security Summary: </Text>
     
-    {/* New Header */}
+    {/* New Header Row */}
     <View style={styles.newHeaderRow}>
-        <Text style={[styles.newHeaderColumn, styles.borderRight]}>Security Description</Text>
-        <Text style={[styles.newHeaderColumn, styles.borderRight]}>Buy</Text>
-        <Text style={[styles.newHeaderColumn, styles.borderRight]}>Sell</Text>
-        <Text style={[styles.newHeaderColumn, styles.borderRight]}>Net Obligation</Text>
+        <Text style={[styles.newHeaderColumn1, styles.borderRight]}>Security Description</Text>
+        <Text style={[styles.newHeaderColumn2, styles.borderRight]}>Buy</Text>
+        <Text style={[styles.newHeaderColumn3, styles.borderRight]}>Sell</Text>
+        <Text style={[styles.newHeaderColumn4, styles.borderRight]}>Net Obligation</Text>
     </View>
     
     {/* Subheaders */}
@@ -222,7 +240,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
         {/* Net Obligation Subheaders */}
         <Text style={[styles.tableHeaderText, styles.borderRight]}>Net Quantity</Text>
         <Text style={[styles.tableHeaderText, styles.borderRight]}>Net Obligation</Text>
-        <Text style={[styles.tableHeaderText, styles.borderRight]}>Series</Text>
+        {/* <Text style={[styles.tableHeaderText, styles.borderRight]}>Series</Text> */}
     </View>
     
     {/* Table Rows */}
@@ -249,7 +267,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
             {/* Net Obligation */}
             <Text style={[styles.tableCell, styles.borderRight]}>{summary.net_qty || '0.000'}</Text>
             <Text style={[styles.tableCell, styles.borderRight]}>{summary.net_oblig || '0.000'}</Text>
-            <Text style={[styles.tableCell, styles.borderRight]}>{summary.series || '0.000'}</Text>
+            {/* <Text style={[styles.tableCell, styles.borderRight]}>{summary.series || '0.000'}</Text> */}
         </View>
     ))}
 </View>

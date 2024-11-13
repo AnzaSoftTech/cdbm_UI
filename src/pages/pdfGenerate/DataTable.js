@@ -86,32 +86,40 @@ const DataTable = ({ columns, data }) => {
                 </Col>
             </Row>
 
+{/* ------>> CREATE MULTIPLE BUTTON TO GENERATE PDF */}
+
             <Row className="mb-3 button-align">
                 <Col>
                     <Button variant="primary" onClick={handleRunReport} className="mr-2 custom-header">
                         Run Report
                     </Button>
 
-                    {showTable && companyDetails && excDetails && contractNotes  && (
-                        <PDFDownloadLink
-                            document={
-                                <MyPDFDocument
-                                    tableData={page.map(row => row.values)}
-                                    companyDetails={companyDetails}
-                                    excDetails={excDetails}
-                                    contractNotes={contractNotes}
-                                />
-                            }
-                            fileName="Ledger.pdf"
-                            style={{ textDecoration: 'none' }}
-                        >
-                            {({ loading }) => (
-                                <Button variant="primary" className="custom-header" style={{ marginLeft: '10px' }}>
-                                    {loading ? 'PDF Loading...' : 'Export to PDF'}
-                                </Button>
-                            )}
-                        </PDFDownloadLink>
-                    )}
+                    {showTable && companyDetails && excDetails && contractNotes && (
+                            <div>
+                                {contractNotes.map((note, index) => (
+                                    <PDFDownloadLink
+                                        key={index} // Ensure unique key for each link
+                                        document={
+                                            <MyPDFDocument
+                                                tableData={page.map(row => row.values)}
+                                                companyDetails={companyDetails}
+                                                excDetails={excDetails}
+                                                contractNotes={[note]} // Pass only the current note
+                                            />
+                                        }
+                                        fileName={`Ledger_${index + 1}.pdf`} // Unique filename for each PDF
+                                        style={{ textDecoration: 'none', marginBottom: '10px', display: 'block' }}
+                                    >
+                                        {({ loading }) => (
+                                            <Button variant="primary" className="custom-header" style={{ marginLeft: '10px' }}>
+                                                {loading ? `PDF Loading (${index + 1})...` : `Export to PDF ${index + 1}`}
+                                            </Button>
+                                        )}
+                                    </PDFDownloadLink>
+                                ))}
+                            </div>
+)}
+
                 </Col>
             </Row>
         </Container>

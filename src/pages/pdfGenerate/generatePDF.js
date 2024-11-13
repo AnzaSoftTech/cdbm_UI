@@ -1,6 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
+
 // PDF styles
 const styles = StyleSheet.create({
     page: {
@@ -9,17 +10,19 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     header: {
-        fontSize: 7,
+        fontSize: 8,
         marginBottom: 2,
         textAlign: 'center',
     },
     leftText: {
-        fontSize: 5,
+        fontSize: 10,
+        fontWeight: 'bold',
         textAlign: 'left',
         marginBottom: 2,
+        marginTop: 6,
     },
     righttext: {
-        fontSize: 5,
+        fontSize: 7,
         textAlign: 'right',
         marginBottom: 2,
     },
@@ -43,38 +46,35 @@ const styles = StyleSheet.create({
     },
     tableHeader: {
         flexDirection: 'row',
-        borderBottomWidth: 1,
-        borderBottomColor: 'black',
-        paddingBottom: 3,
-        marginBottom: 5,
+        borderWidth: 1,
+        borderColor: 'black',
     },
     tableHeaderText: {
         fontSize: 6,
         fontWeight: 'bold',
-        marginRight: 5,
-        width: '20.6%',
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 5,
         textAlign: 'center',
+        flex: 1, // Equal column width
     },
     tableRow: {
         flexDirection: 'row',
-        marginBottom: 3,
     },
     tableCell: {
         fontSize: 5,
-        marginRight: 5,
-        width: '20.6%',
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 3,
         textAlign: 'center',
-    },
-    contentContainer: {
-        marginTop: 10,
-        padding: 5,
+        flex: 1, // Equal column width
     },
 });
 
 const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes }) => (
     <Document>
         {contractNotes.map((note, index) => (
-            <Page key={index} style={styles.page} size="A4" orientation="portrait">
+            <Page key={index} style={styles.page} size={{  width: 800, height: 610.28 }}  orientation="portrait">
                 {/* Header Section */}
                 <View fixed style={styles.row}>
                     <View style={{ width: '30%' }}>
@@ -123,6 +123,15 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
 
                     {/* Right side - Table data */}
                     <View style={{ width: '50%' }}>
+
+                    <View style={{ width: '50%', paddingRight: 10 }}>
+                        <Text style={styles.leftText}>Contract Note No: {note.cont_note_no}</Text>
+                    </View>
+                    <View style={{ width: '50%', paddingRight: 10 }}>
+                    <Text style={styles.leftText}>Trade Date: {note.trade_date}</Text>
+                    </View>
+
+
                         {/* Table Headers */}
                         <View style={styles.tableHeader}>
                             <Text style={styles.tableHeaderText}>Exchange Name</Text>

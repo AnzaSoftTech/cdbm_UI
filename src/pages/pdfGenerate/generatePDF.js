@@ -44,37 +44,54 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginBottom: 10,
     },
+    newHeaderRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: '#f0f0f0',
+        padding: 10,
+        borderBottomWidth: 1,
+        borderColor: '#ccc',
+    },
+    newHeaderColumn: {
+        flex: 1,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 10,
+    },
+    borderRight: {
+        borderRightWidth: 1,
+        borderRightColor: '#ccc',
+    },
     tableHeader: {
         flexDirection: 'row',
-        borderWidth: 1,
-        borderColor: 'black',
+        backgroundColor: '#e0e0e0',
+        padding: 5,
+        borderBottomWidth: 1,
+        borderColor: '#ccc',
     },
     tableHeaderText: {
-        fontSize: 6,
-        fontWeight: 'bold',
-        borderWidth: 1,
-        borderColor: 'black',
-        padding: 5,
+        flex: 1,
         textAlign: 'center',
-        flex: 1, // Equal column width
+        fontWeight: 'bold',
+        fontSize: 8,
     },
     tableRow: {
         flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderColor: '#ddd',
+        padding: 5,
     },
     tableCell: {
-        fontSize: 5,
-        borderWidth: 1,
-        borderColor: 'black',
-        padding: 3,
+        flex: 1,
         textAlign: 'center',
-        flex: 1, // Equal column width
+        fontSize: 8,
     },
 });
 
 const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes }) => (
     <Document>
         {contractNotes.map((note, index) => (
-            <Page key={index} style={styles.page} size={{  width: 800, height: 610.28 }}  orientation="portrait">
+            <Page key={index} style={styles.page} size={{  width: 955, height: 610.28 }}  orientation="portrait">
                 {/* Header Section */}
                 <View fixed style={styles.row}>
                     <View style={{ width: '30%' }}>
@@ -172,44 +189,72 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
 
                 {/* New Table for security_summary */}
                 <View style={{ marginTop: 10 }}>
-                    <Text style={{ fontSize: 8, marginBottom: 5 }}>Security Summary: </Text>
-                    <View style={styles.tableHeader}>
-                        <Text style={styles.tableHeaderText}>ISIN</Text>
-                        <Text style={styles.tableHeaderText}>Security Name/ Symbol</Text>
-                        <Text style={styles.tableHeaderText}>Buy Qty</Text>
-                        <Text style={styles.tableHeaderText}>Wap (Mrk Rate)</Text>
-                        <Text style={styles.tableHeaderText}>Brok Per Share</Text>
-                        <Text style={styles.tableHeaderText}>Buy WAP Aft Brok</Text>
-                        <Text style={styles.tableHeaderText}>Tot Buy Aft Brok</Text>
-                        <Text style={styles.tableHeaderText}>Sale Qty</Text>
-                        <Text style={styles.tableHeaderText}>Wap (Mrk Rate)</Text>
-                        <Text style={styles.tableHeaderText}>Sale Brok Per Share</Text>
-                        <Text style={styles.tableHeaderText}>Sale Wap Aft Brok</Text>
-                        <Text style={styles.tableHeaderText}>Tot Sale Aft Brok</Text>
-                        <Text style={styles.tableHeaderText}>Net Quantty</Text>
-                        <Text style={styles.tableHeaderText}>Net Oblig</Text>
-                        <Text style={styles.tableHeaderText}>series</Text>
-                    </View>
-                    {note.security_summary?.map((summary, summaryIndex) => (
-                        <View key={summaryIndex} style={styles.tableRow}>
-                            <Text style={styles.tableCell}>{summary.isin || 'N/A'}</Text>
-                            <Text style={styles.tableCell}>{summary.scrip_cd || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.buy_qty || 'N/A'}</Text>
-                            <Text style={styles.tableCell}>{summary.buy_wap || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.buy_brok_per_share || 'N/A'}</Text>
-                            <Text style={styles.tableCell}>{summary.buy_wap_aft_brok || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.tot_buy_aft_brok || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.sale_qty || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.sale_wap || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.sale_brok_per_share || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.sale_wap_aft_brok || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.tot_sale_aft_brok || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.net_qty || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.net_oblig || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.series || '0.000'}</Text>
-                        </View>
-                    ))}
-                </View>
+    <Text style={{ fontSize: 8, marginBottom: 5 }}>Security Summary: </Text>
+    
+    {/* New Header */}
+    <View style={styles.newHeaderRow}>
+        <Text style={[styles.newHeaderColumn, styles.borderRight]}>Security Description</Text>
+        <Text style={[styles.newHeaderColumn, styles.borderRight]}>Buy</Text>
+        <Text style={[styles.newHeaderColumn, styles.borderRight]}>Sell</Text>
+        <Text style={[styles.newHeaderColumn, styles.borderRight]}>Net Obligation</Text>
+    </View>
+    
+    {/* Subheaders */}
+    <View style={styles.tableHeader}>
+        {/* Security Description Subheaders */}
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>ISIN</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Security Name/ Symbol</Text>
+        
+        {/* Buy Subheaders */}
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Buy Qty</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Wap (Mrk Rate)</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Brok Per Share</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Buy WAP Aft Brok</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Tot Buy Aft Brok</Text>
+        
+        {/* Sell Subheaders */}
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Sale Qty</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Wap (Mrk Rate)</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Sale Brok Per Share</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Sale Wap Aft Brok</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Tot Sale Aft Brok</Text>
+        
+        {/* Net Obligation Subheaders */}
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Net Quantity</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Net Obligation</Text>
+        <Text style={[styles.tableHeaderText, styles.borderRight]}>Series</Text>
+    </View>
+    
+    {/* Table Rows */}
+    {note.security_summary?.map((summary, summaryIndex) => (
+        <View key={summaryIndex} style={styles.tableRow}>
+            {/* Security Description */}
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.isin || 'N/A'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.scrip_cd || '0.000'}</Text>
+            
+            {/* Buy */}
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.buy_qty || 'N/A'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.buy_wap || '0.000'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.buy_brok_per_share || 'N/A'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.buy_wap_aft_brok || '0.000'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.tot_buy_aft_brok || '0.000'}</Text>
+            
+            {/* Sell */}
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.sale_qty || '0.000'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.sale_wap || '0.000'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.sale_brok_per_share || '0.000'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.sale_wap_aft_brok || '0.000'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.tot_sale_aft_brok || '0.000'}</Text>
+            
+            {/* Net Obligation */}
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.net_qty || '0.000'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.net_oblig || '0.000'}</Text>
+            <Text style={[styles.tableCell, styles.borderRight]}>{summary.series || '0.000'}</Text>
+        </View>
+    ))}
+</View>
+
+
                 {/* New Table for GST */}
                 <View style={{ marginTop: 10 }}>
                     <Text style={{ fontSize: 8, marginBottom: 5 }}>GST Summary: </Text>

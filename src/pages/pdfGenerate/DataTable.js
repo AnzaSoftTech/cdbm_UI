@@ -23,7 +23,7 @@ const DataTable = ({ columns, data }) => {
     const [excDetails, setExcDetails] = useState(null);
     const [contractNotes, setContractNotes] = useState(null);
     const [selectedDate, setSelectedDate] = useState('');
-    const [ setHeaderInfo] = useState({ client_cd: '', int_mkt_type: '', trd_settle_no: '' }); // State for header values
+    const [headerInfo, setHeaderInfo] = useState({ client_cd: '', int_mkt_type: '', trd_settle_no: '' });
 
     const {
         page,

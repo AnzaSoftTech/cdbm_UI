@@ -137,9 +137,9 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                             <Text style={styles.tableHeaderText}>Exchange Name</Text>
                             <Text style={styles.tableHeaderText}>Segment</Text>
                             <Text style={styles.tableHeaderText}>Clearing No</Text>
-                            <Text style={styles.tableHeaderText}>SEBI Reg</Text>
                             <Text style={styles.tableHeaderText}>Trading No</Text>
-                            <Text style={styles.tableHeaderText}>CM BP ID</Text>
+                            <Text style={styles.tableHeaderText}>CMBP ID</Text>
+                            <Text style={styles.tableHeaderText}>SEBI Reg No</Text>
                         </View>
 
                         {/* Table Rows - Display excDetails */}
@@ -149,9 +149,9 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                                     <Text style={styles.tableCell}>{item.exc_name || 'N/A'}</Text>
                                     <Text style={styles.tableCell}>{item.segment || 'N/A'}</Text>
                                     <Text style={styles.tableCell}>{item.clearing_no || 'N/A'}</Text>
-                                    <Text style={styles.tableCell}>{item.sebi_reg || 'N/A'}</Text>
                                     <Text style={styles.tableCell}>{item.trading_no || 'N/A'}</Text>
                                     <Text style={styles.tableCell}>{item.cmbp_id || 'N/A'}</Text>
+                                    <Text style={styles.tableCell}>{item.sebi_reg || 'N/A'}</Text>
                                 </View>
                             ))
                         ) : (
@@ -175,35 +175,38 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                     <Text style={{ fontSize: 8, marginBottom: 5 }}>Security Summary: </Text>
                     <View style={styles.tableHeader}>
                         <Text style={styles.tableHeaderText}>ISIN</Text>
+                        <Text style={styles.tableHeaderText}>Security Name/ Symbol</Text>
+                        <Text style={styles.tableHeaderText}>Buy Qty</Text>
+                        <Text style={styles.tableHeaderText}>Wap (Mrk Rate)</Text>
                         <Text style={styles.tableHeaderText}>Brok Per Share</Text>
-                        <Text style={styles.tableHeaderText}> Buy Qty</Text>
-                        <Text style={styles.tableHeaderText}>Buy Wap</Text>
                         <Text style={styles.tableHeaderText}>Buy WAP Aft Brok</Text>
-                        <Text style={styles.tableHeaderText}>Net Oblig</Text>
-                        <Text style={styles.tableHeaderText}>Net Qty</Text>
-                        <Text style={styles.tableHeaderText}>sale_brok_per_share</Text>
+                        <Text style={styles.tableHeaderText}>Tot Buy Aft Brok</Text>
                         <Text style={styles.tableHeaderText}>Sale Qty</Text>
+                        <Text style={styles.tableHeaderText}>Wap (Mrk Rate)</Text>
+                        <Text style={styles.tableHeaderText}>Sale Brok Per Share</Text>
                         <Text style={styles.tableHeaderText}>Sale Wap Aft Brok</Text>
+                        <Text style={styles.tableHeaderText}>Tot Sale Aft Brok</Text>
+                        <Text style={styles.tableHeaderText}>Net Quantty</Text>
+                        <Text style={styles.tableHeaderText}>Net Oblig</Text>
                         <Text style={styles.tableHeaderText}>series</Text>
-                        <Text style={styles.tableHeaderText}>tot_buy_aft_brok</Text>
-                        <Text style={styles.tableHeaderText}>tot_sale_aft_brok</Text>
                     </View>
                     {note.security_summary?.map((summary, summaryIndex) => (
                         <View key={summaryIndex} style={styles.tableRow}>
                             <Text style={styles.tableCell}>{summary.isin || 'N/A'}</Text>
-                            <Text style={styles.tableCell}>{summary.buy_brok_per_share || 'N/A'}</Text>
+                            <Text style={styles.tableCell}>{summary.scrip_cd || '0.000'}</Text>
                             <Text style={styles.tableCell}>{summary.buy_qty || 'N/A'}</Text>
                             <Text style={styles.tableCell}>{summary.buy_wap || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.buy_brok_per_share || 'N/A'}</Text>
                             <Text style={styles.tableCell}>{summary.buy_wap_aft_brok || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.net_oblig || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.net_qty || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.sale_brok_per_share || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.tot_buy_aft_brok || '0.000'}</Text>
                             <Text style={styles.tableCell}>{summary.sale_qty || '0.000'}</Text>
                             <Text style={styles.tableCell}>{summary.sale_wap || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.sale_brok_per_share || '0.000'}</Text>
                             <Text style={styles.tableCell}>{summary.sale_wap_aft_brok || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.series || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.tot_buy_aft_brok || '0.000'}</Text>
                             <Text style={styles.tableCell}>{summary.tot_sale_aft_brok || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.net_qty || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.net_oblig || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.series || '0.000'}</Text>
                         </View>
                     ))}
                 </View>
@@ -211,32 +214,31 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 <View style={{ marginTop: 10 }}>
                     <Text style={{ fontSize: 8, marginBottom: 5 }}>GST Summary: </Text>
                     <View style={styles.tableHeader}>
-                        <Text style={styles.tableHeaderText}>Brok CGST</Text>
-                        <Text style={styles.tableHeaderText}>Brok IGST</Text>
-                        <Text style={styles.tableHeaderText}>Brok SGST</Text>
                         <Text style={styles.tableHeaderText}>ISIN</Text>
-                        <Text style={styles.tableHeaderText}>Net Oblig</Text>
-                        <Text style={styles.tableHeaderText}>Other Charge</Text>
-                        <Text style={styles.tableHeaderText}>Script CD</Text>
+                        <Text style={styles.tableHeaderText}>Symbol/Series</Text>
+                        <Text style={styles.tableHeaderText}>Net Obligation</Text>
+                        <Text style={styles.tableHeaderText}>STT Charges</Text>
+                        <Text style={styles.tableHeaderText}>Stamp Duty</Text>
                         <Text style={styles.tableHeaderText}>SEBI Turnover</Text>
-                        <Text style={styles.tableHeaderText}>Series</Text>
-                        <Text style={styles.tableHeaderText}>STT Charg</Text>
-                        <Text style={styles.tableHeaderText}>Taxable Val</Text>
+                        <Text style={styles.tableHeaderText}>Other Charges</Text>
+                        <Text style={styles.tableHeaderText}>Tax Value</Text>
+                        <Text style={styles.tableHeaderText}>IGST</Text>
+                        <Text style={styles.tableHeaderText}>CGST</Text>
+                        <Text style={styles.tableHeaderText}>SGST</Text>
                     </View>
                     {note.GST_summary?.map((summary, summaryIndex) => (
                         <View key={summaryIndex} style={styles.tableRow}>
-                            <Text style={styles.tableCell}>{summary.brok_cgst || 'N/A'}</Text>
-                            <Text style={styles.tableCell}>{summary.brok_igst || 'N/A'}</Text>
-                            <Text style={styles.tableCell}>{summary.brok_sgst || 'N/A'}</Text>
-                            <Text style={styles.tableCell}>{summary.isin || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.net_oblig || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.other_chrg || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.scrip_cd || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.sebi_turnover || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.series || '0.000'}</Text>
-                            <Text style={styles.tableCell}>{summary.stamp_duty || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.isin || 'N/A'}</Text>
+                            <Text style={styles.tableCell}>{summary.series || 'N/A'}</Text>
+                            <Text style={styles.tableCell}>{summary.net_oblig || 'N/A'}</Text>
                             <Text style={styles.tableCell}>{summary.stt_chrg || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.stamp_duty || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.sebi_turnover || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.other_chrg || '0.000'}</Text>
                             <Text style={styles.tableCell}>{summary.taxable_val || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.brok_igst || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.brok_cgst || '0.000'}</Text>
+                            <Text style={styles.tableCell}>{summary.brok_sgst || '0.000'}</Text>
                         </View>
                     ))}
                 </View>

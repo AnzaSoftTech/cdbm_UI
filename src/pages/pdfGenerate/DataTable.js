@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
-import {  Button, Container, Form, Row, Col } from 'react-bootstrap';
-
+import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import MyPDFDocument from './generatePDF';
 import './DataTable.css';
@@ -21,12 +20,13 @@ const DataTable = ({ columns, data }) => {
     const [showTable, setShowTable] = useState(false);
     const [companyDetails, setCompanyDetails] = useState(null);
     const [excDetails, setExcDetails] = useState(null);
-    const [contractNotes, setContractNotes] = useState(null);
+    const [contractNotes, setContractNotes] = useState([]);
     const [selectedDate, setSelectedDate] = useState('');
     const [headerInfo, setHeaderInfo] = useState({ client_cd: '', int_mkt_type: '', trd_settle_no: '' });
 
     const {
-        page,
+        page, // Get paginated data from react-table
+        prepareRow, 
     } = useTable(
         { columns, data, initialState: { pageIndex: 0 } },
         useFilters,
@@ -54,9 +54,6 @@ const DataTable = ({ columns, data }) => {
                 axios.get(endpoint),
             ]);
 
-            // console.log("contractNotesResponse",contractNotesResponse)
-
-
             setCompanyDetails(companyResponse.data[0]);
             setExcDetails(excResponse.data);
             setContractNotes(contractNotesResponse.data);
@@ -66,28 +63,70 @@ const DataTable = ({ columns, data }) => {
                 const { client_cd, int_mkt_type, trd_settle_no } = contractNotesResponse.data[0];
                 setHeaderInfo({ client_cd, int_mkt_type, trd_settle_no });
             }
-
         } catch (error) {
             console.error('Error fetching data:', error);
         }
+    };
+
+    // Split contract notes into smaller chunks for PDF generation
+    const chunkSize = 10; // Adjust the size as needed
+    const chunkedContractNotes = [];
+    for (let i = 0; i < contractNotes.length; i += chunkSize) {
+        chunkedContractNotes.push(contractNotes.slice(i, i + chunkSize));
+    }
+
+    // Function to handle PDF generation in batches
+    const generatePDFsInBatches = () => {
+        return chunkedContractNotes.map((chunk, index) => (
+            <div key={index}>
+                {chunk.map((note, noteIndex) => (
+                    <PDFDownloadLink
+                        key={noteIndex} // Ensure unique key for each link
+                        document={
+                            <MyPDFDocument
+                                tableData={page.map(row => row.values)}
+                                companyDetails={companyDetails}
+                                excDetails={excDetails}
+                                contractNotes={[note]} // Pass only the current note
+                            />
+                        }
+                        fileName={`${note.client_name || `Ledger_${noteIndex + 1}`}.pdf`} // Use client_name or a fallback name
+                        style={{ textDecoration: 'none', marginBottom: '10px', display: 'block' }}
+                    >
+                        {({ loading }) => (
+                            <Button
+                                variant="primary"
+                                className="custom-header"
+                                style={{ marginLeft: '10px' }}
+                            >
+                                {loading
+                                    ? `PDF Loading (${note.client_name || `Ledger_${noteIndex + 1}`})...`
+                                    : `Export to PDF - ${note.client_name || `Ledger ${noteIndex + 1}`}`}
+                            </Button>
+                        )}
+                    </PDFDownloadLink>
+                ))}
+            </div>
+        ));
     };
 
     return (
         <Container className="align-items-center">
             <Row className="pt-5 mb-3">
                 <Col xs={12} md={6} className="d-flex align-items-center">
-                    <Form.Label className="margin-right mb-0 label-color-common" style={{ width: "25%" }}>Select Date: </Form.Label>
+                    <Form.Label className="margin-right mb-0 label-color-common" style={{ width: "25%" }}>
+                        Select Date:
+                    </Form.Label>
                     <Form.Control
                         type="date"
                         size="sm"
                         value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)} // Update selected date
+                        onChange={(e) => setSelectedDate(e.target.value)}
                     />
                 </Col>
             </Row>
 
-{/* ------>> CREATE MULTIPLE BUTTON TO GENERATE PDF */}
-
+            {/* Generate PDFs */}
             <Row className="mb-3 button-align">
                 <Col>
                     <Button variant="primary" onClick={handleRunReport} className="mr-2 custom-header">
@@ -95,31 +134,10 @@ const DataTable = ({ columns, data }) => {
                     </Button>
 
                     {showTable && companyDetails && excDetails && contractNotes && (
-                            <div>
-                                {contractNotes.map((note, index) => (
-                                    <PDFDownloadLink
-                                        key={index} // Ensure unique key for each link
-                                        document={
-                                            <MyPDFDocument
-                                                tableData={page.map(row => row.values)}
-                                                companyDetails={companyDetails}
-                                                excDetails={excDetails}
-                                                contractNotes={[note]} // Pass only the current note
-                                            />
-                                        }
-                                        fileName={`Ledger_${index + 1}.pdf`} // Unique filename for each PDF
-                                        style={{ textDecoration: 'none', marginBottom: '10px', display: 'block' }}
-                                    >
-                                        {({ loading }) => (
-                                            <Button variant="primary" className="custom-header" style={{ marginLeft: '10px' }}>
-                                                {loading ? `PDF Loading (${index + 1})...` : `Export to PDF ${index + 1}`}
-                                            </Button>
-                                        )}
-                                    </PDFDownloadLink>
-                                ))}
-                            </div>
-)}
-
+                        <div>
+                            {generatePDFsInBatches()}
+                        </div>
+                    )}
                 </Col>
             </Row>
         </Container>

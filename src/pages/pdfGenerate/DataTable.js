@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
-import { Button, Container, Form, Row, Col } from 'react-bootstrap';
+import { Button, Container, Form, Row, Col, Spinner, Card } from 'react-bootstrap';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import MyPDFDocument from './generatePDF';
 import './DataTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Helper function to format the date
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
@@ -24,10 +23,7 @@ const DataTable = ({ columns, data }) => {
     const [selectedDate, setSelectedDate] = useState('');
     const [headerInfo, setHeaderInfo] = useState({ client_cd: '', int_mkt_type: '', trd_settle_no: '' });
 
-    const {
-        page, // Get paginated data from react-table
-        prepareRow, 
-    } = useTable(
+    const { page, prepareRow } = useTable(
         { columns, data, initialState: { pageIndex: 0 } },
         useFilters,
         useSortBy,
@@ -36,7 +32,7 @@ const DataTable = ({ columns, data }) => {
 
     const handleRunReport = async () => {
         setShowTable(true);
-        await fetchData(selectedDate); // Wait for data to load before generating PDF
+        await fetchData(selectedDate);
     };
 
     const fetchData = async (date) => {
@@ -58,7 +54,6 @@ const DataTable = ({ columns, data }) => {
             setExcDetails(excResponse.data);
             setContractNotes(contractNotesResponse.data);
 
-            // Extract and set the header info from contractNotesResponse data
             if (contractNotesResponse.data && contractNotesResponse.data.length > 0) {
                 const { client_cd, int_mkt_type, trd_settle_no } = contractNotesResponse.data[0];
                 setHeaderInfo({ client_cd, int_mkt_type, trd_settle_no });
@@ -68,39 +63,37 @@ const DataTable = ({ columns, data }) => {
         }
     };
 
-    // Split contract notes into smaller chunks for PDF generation
-    const chunkSize = 10; // Adjust the size as needed
+    const chunkSize = 10;
     const chunkedContractNotes = [];
     for (let i = 0; i < contractNotes.length; i += chunkSize) {
         chunkedContractNotes.push(contractNotes.slice(i, i + chunkSize));
     }
 
-    // Function to handle PDF generation in batches
     const generatePDFsInBatches = () => {
         return chunkedContractNotes.map((chunk, index) => (
             <div key={index}>
                 {chunk.map((note, noteIndex) => (
                     <PDFDownloadLink
-                        key={noteIndex} // Ensure unique key for each link
+                        key={noteIndex}
                         document={
                             <MyPDFDocument
                                 tableData={page.map(row => row.values)}
                                 companyDetails={companyDetails}
                                 excDetails={excDetails}
-                                contractNotes={[note]} // Pass only the current note
+                                contractNotes={[note]}
                             />
                         }
-                        fileName={`${note.client_name || `Ledger_${noteIndex + 1}`}.pdf`} // Use client_name or a fallback name
-                        style={{ textDecoration: 'none', marginBottom: '10px', display: 'block' }}
+                        fileName={`${note.client_name || `Ledger_${noteIndex + 1}`}.pdf`}
+                        style={{ textDecoration: 'none', marginBottom: '15px' }}
                     >
                         {({ loading }) => (
                             <Button
                                 variant="primary"
-                                className="custom-header"
-                                style={{ marginLeft: '10px' }}
+                                className="d-block w-100 mb-3"
+                                style={{ minHeight: '50px', fontWeight: '500' }}
                             >
                                 {loading
-                                    ? `PDF Loading (${note.client_name || `Ledger_${noteIndex + 1}`})...`
+                                    ? `Loading PDF...`
                                     : `Export to PDF - ${note.client_name || `Ledger ${noteIndex + 1}`}`}
                             </Button>
                         )}
@@ -111,35 +104,46 @@ const DataTable = ({ columns, data }) => {
     };
 
     return (
-        <Container className="align-items-center">
-            <Row className="pt-5 mb-3">
-                <Col xs={12} md={6} className="d-flex align-items-center">
-                    <Form.Label className="margin-right mb-0 label-color-common" style={{ width: "25%" }}>
-                        Select Date:
-                    </Form.Label>
-                    <Form.Control
-                        type="date"
-                        size="sm"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                    />
-                </Col>
-            </Row>
+        <Container className="py-4">
+            <Card className="shadow-sm p-4 mb-4">
+                <Row className="align-items-center mb-4">
+                    <Col xs={12} md={6}>
+                        <Form.Group>
+                            <Form.Label className="fw-bold">Select Date:</Form.Label>
+                            <Form.Control
+                                type="date"
+                                size="sm"
+                                value={selectedDate}
+                                onChange={(e) => setSelectedDate(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col xs={12} md={6} className="d-flex justify-content-md-end">
+                        <Button
+                            variant="primary"
+                            onClick={handleRunReport}
+                            className="mt-3 mt-md-0"
+                            style={{ minHeight: '40px', fontWeight: '500' }}
+                        >
+                            {showTable ? 'Rerun Report' : 'Run Report'}
+                        </Button>
+                    </Col>
+                </Row>
+            </Card>
 
-            {/* Generate PDFs */}
-            <Row className="mb-3 button-align">
-                <Col>
-                    <Button variant="primary" onClick={handleRunReport} className="mr-2 custom-header">
-                        Run Report
-                    </Button>
-
-                    {showTable && companyDetails && excDetails && contractNotes && (
-                        <div>
-                            {generatePDFsInBatches()}
-                        </div>
-                    )}
-                </Col>
-            </Row>
+            {showTable && companyDetails && excDetails && contractNotes.length > 0 ? (
+                <Card className="shadow-sm p-4">
+                    <h5 className="fw-bold text-center mb-4">Generated PDFs</h5>
+                    {generatePDFsInBatches()}
+                </Card>
+            ) : (
+                showTable && (
+                    <div className="text-center">
+                        <Spinner animation="border" variant="primary" />
+                        <p className="mt-3">Fetching data...</p>
+                    </div>
+                )
+            )}
         </Container>
     );
 };

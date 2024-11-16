@@ -5,7 +5,21 @@
     background-color:#0275d8!important; /* Purple color */
     color: white !important;
   }
-  
+  /* DataTable.css */
+.custom-header {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.label-color-common {
+    color: #4f4f4f;
+}
+
+.button-align {
+    display: flex;
+    justify-content: center;
+}
+
   /* Custom styles for the table */
   .custom-table {
     width: auto; /* Adjust table width as needed */

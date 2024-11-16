@@ -1,9 +1,10 @@
+import JSZip from 'jszip'; // Import JSZip
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
 import { Button, Container, Form, Row, Col, Spinner, Card } from 'react-bootstrap';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import MyPDFDocument from './generatePDF';
+import { pdf } from '@react-pdf/renderer'; // Import pdf function from @react-pdf/renderer
+import MyPDFDocument from './generatePDF'; // Assuming MyPDFDocument is the component for generating the PDF
 import './DataTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -69,39 +70,48 @@ const DataTable = ({ columns, data }) => {
         chunkedContractNotes.push(contractNotes.slice(i, i + chunkSize));
     }
 
-    const generatePDFsInBatches = () => {
-        return chunkedContractNotes.map((chunk, index) => (
-            <div key={index}>
-                {chunk.map((note, noteIndex) => (
-                    <PDFDownloadLink
-                        key={noteIndex}
-                        document={
-                            <MyPDFDocument
-                                tableData={page.map(row => row.values)}
-                                companyDetails={companyDetails}
-                                excDetails={excDetails}
-                                contractNotes={[note]}
-                            />
-                        }
-                        fileName={`${note.client_name || `Ledger_${noteIndex + 1}`}.pdf`}
-                        style={{ textDecoration: 'none', marginBottom: '15px' }}
-                    >
-                        {({ loading }) => (
-                            <Button
-                                variant="primary"
-                                className="d-block w-100 mb-3"
-                                style={{ minHeight: '50px', fontWeight: '500' }}
-                            >
-                                {loading
-                                    ? `Loading PDF...`
-                                    : `Export to PDF - ${note.client_name || `Ledger ${noteIndex + 1}`}`}
-                            </Button>
-                        )}
-                    </PDFDownloadLink>
-                ))}
-            </div>
-        ));
+    const generateAllPDFs = async () => {
+        const pdfs = [];
+        for (let chunk of chunkedContractNotes) {
+            for (let note of chunk) {
+                const pdfDoc = (
+                    <MyPDFDocument
+                        tableData={page.map(row => row.values)}
+                        companyDetails={companyDetails}
+                        excDetails={excDetails}
+                        contractNotes={[note]}
+                    />
+                );
+    
+                // Generate the PDF as a blob using @react-pdf/renderer's pdf function
+                const pdfBlob = await pdf(pdfDoc).toBlob();
+                
+                // Use note.client_name for the PDF filename, or fallback to a default if it's not available
+                const pdfFileName = note.client_name ? `${note.client_name}.pdf` : `Ledger_${chunk.indexOf(note) + 1}.pdf`;
+                
+                pdfs.push({ pdfBlob, pdfFileName });
+            }
+        }
+        return pdfs;
     };
+    
+    const handleDownloadAllPDFs = async () => {
+        const pdfDocuments = await generateAllPDFs();
+        const zip = new JSZip();
+    
+        // Add each PDF Blob to the ZIP file using the client_name or default name
+        pdfDocuments.forEach(({ pdfBlob, pdfFileName }, index) => {
+            zip.file(pdfFileName, pdfBlob);
+        });
+    
+        zip.generateAsync({ type: 'blob' }).then((content) => {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(content);
+            link.download = 'Contract_Notes.zip';
+            link.click();
+        });
+    };
+    
 
     return (
         <Container className="py-4">
@@ -134,7 +144,13 @@ const DataTable = ({ columns, data }) => {
             {showTable && companyDetails && excDetails && contractNotes.length > 0 ? (
                 <Card className="shadow-sm p-4">
                     <h5 className="fw-bold text-center mb-4">Generated PDFs</h5>
-                    {generatePDFsInBatches()}
+                    <Button
+                        variant="success"
+                        className="d-block w-100 mb-3"
+                        onClick={handleDownloadAllPDFs}
+                    >
+                        Download All PDFs as ZIP
+                    </Button>
                 </Card>
             ) : (
                 showTable && (

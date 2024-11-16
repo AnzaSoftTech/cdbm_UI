@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     header: {
-        fontSize: 8,
+        fontSize: 10,
         marginBottom: 2,
         textAlign: 'center',
     },
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         marginTop: 6,
     },
     righttext: {
-        fontSize: 7,
+        fontSize: 9,
         textAlign: 'right',
         marginBottom: 2,
     },
@@ -131,7 +131,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 return chunks;
             };
 
-            const chunkSize = 10; // Number of items per chunk
+            const chunkSize = 1110; // Number of items per chunk
             const chunks = chunkArray(note.Detailed || [], chunkSize);
 
             console.log("chunks", chunks)
@@ -140,7 +140,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 <Page
                     key={index}
                     style={styles.page}
-                    size={{ width: 995, height: 610.28 }}
+                    size={{ width: 995, height: 670.28 }}
                     orientation="portrait"
                 >
                     {/* Header Section */}
@@ -324,11 +324,11 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                                 ))}
                         </View>
                     </View>
-                    {/* New Table for GST */}
 
+                    {/* GST Summary Table */}
                     <View style={{ marginTop: 10 }}>
                         <Text style={{ fontSize: 8, marginBottom: 5 }}>GST Summary: </Text>
-                        <View style={styles.tableHeader}>
+                        <View style={styles.tableHeader} fixed>
                             <Text style={styles.tableHeaderText}>ISIN</Text>
                             <Text style={styles.tableHeaderText}>Symbol/Series</Text>
                             <Text style={styles.tableHeaderText}>Net Obligation</Text>
@@ -357,10 +357,11 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                             </View>
                         ))}
                     </View>
-                    {/* New Table for Detailed */}
-                    <View style={{ marginTop: 10 }}>
+
+                    {/* Detailed Table with Chunking */}
+                    <View break style={{ marginTop: 10 }}>
                         <Text style={{ fontSize: 8, marginBottom: 5 }}>Detailed: </Text>
-                        <View style={styles.tableHeader}>
+                        <View style={styles.tableHeader} fixed>
                             <Text style={styles.tableHeaderText}>Brok Per Unit</Text>
                             <Text style={styles.tableHeaderText}>Buy Sell</Text>
                             <Text style={styles.tableHeaderText}>Gross Rate</Text>

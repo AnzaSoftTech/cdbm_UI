@@ -48,7 +48,8 @@ function MasterFileUpload() {
 
   const fetchMasterFileData = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/sauda_metadata`, {
+     // const response = await axios.get(`${BASE_URL}/api/sauda_metadata`, {
+       const response = await axios.get(`http://13.233.84.104:3001/api/sauda_metadata`, {
         params: { exch_cd, segment },
       });
       setData(response.data);

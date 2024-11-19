@@ -7,6 +7,7 @@ import { pdf } from '@react-pdf/renderer'; // Import pdf function from @react-pd
 import MyPDFDocument from './generatePDF'; // Assuming MyPDFDocument is the component for generating the PDF
 import './DataTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+//import { BASE_URL } from ".././constants";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -39,7 +40,8 @@ const DataTable = ({ columns, data }) => {
     const fetchData = async (date) => {
         try {
             const formattedDate = formatDate(date);
-            const endpoint = `http://localhost:3001/api/contract_notes?p_transaction_date=${formattedDate}`;
+           // const endpoint = `${BASE_URL}/api/contract_notes?p_transaction_date=${formattedDate}`;
+           const endpoint = `http://localhost:3001/api/contract_notes?p_transaction_date=${formattedDate}`;
 
             const [
                 companyResponse,
@@ -50,6 +52,16 @@ const DataTable = ({ columns, data }) => {
                 axios.get('http://localhost:3001/api/exc_details'),
                 axios.get(endpoint),
             ]);
+
+            // const [
+            //     companyResponse,
+            //     excResponse,
+            //     contractNotesResponse,
+            // ] = await Promise.all([
+            //     axios.get(`${BASE_URL}/api/company_details`),
+            //     axios.get(`${BASE_URL}/api/exc_details`),
+            //     axios.get(endpoint),
+            // ]);
 
             setCompanyDetails(companyResponse.data[0]);
             setExcDetails(excResponse.data);

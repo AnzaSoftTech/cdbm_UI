@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainPanel from './MainPanel';
 import { useNavigate } from 'react-router-dom';
-import { FaAngleDown, FaAngleRight, FaHome, FaUpload, FaFileAlt, FaDollarSign, FaFileInvoiceDollar, FaBook } from "react-icons/fa";
+import { FaAngleDown, FaAngleRight, FaHome, FaUpload, FaFileAlt, FaRupeeSign, FaFileInvoiceDollar, FaBook } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-
+// FaDollarSign
 const DashboardPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentPage] = useState('page1');
@@ -94,7 +94,7 @@ const toggleMenu = (menuName) => {
           {/* Financial */}
           <div className="menu-item">
             <div className="menu-title" onClick={() => toggleMenu("financial")}>
-              <FaDollarSign style={{ fontSize: '23px' }} />
+              <FaRupeeSign style={{ fontSize: '23px' }} />
               Finance {openMenus.financial ? <FaAngleDown /> : <FaAngleRight />}
             </div>
             {openMenus.financial && (

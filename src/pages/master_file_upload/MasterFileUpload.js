@@ -115,6 +115,7 @@ function MasterFileUpload() {
         axios.post(`${BASE_URL}/api/insert-var-file-stag`),
         axios.post(`${BASE_URL}/api/insert-corp_action-stag`),
         axios.post(`${BASE_URL}/api/insert-scrip_master-stag`),
+        axios.post(`${BASE_URL}/api/daily-holdings-stag`),
       ]);
      // console.log('before calling exec_db_proc')
       const status = await axios.post(`${BASE_URL}/api/exec_db_Procedure`);

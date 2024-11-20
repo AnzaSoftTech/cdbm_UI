@@ -140,7 +140,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 <Page
                     key={index}
                     style={styles.page}
-                    size={{ width: 995, height: 670.28 }}
+                    size={{ width: 1400, height: 770.28 }}
                     orientation="portrait"
                 >
                     {/* Header Section */}
@@ -397,11 +397,33 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                         ))}
 
                     </View>
+
+
                     {/* Footer Section */}
-                    <View style={styles.line} />
-                    <View style={styles.row}>
-                        <Text style={styles.leftText}>Date: 18 Oct, 2024. Place: Mumbai</Text>
-                        <Text style={styles.leftText}>Authorized Signatory</Text>
+                    <View fixed style={styles.line} />
+                    <View fixed style={styles.row}>
+                        <View fixed style={{ width: '80%', alignItems: 'left' }}>
+                            <View fixed>
+                                <Text style={styles.leftText}>OTHER LEVIES, IF ANY:</Text>
+                                <Text style={styles.leftText}>Note: Buy : 'B'/'+', Sell: 'S'/'-', Debit: '+', Credit: '-'
+                                    CGST: Central GST, SGST: State GST, IGST: Integrated GST, UTT: Union Terittory Tax.
+                                    Details of Tradewise levies shall be provided on request.</Text>
+                                <Text style={styles.leftText}>Description of Service: Brokerage & related Securities & Commodity services. Accounting Code: 997152.
+                                    SSL is collecting Stamp Duty & Securities Transaction Tax (STT) as a pure agent of the investor and hence the same is not considered in taxable value of supply for charging GST.
+                                    Transactions mentioned in this contract note cum bill shall be governed and subject to the Rules, Bye-laws, Regulations and Circulars of the respective Exchanges on which trades have been executed and Securities and Exchange Board of India issued from time to time. It shall also be subject to the relevant Acts, Rules, Regulations, Directives, Notifications, Guidelines (including GST Laws) & Circulars issued by SEBI / Government of India / State Governments
+                                    and Union Territory Governments issued from time to time. The Exchanges provide Complaint Resolution, Arbitration and Appellate arbitration facilities at the Regional Arbitration Centres (RAC). The client may approach its nearest centre, details of which are available on respective Exchange's website. Please visit www.nseindia.com for NSE, www.bseindia.com for BSE and www.msei.in for MSEI.
+                                </Text>
+                                <Text style={styles.leftText}>Date: {note.trade_date} , place : Mumbai</Text>
+
+                            </View>
+                        </View>
+                        <View fixed style={{ width: '40%', alignItems: 'right' }}>
+                            <Text style={styles.righttext}>Yours Faithfully,
+                                For Sodhani Securities Ltd</Text>
+                            <Text style={styles.righttext}>Director/Authorized Signatory</Text>
+                            <Text style={styles.righttext}>Member: National Stock Exchange of India Ltd.</Text>
+
+                        </View>
                     </View>
                 </Page>
             );

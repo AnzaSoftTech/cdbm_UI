@@ -152,7 +152,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                             <Text style={styles.header}>CONTRACT NOTE CUM TAX INVOICE</Text>
                             <Text style={styles.header}>(TAX INVOICE UNDER SECTION 31 OF GST ACT)</Text>
                             <Text style={{ fontSize: 11, textAlign: 'center' }}>
-                                {companyDetails?.comp_name || "Company Name"}
+                                <b>{companyDetails?.comp_name || "Company Name"}</b>
                             </Text>
                             <Text style={styles.header}>MEMBER: NATIONAL STOCK EXCHANGE OF INDIA LTD</Text>
                             <Text style={styles.header}>SEBI REGN. NO. INZ000242534 • TRADING CODE NO: 23/10245 • CM BP ID: IN554382</Text>
@@ -163,9 +163,9 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                             <Text style={styles.righttext}>{companyDetails?.addr1}</Text>
                             <Text style={styles.righttext}>{companyDetails?.addr2}</Text>
                             <Text style={styles.righttext}>{companyDetails?.addr3}</Text>
-                            <Text style={styles.righttext}>304, Samarpan, New Link Road,</Text>
+                            {/* <Text style={styles.righttext}>304, Samarpan, New Link Road,</Text>
                             <Text style={styles.righttext}>Chakala, Andheri East,</Text>
-                            <Text style={styles.righttext}>Mumbai - 400 099.</Text>
+                            <Text style={styles.righttext}>Mumbai - 400 099.</Text> */}
                         </View>
                     </View>
 
@@ -178,14 +178,14 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                         <View style={{ width: '50%', paddingRight: 10 }}>
                             <Text style={styles.leftText}>Client Code: {note.client_cd}</Text>
                             <Text style={styles.leftText}>Client Name: {note.client_name}</Text>
-                            <Text style={styles.leftText}>Contract Note No: {note.cont_note_no}</Text>
-                            <Text style={styles.leftText}>Address Line 1: {note.corres_addr_1}</Text>
-                            <Text style={styles.leftText}>Address Line 2: {note.corres_addr_2}</Text>
-                            <Text style={styles.leftText}>Address Line 3: {note.corres_addr_3}</Text>
-                            <Text style={styles.leftText}>City: {note.corres_city}</Text>
+                            {/* <Text style={styles.leftText}><b>Contract Note No: </b>{note.cont_note_no}</Text> */}
+                            <Text style={styles.leftText}>{note.corres_addr_1}</Text>
+                            <Text style={styles.leftText}>{note.corres_addr_2}</Text>
+                            <Text style={styles.leftText}>{note.corres_addr_3} . {note.corres_city}</Text>
+                            {/* <Text style={styles.leftText}>{note.corres_city}</Text> */}
                             <Text style={styles.leftText}>Market Type: {note.int_mkt_type}</Text>
                             <Text style={styles.leftText}>PAN Number: {note.pan_no}</Text>
-                            <Text style={styles.leftText}>Trade Date: {note.trade_date}</Text>
+                            {/* <Text style={styles.leftText}>Trade Date: {note.trade_date}</Text> */}
                             <Text style={styles.leftText}>Settlement No: {note.trd_settle_no}</Text>
                         </View>
 

@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './MasterFileUpload.css'; // Import custom styles
 //import Table from 'react-bootstrap/Table';
 import { BASE_URL } from ".././constants";
+import ProcessingDialog from './ProcessingDialog';
 
 function MasterFileUpload() {
   const [exch_cd, setExch_cd] = useState('N');
@@ -13,30 +14,13 @@ function MasterFileUpload() {
   const [date, setDate] = useState('');
   const [data, setData] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(Array(data.length).fill(false));
+  const [isProcessing, setIsProcessing] = useState(false);
 
- // const fileInputRefSB = useRef(null);
-
-  //const [items, setItems] = useState([]);
   const [files, setFiles] = useState([]);
-  //const [uploadPercentage, setUploadPercentage] = useState(0);
   const [message, setMessage] = useState('');
   
   const onChangeMasterInput = (e, index) => {
     setFiles(e.target.files);
-
-    //const filename = document.getElementById(`master_filename_${index}`);
-    //filename.target.value = e.target.files[0].name;
-
-    //console.log(' e.target.files[0] --> ',  e.target.files[0].name);
-    //console.log('filename ---> ', filename);
-
-    // setData((prevData) =>
-    //   prevData.map((item) =>
-    //     item.index === index ? { ...item, segment: e.target.files[0].name } : item
-    //   )
-    // );
-
-    // console.log('after data ', data);
 
   };
 
@@ -52,12 +36,12 @@ function MasterFileUpload() {
         params: { exch_cd, segment },
       });
       setData(response.data);
-      console.log('response.data => ', response.data);
-
     } catch (err) {
       console.error(err);
     }
   };
+
+
 
   const onSubmitMasterFile = async (index,filecd) => {
     //e.preventDefault();
@@ -106,6 +90,16 @@ function MasterFileUpload() {
   };
   // //---settlement_master csv file 
   const handleMasterFileButtonClick = async () => {
+
+    const isConfirmed = window.confirm("Sure you want to process the Master file ?");
+
+      if (!isConfirmed)
+      {
+        return;
+      }
+
+    setIsProcessing(true);
+
     const filecd = 'SETTLE'; 
     try {
       const  response= await Promise.all([
@@ -118,6 +112,8 @@ function MasterFileUpload() {
       ]);
      // console.log('before calling exec_db_proc')
       const status = await axios.post(`${BASE_URL}/api/exec_db_Procedure`);
+      setIsProcessing(false);
+
      // console.log('status ===> ', status);
       if (status.data.message === "0")
       {
@@ -128,6 +124,8 @@ function MasterFileUpload() {
         alert('DB Error processing Master file(s) ');
       }
 
+      fetchMasterFileData();
+
       
       // if (response.data[0].message === 0)
       //   {
@@ -136,6 +134,7 @@ function MasterFileUpload() {
       //   }
       setUploadStatus(false);
     } catch (error) {
+      setIsProcessing(false);
       console.error("Error loading files:", error);
       alert('Error loading files');
     }
@@ -179,18 +178,14 @@ function MasterFileUpload() {
               />
             </div>
             <div className="d-flex align-items-center">
-              <button
-                className="btn btn-primary me-2 master-btn"
-                onClick={fetchMasterFileData}
-              >
+              <button className="btn btn-primary me-2 master-btn"
+                onClick={fetchMasterFileData}>
                 Get Files
               </button>
-              <button
-                className="btn btn-success master-btn"
-                onClick={handleMasterFileButtonClick}
-              >
+              <button className="btn btn-success master-btn" onClick={handleMasterFileButtonClick}>
                 Process Files
               </button>
+              {isProcessing && <ProcessingDialog isOpen={isProcessing} />}
             </div>
           </div>
 
@@ -229,9 +224,8 @@ function MasterFileUpload() {
                       <input className="form-control form-control-sm me-2" id={`formFileSm_${index}`} accept=".csv,.txt" 
                       onChange={(e) => onChangeMasterInput (e, index)} type="file" multiple />
                       <button onClick={() => onSubmitMasterFile(index,item.file_cd)}
-                                             className={`btn btn-outline-primary btn-sm ml-1 ${uploadStatus[index] ? 'btn-uploaded' : ''} `} style={{
-                        backgroundColor: uploadStatus[index] ? '#28a745' : '',
-                        color: uploadStatus[index] ? '#ffffff' : ''
+                         className={`btn btn-outline-primary btn-sm ml-1 ${uploadStatus[index] ? 'btn-uploaded' : ''} `} style={{
+                        backgroundColor: uploadStatus[index] ? '#28a745' : '', color: uploadStatus[index] ? '#ffffff' : ''
                       }}> {uploadStatus[index] ? 'Uploaded' : 'Upload'}</button>
                     </div>
 

@@ -6,23 +6,22 @@ import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/render
 const styles = StyleSheet.create({
     page: {
         padding: 13,
-        display: 'flex',
         flexDirection: 'column',
     },
     header: {
-        fontSize: 10,
+        fontSize: 11,
         marginBottom: 2,
         textAlign: 'center',
     },
     leftText: {
-        fontSize: 10,
+        fontSize: 11,
         fontWeight: 'bold',
         textAlign: 'left',
         marginBottom: 2,
         marginTop: 6,
     },
     righttext: {
-        fontSize: 9,
+        fontSize: 11,
         textAlign: 'right',
         marginBottom: 2,
     },
@@ -39,11 +38,6 @@ const styles = StyleSheet.create({
         marginVertical: 2,
         width: '100%',
     },
-    tableContainer: {
-        width: '50%',
-        marginLeft: 'auto',
-        marginBottom: 10,
-    },
     newHeaderRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -56,45 +50,47 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 12,
     },
     newHeaderColumn2: {
         flex: 3,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 12,
     },
     newHeaderColumn3: {
         flex: 3,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 12,
     },
     newHeaderColumn4: {
         flex: 1,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 12,
     },
     borderRight: {
         borderRightWidth: 1,
         borderRightColor: '#ccc',
     },
+    tableContainer: {
+        flex: 1, // Take up remaining space between header and footer
+        marginTop: 10,
+        marginBottom: 30,
+    },
     tableHeader: {
         flexDirection: 'row',
         backgroundColor: '#e0e0e0',
-        padding: 6,
+        padding: 8,
         borderBottomWidth: 1,
         borderColor: '#ccc',
-        position: 'fixed', // Make header fixed to the top of each page
-        top: 0, // Adjust position
-        zIndex: 1,
     },
     tableHeaderText: {
         flex: 1,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 12,
     },
     tableRow: {
         flexDirection: 'row',
@@ -105,7 +101,19 @@ const styles = StyleSheet.create({
     tableCell: {
         flex: 1,
         textAlign: 'center',
+        fontSize: 12,
+        borderRightWidth: 1,
+        borderRightColor: '#ddd',
+        padding: 4,
+    },
+    footer: {
+        marginTop: 'auto', // Push the footer to the bottom
+        padding: 10,
+        marginBottom: 9,
+        textAlign: 'center',
         fontSize: 8,
+        borderTopWidth: 1,
+        borderColor: '#ccc', // Add a top border for better separation
     },
 });
 
@@ -140,19 +148,19 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 <Page
                     key={index}
                     style={styles.page}
-                    size={{ width: 1400, height: 770.28 }}
+                    size={{ width: 1400, height: 850.28 }}
                     orientation="portrait"
                 >
                     {/* Header Section */}
                     <View fixed style={styles.row}>
-                        <View style={{ width: '30%' }}>
+                        <View style={{ width: '15%' }}>
                             <Image src={`${window.location.origin}/image.png`} style={styles.logo} />
                         </View>
                         <View style={{ width: '90%', alignItems: 'center' }}>
                             <Text style={styles.header}>CONTRACT NOTE CUM TAX INVOICE</Text>
                             <Text style={styles.header}>(TAX INVOICE UNDER SECTION 31 OF GST ACT)</Text>
-                            <Text style={{ fontSize: 11, textAlign: 'center' }}>
-                                <b>{companyDetails?.comp_name || "Company Name"}</b>
+                            <Text style={{ fontSize: 13, textAlign: 'center' }}>
+                                {companyDetails?.comp_name || "Company Name"}
                             </Text>
                             <Text style={styles.header}>MEMBER: NATIONAL STOCK EXCHANGE OF INDIA LTD</Text>
                             <Text style={styles.header}>SEBI REGN. NO. INZ000242534 • TRADING CODE NO: 23/10245 • CM BP ID: IN554382</Text>
@@ -359,8 +367,8 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                     </View>
 
                     {/* Detailed Table with Chunking */}
-                    <View break style={{ marginTop: 10 }}>
-                        <Text style={{ fontSize: 8, marginBottom: 5 }}>Detailed: </Text>
+                    <View break style={{ marginTop: 20 }}>
+                        <Text fixed style={{ fontSize: 8, marginBottom: 5 }}>Detailed: </Text>
                         <View style={styles.tableHeader} fixed>
                             <Text style={styles.tableHeaderText}>Brok Per Unit</Text>
                             <Text style={styles.tableHeaderText}>Buy Sell</Text>
@@ -401,28 +409,29 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
 
                     {/* Footer Section */}
                     <View fixed style={styles.line} />
-                    <View fixed style={styles.row}>
-                        <View fixed style={{ width: '80%', alignItems: 'left' }}>
-                            <View fixed>
-                                <Text style={styles.leftText}>OTHER LEVIES, IF ANY:</Text>
-                                <Text style={styles.leftText}>Note: Buy : 'B'/'+', Sell: 'S'/'-', Debit: '+', Credit: '-'
-                                    CGST: Central GST, SGST: State GST, IGST: Integrated GST, UTT: Union Terittory Tax.
-                                    Details of Tradewise levies shall be provided on request.</Text>
-                                <Text style={styles.leftText}>Description of Service: Brokerage & related Securities & Commodity services. Accounting Code: 997152.
-                                    SSL is collecting Stamp Duty & Securities Transaction Tax (STT) as a pure agent of the investor and hence the same is not considered in taxable value of supply for charging GST.
-                                    Transactions mentioned in this contract note cum bill shall be governed and subject to the Rules, Bye-laws, Regulations and Circulars of the respective Exchanges on which trades have been executed and Securities and Exchange Board of India issued from time to time. It shall also be subject to the relevant Acts, Rules, Regulations, Directives, Notifications, Guidelines (including GST Laws) & Circulars issued by SEBI / Government of India / State Governments
-                                    and Union Territory Governments issued from time to time. The Exchanges provide Complaint Resolution, Arbitration and Appellate arbitration facilities at the Regional Arbitration Centres (RAC). The client may approach its nearest centre, details of which are available on respective Exchange's website. Please visit www.nseindia.com for NSE, www.bseindia.com for BSE and www.msei.in for MSEI.
-                                </Text>
-                                <Text style={styles.leftText}>Date: {note.trade_date} , place : Mumbai</Text>
+                    <View fixed style={styles.footer}>
+                        <View fixed style={styles.row}>
+                            <View fixed style={{ width: '80%', alignItems: 'left' }}>
+                                <View fixed>
+                                    <Text style={styles.leftText}>OTHER LEVIES, IF ANY:</Text>
+                                    <Text style={styles.leftText}>Note: Buy : 'B'/'+', Sell: 'S'/'-', Debit: '+', Credit: '-'
+                                        CGST: Central GST, SGST: State GST, IGST: Integrated GST, UTT: Union Terittory Tax.
+                                        Details of Tradewise levies shall be provided on request.</Text>
+                                    <Text style={styles.leftText}>Description of Service: Brokerage & related Securities & Commodity services. Accounting Code: 997152.
+                                        SSL is collecting Stamp Duty & Securities Transaction Tax (STT) as a pure agent of the investor and hence the same is not considered in taxable value of supply for charging GST.
+                                        Transactions mentioned in this contract note cum bill shall be governed and subject to the Rules, Bye-laws, Regulations and Circulars of the respective Exchanges on which trades have been executed and Securities and Exchange Board of India issued from time to time. It shall also be subject to the relevant Acts, Rules, Regulations, Directives, Notifications, Guidelines (including GST Laws) & Circulars issued by SEBI / Government of India / State Governments
+                                        and Union Territory Governments issued from time to time. The Exchanges provide Complaint Resolution, Arbitration and Appellate arbitration facilities at the Regional Arbitration Centres (RAC). The client may approach its nearest centre, details of which are available on respective Exchange's website. Please visit www.nseindia.com for NSE, www.bseindia.com for BSE and www.msei.in for MSEI.
+                                    </Text>
+                                    <Text style={styles.leftText}>Date: {note.trade_date} , place : Mumbai</Text>
 
+                                </View>
                             </View>
-                        </View>
-                        <View fixed style={{ width: '40%', alignItems: 'right' }}>
-                            <Text style={styles.righttext}>Yours Faithfully,
-                                For Sodhani Securities Ltd</Text>
-                            <Text style={styles.righttext}>Director/Authorized Signatory</Text>
-                            <Text style={styles.righttext}>Member: National Stock Exchange of India Ltd.</Text>
-
+                            <View fixed style={{ width: '40%', alignItems: 'right' }}>
+                                <Text style={styles.righttext}>Yours Faithfully,
+                                    For Sodhani Securities Ltd</Text>
+                                <Text style={styles.righttext}>Director/Authorized Signatory</Text>
+                                <Text style={styles.righttext}>Member: National Stock Exchange of India Ltd.</Text>
+                            </View>
                         </View>
                     </View>
                 </Page>

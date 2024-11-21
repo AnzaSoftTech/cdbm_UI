@@ -41,38 +41,38 @@ const styles = StyleSheet.create({
     newHeaderRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: '#E1D2D2',
+        backgroundColor: '#A0A0A0',
         padding: 8,
         borderBottomWidth: 1,
         borderColor: 'black',
     },
     newHeaderColumn1: {
-        flex: 1,
+        flex: 1.3,
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 12,
     },
     newHeaderColumn2: {
-        flex: 3,
+        flex: 3.1,
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 12,
     },
     newHeaderColumn3: {
-        flex: 3,
+        flex: 3.1,
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 12,
     },
     newHeaderColumn4: {
-        flex: 1,
+        flex: 1.2,
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 12,
     },
     borderRight: {
-        borderRightWidth: 1,
-        borderRightColor: 'black',
+        borderRightWidth: 1.5,
+        borderRightColor: '#C0C0C0',
     },
     tableContainer: {
         flex: 1, // Take up remaining space between header and footer

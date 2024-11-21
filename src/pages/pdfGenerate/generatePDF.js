@@ -382,7 +382,6 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Trade Time</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Trd No</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Trd Qty</Text>
-                            <Text style={[styles.tableHeaderText, styles.borderRight]}>Trd Sec CD</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Trd Series</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Ord No</Text>
                         </View>
@@ -400,7 +399,6 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.trade_time || '0.000'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.trd_no || '0.000'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.trd_qty || '0.000'}</Text>
-                                        <Text style={[styles.tableCell, styles.borderRight]}>{summary.trd_sec_cd || '0.000'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.trd_series || '0.000'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.ord_no || '0.000'}</Text>
                                     </View>

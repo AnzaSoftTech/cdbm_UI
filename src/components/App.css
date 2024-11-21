@@ -103,3 +103,51 @@ body {
     cursor: pointer;
   }
   
+  /*
+  Added for Master and Transaction Sub-Menus
+  */
+
+  /* Submenu list container */
+.submenu-list {
+  padding-left: 20px; /* Indentation to show it's a sub-level */
+  margin-top: 8px; /* Space between the main menu item and submenu items */
+  display: block; /* Ensure that submenu items are displayed in a block layout */
+  background-color: #f9f9f9; /* Light background color for the submenu */
+  border-left: 2px solid #ddd; /* Thin border to differentiate submenus */
+  border-radius: 4px; /* Optional: Rounded corners for the submenu */
+}
+
+/* Style for each submenu item */
+.submenu-list .submenu-item {
+  padding: 8px 0; /* Space between submenu items */
+  list-style: none; /* Remove bullet points */
+}
+
+.submenu-list .submenu-item a {
+  text-decoration: none; /* Remove underlines */
+  color: #333; /* Dark text color */
+  display: flex; /* Use flex to align icon and text */
+  align-items: center; /* Vertically align the icon and text */
+}
+
+.submenu-list .submenu-item a:hover {
+  color: #007bff; /* Change text color on hover */
+  background-color: #e9ecef; /* Light background color on hover */
+  border-radius: 4px; /* Optional: Rounded corners on hover */
+}
+
+.submenu-list .submenu-item a .fa {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 18px; /* Set icon size */
+}
+
+/* Optional: Add a small animation for opening/closing submenus */
+.submenu-list {
+  transition: max-height 0.3s ease-out;
+  overflow: hidden; /* Hide overflow for smooth animation */
+  max-height: 1000px; /* Default height when open */
+}
+
+.submenu-list.collapsed {
+  max-height: 0; /* Collapse submenu */
+}

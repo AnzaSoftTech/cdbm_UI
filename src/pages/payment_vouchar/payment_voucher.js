@@ -56,6 +56,8 @@ function Payment_Voucher({ details, setDetails }) {
 
     const [fin_year, setFin_Year] = useState();
 
+    const [editMode, setEditMode] = useState(false);
+
     useEffect(() => {
         axios.get(`${BASE_URL}/api/get_segment`)
             .then(response => setSegments(response.data))
@@ -348,10 +350,11 @@ function Payment_Voucher({ details, setDetails }) {
     
             const balance = drTotal - crTotal;
             setTotals({ drTotal, crTotal, balance });
+            setEditMode(true);
     
             setShowModal(false);
             // Log modal state update
-            console.log('Modal Closed');
+           // console.log('Modal Closed');
         } else {
             console.error('Invalid vouchers array:', vouchers);
         }
@@ -552,7 +555,7 @@ function Payment_Voucher({ details, setDetails }) {
 
        // console.log('resValidate before save ', resValidate)
 
-        if (resValidate == 0) {
+        if (resValidate === 0) {
             if (!voucherNo) {
                 axios.post(`${BASE_URL}/api/voucher`, data)
                     .then(response => {
@@ -577,6 +580,7 @@ function Payment_Voucher({ details, setDetails }) {
                         setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
                         setVendorDetails('');
                         setCBAccount('');
+                        setEditMode(false);
                     })
                     .catch(error => console.error('Error saving voucher:', error));
             }
@@ -602,6 +606,7 @@ function Payment_Voucher({ details, setDetails }) {
                         setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
                         setVendorDetails('');
                         setCBAccount('');
+                        setEditMode(false);
                     })
                     .catch(error => console.error('Error saving voucher:', error));
             }
@@ -1059,7 +1064,7 @@ function Payment_Voucher({ details, setDetails }) {
                         <div className="col-md-6 mb-2 d-flex">
                             <label htmlFor="TransactionTypeCode" className="form-label form-label-pv label-color-common">Transaction Type</label>
                             <select id="TransactionTypeCode" className="form-select form-control-standard" name='TransactionType' value={TransactionType}
-                                onChange={(e) => setTransactionType(e.target.value)}>
+                                onChange={(e) => setTransactionType(e.target.value)} disabled={editMode === true}>
                                 <option value="">Select Transaction Type</option>
                                 <option value="Payment">Payment Voucher</option>
                                 <option value="Receipt">Receipt Voucher</option>
@@ -1080,7 +1085,7 @@ function Payment_Voucher({ details, setDetails }) {
                         <div className="col-md-6 mb-2 d-flex">
                             <label htmlFor="cbaccount" className="form-label form-label-pv label-color-common">Cash/Bank A/c</label>
                             <select id="cbaccount" className="form-select form-control-standard" name='cbaccount' value={cbaccount}
-                                onChange={(e) => handleCashBank(e.target.value)}>
+                                onChange={(e) => handleCashBank(e.target.value)} disabled={editMode === true}>
                                 <option value="">Select Cash Bank A/c</option>
                                 {cbaccounts.map(CB_Act => (
                                     <option key={CB_Act.cb_act_cd} value={CB_Act.cb_act_cd}>{CB_Act.bank_ac_name}</option>

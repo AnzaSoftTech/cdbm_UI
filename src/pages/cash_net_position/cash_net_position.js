@@ -186,18 +186,17 @@ const CashNetPosition = () => {
     };
 
 
-    useEffect(() => {
-        // 'http://localhost:3001
-        axios.get(`${BASE_URL}/api/branches`)
-            .then(response => {
-                setBranches(response.data);
-                // alert(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the data!", error);
-            });
-    },
-        []);
+    // useEffect(() => {
+    //     axios.get(`${BASE_URL}/api/branches`)
+    //         .then(response => {
+    //             setBranches(response.data);
+    //             // alert(response.data);
+    //         })
+    //         .catch(error => {
+    //             console.error("There was an error fetching the data!", error);
+    //         });
+    // },
+    //     []);
 
     useEffect(() => {
         // 'http://localhost:3001/api/Settlement_type'
@@ -303,8 +302,6 @@ const CashNetPosition = () => {
             },
         },
     };
-
-
 
     const columns = [
         {
@@ -450,7 +447,7 @@ const CashNetPosition = () => {
     return (
         <Container className="align-items-center mt-3">
             <Row className="mb-3">
-                <Col xs={12} md={4}>
+                {/* <Col xs={12} md={4}>
                     <div className="d-flex flex-column flex-md-row align-items-md-center">
                         <div className="mb-2 mb-md-0 me-md-5 align-middle">
                             <Form.Label className='branch_width label-color-common'>Branch:</Form.Label>
@@ -472,15 +469,23 @@ const CashNetPosition = () => {
                             </Form.Select>
                         </div>
                     </div>
-                </Col>
+                </Col> */}
 
-                <Col xs={12} md={4}>
-                    <div className="d-flex flex-column flex-md-row align-items-md-center">
-                        <div className="mb-2 mb-md-0">
-                            <Form.Label className="me-md-2 label-color-common label_btn_margin align-middle">Settle Type:</Form.Label>
-                        </div>
-                        <div>
-                            <Form.Select
+                {/* <Col xs={12} md={4}> */}
+                    <div className="row">
+                        <div className="col-md-6 mb-3 d-flex">
+                            <label className="label-color-common form-label label-width">Settle Type:</label>
+                            <select id="Settle_tp" className="form-select size_input_cashbank" name='actstatus' value={filters.Settle_tp}
+                                onChange={handleChange}>
+                                <option value="">Select Settlement Type</option>
+                                {Setletypes.map(Setletype => (
+                                    <option key={Setletype.settle_tp} value={Setletype.settle_tp}>
+                                        {Setletype.description}
+                                    </option>
+                                ))}
+                            </select>
+
+                            {/* <Form.Select
                                 aria-label="Default select example"
                                 name='Settle_tp'
                                 value={filters.Settle_tp}
@@ -493,12 +498,18 @@ const CashNetPosition = () => {
                                         {Setletype.description}
                                     </option>
                                 ))}
-                            </Form.Select>
+                            </Form.Select> */}
+                        </div>
+                        <div className="col-md-6 mb-3 d-flex">
+                            {/* <Form.Label className='labelSettleNo align-middle label-color-common'>Settle No:</Form.Label> */}
+                            <label className="label-color-common form-label label-width">Settle No:</label>
+                            <Form.Control type="number" name="SetleNo"
+                                value={filters.SetleNo} onChange={handleChange} size="sm"/>
                         </div>
                     </div>
-                </Col>
+                {/* </Col> */}
 
-                <Col xs={12} md={4}>
+                {/* <Col xs={12} md={4}>
                     <div className="d-flex flex-column flex-md-row align-items-md-center">
                         <div className="mb-2 mb-md-0 me-md-2">
                             <Form.Label className='labelSettleNo align-middle label-color-common'>Settle No:</Form.Label>
@@ -513,7 +524,7 @@ const CashNetPosition = () => {
                             />
                         </div>
                     </div>
-                </Col>
+                </Col> */}
             </Row>
 
             <Row className="mb-3">
@@ -597,8 +608,9 @@ const CashNetPosition = () => {
                                     name="scripcd"
                                     value={scripcd}
                                     onChange={handleScripChange}
-                                    size="sm"
-                                    className='number_width'
+                                    style={{width:'100px'}}
+                                    // size="sm"
+                                    // className='number_width'
                                 />
                             </div>
                             <div>
@@ -626,12 +638,13 @@ const CashNetPosition = () => {
                 <Col xs={12} md={8}>
                     <div className="d-flex justify-content-end align-items-end mb-3 labelmarginbtn">
                         <div>
-                        <button onClick={() => downloadCSV(data)}>Download CSV</button>
+                        <button className='btn btn-secondary' onClick={() => downloadCSV(data)}>Download CSV</button> &nbsp;
+                        
                             <Button
                                 variant="primary"
                                 onClick={fetchData}
                                 className="mr-2 btn-success"
-                                size='sm'
+                                // size='sm'
                                 style={{ width: "150px" }}
                             >
                                 Run Report
@@ -641,7 +654,7 @@ const CashNetPosition = () => {
                 </Col>
             </Row>
 
-            {showInputs && (
+            {/* {showInputs && (
                 <Row className="mb-3">
                     <Col xs={12} md={3}>
                         <div className="d-flex flex-column flex-md-row align-items-md-center">
@@ -701,7 +714,7 @@ const CashNetPosition = () => {
                         </div>
                     </Col>
                 </Row>
-            )}
+            )} */}
 
             <div>
                 <DataTable
@@ -716,6 +729,7 @@ const CashNetPosition = () => {
                     overflowY
                 />
             </div>
+            <div>&nbsp;</div>
 
             <div>
                 <DataTable

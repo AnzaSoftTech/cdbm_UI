@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainPanel from './MainPanel';
 import { useNavigate } from 'react-router-dom';
-import { FaAngleDown, FaAngleRight, FaHome, FaUpload, FaFileAlt, FaRupeeSign, FaFileInvoiceDollar, FaBook } from "react-icons/fa";
+import { FaAngleDown, FaAngleRight, FaHome, FaUpload, FaFileAlt, FaRupeeSign, FaFileInvoiceDollar, FaBook, FaCogs, FaExchangeAlt } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 // FaDollarSign
 const DashboardPage = () => {
@@ -26,9 +26,11 @@ const DashboardPage = () => {
 //   const [openMenus, setOpenMenus] = useState({});
 
 const toggleMenu = (menuName) => {
+  console.log('before openMenus ', openMenus);
     setOpenMenus((prevOpenMenus) => ({
       [menuName]: !prevOpenMenus[menuName]
     }));
+   console.log('after openMenus ', openMenus);
   };
 
 
@@ -99,8 +101,9 @@ const toggleMenu = (menuName) => {
             </div>
             {openMenus.financial && (
               <div className="submenu">
-                <div className="submenu-item"><Link to="/dashboard/Cash_Bank_Master/CashBankMasterApp" className="nav-link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} />Cash/Bank Master</Link></div>
-                <div className="submenu-item"><Link to="/dashboard/payment_vouchar/Payment_voucharApp" className="nav-link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} /> Payment/Receipt Vouchers</Link></div>
+                
+                  <div className="submenu-item"><Link to="/dashboard/Cash_Bank_Master/CashBankMasterApp" className="nav-link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} />Cash/Bank Master</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/payment_vouchar/Payment_voucharApp" className="nav-link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} /> Payment/Receipt Vouchers</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/journal_vouchar/JOURNALApp " className="nav-link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} />Journal Voucher</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/dr_cr_note/drcrnotesApp " className="nav-link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} />Debit/Credit Notes</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/Contra_Entry/contraenteryApp " className="nav-link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} /> Contra Entry</Link></div>
@@ -110,6 +113,7 @@ const toggleMenu = (menuName) => {
               </div>
             )}
           </div>
+
 
           {/* Reports */}
           <div className="menu-item">
@@ -121,7 +125,7 @@ const toggleMenu = (menuName) => {
               <div className="submenu">
                 <div className="submenu-item"><Link to="/dashboard/trial_balance/tb_mainapp" className="nav-link"><FaFileAlt style={{ marginRight: '8px' }} />Trial Balance</Link></div>
                 <div className="submenu-item"><Link to="/dashboard/ledger/l_mainapp" className="nav-link"><FaFileAlt style={{ marginRight: '8px' }} />Ledger</Link></div>
-                <div className="submenu-item"><Link to="/dashboard/pdfGenerate/SettlementReport" className="nav-link"><FaFileAlt style={{ marginRight: '8px' }} />PDF</Link></div>
+                <div className="submenu-item"><Link to="/dashboard/pdfGenerate/SettlementReport" className="nav-link"><FaFileAlt style={{ marginRight: '8px' }} />Contract Notes</Link></div>
                 {/* <div className="submenu-item" ><Link to="/dashboard/page2" className="nav-link">page 2</Link></div> */}              </div>
             )}
           </div>

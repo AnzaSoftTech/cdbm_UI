@@ -41,10 +41,10 @@ const styles = StyleSheet.create({
     newHeaderRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#E1D2D2',
         padding: 8,
         borderBottomWidth: 1,
-        borderColor: '#ccc',
+        borderColor: 'black',
     },
     newHeaderColumn1: {
         flex: 1,
@@ -72,19 +72,21 @@ const styles = StyleSheet.create({
     },
     borderRight: {
         borderRightWidth: 1,
-        borderRightColor: '#ccc',
+        borderRightColor: 'black',
     },
     tableContainer: {
         flex: 1, // Take up remaining space between header and footer
         marginTop: 10,
+        flexGrow: 1,
         marginBottom: 30,
     },
     tableHeader: {
         flexDirection: 'row',
-        backgroundColor: '#e0e0e0',
+        backgroundColor: '#DFDEDE',
         padding: 8,
+        fontWeight: 'bold',
         borderBottomWidth: 1,
-        borderColor: '#ccc',
+        borderColor: 'black',
     },
     tableHeaderText: {
         flex: 1,
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     tableRow: {
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderColor: '#ddd',
+        borderColor: 'black',
         padding: 5,
     },
     tableCell: {
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 12,
         borderRightWidth: 1,
-        borderRightColor: '#ddd',
+        borderRightColor: 'black',
         padding: 5,
     },
     footer: {
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 8,
         borderTopWidth: 1,
-        borderColor: '#ccc', // Add a top border for better separation
+        borderColor: 'black',
     },
 });
 
@@ -148,7 +150,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 <Page
                     key={index}
                     style={styles.page}
-                    size={{ width: 1400, height: 850.28 }}
+                    size={{ width: 1600, height: 850.28 }}
                     orientation="portrait"
                 >
                     {/* Header Section */}
@@ -304,7 +306,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                         ))}
 
                         {/* Total Row */}
-                        <View style={[styles.tableRow, { backgroundColor: '#f7f7f7' }]}>
+                        <View style={[styles.tableRow, { backgroundColor: '#DCDCDC' }]}>
                             <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]} colSpan={6}>
                                 Total
                             </Text>
@@ -368,8 +370,9 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
 
                     {/* Detailed Table with Chunking */}
                     <View break style={{ marginTop: 20 }}>
-                        <Text fixed style={{ fontSize: 8, marginBottom: 5 }}>Detailed: </Text>
+                        <Text fixed style={{ fontSize: 11, marginBottom: 5 }}>Detailed: </Text>
                         <View style={styles.tableHeader} fixed>
+                            <Text style={[styles.tableHeaderText, styles.borderRight]}>Security Code</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Brok Per Unit</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Buy Sell</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Gross Rate</Text>
@@ -382,12 +385,12 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Trd Sec CD</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Trd Series</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Ord No</Text>
-                            <Text style={[styles.tableHeaderText, styles.borderRight]}>Security Code</Text>
                         </View>
                         {chunks.map((chunk, chunkIndex) => (
                             <View key={chunkIndex}>
                                 {chunk.map((summary, summaryIndex) => (
                                     <View key={summaryIndex} style={styles.tableRow}>
+                                        <Text style={[styles.tableCell, styles.borderRight]}>{summary.trd_sec_cd || '0.000'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.brok_per_unit || 'N/A'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.buy_sell || 'N/A'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.gross_rate || 'N/A'}</Text>
@@ -400,7 +403,6 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.trd_sec_cd || '0.000'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.trd_series || '0.000'}</Text>
                                         <Text style={[styles.tableCell, styles.borderRight]}>{summary.ord_no || '0.000'}</Text>
-                                        <Text style={[styles.tableCell, styles.borderRight]}>{summary.trd_sec_cd || '0.000'}</Text>
                                     </View>
                                 ))}
                             </View>
@@ -410,7 +412,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
 
 
                     {/* Footer Section */}
-                    <View fixed style={styles.line} />
+                    {/* <View fixed style={styles.line} /> */}
                     <View fixed style={styles.footer}>
                         <View fixed style={styles.row}>
                             <View fixed style={{ width: '80%', alignItems: 'left' }}>

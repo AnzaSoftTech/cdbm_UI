@@ -2,7 +2,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 /**
- * Generates a single PDF document with custom page dimensions.
+ * Generates a single PDF document with a fixed custom header.
  * @param {Object} companyDetails - Details of the company.
  * @param {Array} excDetails - Exchange details array.
  * @param {Object} note - Contract note details.
@@ -13,7 +13,7 @@ export const generateSinglePDF = (companyDetails, excDetails, note) => {
     console.log("Exchange Details:", excDetails);
     console.log("Contract Note:", note);
 
-    // Create a new jsPDF instance with custom page dimensions
+    // Create a new jsPDF instance
     const pdfDoc = new jsPDF({
         orientation: "portrait", // "portrait" or "landscape"
         unit: "mm", // Units: "mm", "pt", "cm", "in"
@@ -22,18 +22,62 @@ export const generateSinglePDF = (companyDetails, excDetails, note) => {
 
     const safeText = (value) => (value ? String(value) : "N/A");
 
-    // Add company details
-    pdfDoc.setFontSize(14);
-    pdfDoc.text("Company Details", 10, 10);
-    pdfDoc.setFontSize(12);
-    pdfDoc.text(`Name: ${safeText(companyDetails?.name)}`, 10, 20);
-    pdfDoc.text(`Address: ${safeText(companyDetails?.address)}`, 10, 30);
+    // Fixed Header: Add the title and centered company information
+    
+    pdfDoc.setFontSize(10);
+    pdfDoc.text("CONTRACT NOTE CUM TAX INVOICE", 105, 15, { align: "center" });
 
-    // Add exchange details
+    pdfDoc.setFont("helvetica", "normal");
+    pdfDoc.setFontSize(10);
+    pdfDoc.text("(TAX INVOICE UNDER SECTION 31 OF GST ACT)", 105, 22, { align: "center" });
+
+    pdfDoc.setFont("helvetica", "bold");
+    pdfDoc.setFontSize(12);
+    pdfDoc.text(`${safeText(companyDetails?.comp_name)}`, 105, 30, { align: "center" });
+
+    pdfDoc.setFontSize(10);
+    pdfDoc.text(
+        "MEMBER: NATIONAL STOCK EXCHANGE OF INDIA LTD",
+        105,
+        37,
+        { align: "center" }
+    );
+    pdfDoc.text(
+        "SEBI REGN. NO. INZ000242534 • TRADING CODE NO: 23/10245 • CM BP ID: IN554382",
+        105,
+        44,
+        { align: "center" }
+    );
+    pdfDoc.text(
+        "CIN: U67120MH1997PLC108674 • GSTIN: 27AABCS • PAN NO AABCS9766K",
+        105,
+        51,
+        { align: "center" }
+    );
+    pdfDoc.text(
+        `Compliance Officer: Anil Sodhani • Phone: ${safeText(companyDetails?.phone)} • Email: ${safeText(companyDetails?.email)}`,
+        105,
+        58,
+        { align: "center" }
+    );
+
+    // Add company address in the top-right corner
+    pdfDoc.setFont("helvetica", "normal");
+    pdfDoc.setFontSize(10);
+    const addressX = 50; // X-coordinate for right-aligned text
+    const addressY = 15; // Y-coordinate for starting address
+    pdfDoc.text(`${safeText(companyDetails?.addr1)}`, addressX, addressY, { align: "right" });
+    pdfDoc.text(`${safeText(companyDetails?.addr2)}`, addressX, addressY + 5, { align: "right" });
+    pdfDoc.text(`${safeText(companyDetails?.addr3)}`, addressX, addressY + 10, { align: "right" });
+    pdfDoc.text(`${safeText(companyDetails?.city)}`, addressX, addressY + 15, { align: "right" });
+
+    // Add Exchange Details section
+    pdfDoc.setFont("helvetica", "bold");
     pdfDoc.setFontSize(14);
-    pdfDoc.text("Exchange Details", 10, 50);
+    pdfDoc.text("Exchange Details", 10, 70);
+
     pdfDoc.autoTable({
-        startY: 60,
+        startY: 75,
         head: [["Exchange Name", "Segment", "Clearing No", "Trading No", "CMBP ID", "SEBI Reg"]],
         body: excDetails.map((exc) => [
             safeText(exc.exc_name),
@@ -219,7 +263,6 @@ export const generateSinglePDF = (companyDetails, excDetails, note) => {
 
     return pdfDoc.output("blob");
 };
-
 
 
 

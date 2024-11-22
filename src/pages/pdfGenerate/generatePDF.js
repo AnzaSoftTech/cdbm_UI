@@ -2,13 +2,39 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 /**
+ * Loads an image as a Base64 string.
+ * @param {string} url - The URL of the image to load.
+ * @returns {Promise<string>} - A promise that resolves with the Base64 string of the image.
+ */
+const loadImageAsBase64 = (url) => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "Anonymous"; // Handle CORS
+        img.src = url;
+
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL("image/png"));
+        };
+
+        img.onerror = (err) => {
+            reject(new Error("Failed to load image: " + url));
+        };
+    });
+};
+
+/**
  * Generates a single PDF document with a fixed custom header.
  * @param {Object} companyDetails - Details of the company.
  * @param {Array} excDetails - Exchange details array.
  * @param {Object} note - Contract note details.
- * @returns {Blob} - PDF Blob.
+ * @returns {Promise<Blob>} - PDF Blob.
  */
-export const generateSinglePDF = (companyDetails, excDetails, note) => {
+export const generateSinglePDF = async (companyDetails, excDetails, note) => {
     console.log("Generating PDF with Company Details:", companyDetails);
     console.log("Exchange Details:", excDetails);
     console.log("Contract Note:", note);
@@ -22,54 +48,67 @@ export const generateSinglePDF = (companyDetails, excDetails, note) => {
 
     const safeText = (value) => (value ? String(value) : "N/A");
 
-    // Fixed Header: Add the title and centered company information
-    
+    const pageWidth = pdfDoc.internal.pageSize.getWidth();
+    const margin = 10; // Margin from the edge
+
+    // Load image and add it to the top-left corner
+    try {
+        const imageUrl = `${window.location.origin}/image.png`;
+        const imageBase64 = await loadImageAsBase64(imageUrl);
+        pdfDoc.addImage(imageBase64, "PNG", margin, margin, 30, 30); // X, Y, Width, Height
+    } catch (error) {
+        console.error("Image loading error:", error);
+    }
+
+    // Title and Centered Company Information
+
     pdfDoc.setFontSize(10);
-    pdfDoc.text("CONTRACT NOTE CUM TAX INVOICE", 105, 15, { align: "center" });
+    pdfDoc.text("CONTRACT NOTE CUM TAX INVOICE", pageWidth / 2, margin + 8, {
+        align: "center",
+    });
 
     pdfDoc.setFont("helvetica", "normal");
     pdfDoc.setFontSize(10);
-    pdfDoc.text("(TAX INVOICE UNDER SECTION 31 OF GST ACT)", 105, 22, { align: "center" });
-
+    pdfDoc.text("(TAX INVOICE UNDER SECTION 31 OF GST ACT)", pageWidth / 2, margin + 15, {
+        align: "center",
+    });
     pdfDoc.setFont("helvetica", "bold");
-    pdfDoc.setFontSize(12);
-    pdfDoc.text(`${safeText(companyDetails?.comp_name)}`, 105, 30, { align: "center" });
+    pdfDoc.setFontSize(16);
+    pdfDoc.text(`${safeText(companyDetails?.comp_name)}`, pageWidth / 2, margin + 22, {
+        align: "center",
+    });
 
     pdfDoc.setFontSize(10);
     pdfDoc.text(
         "MEMBER: NATIONAL STOCK EXCHANGE OF INDIA LTD",
-        105,
-        37,
+        pageWidth / 2, margin + 29,
         { align: "center" }
     );
     pdfDoc.text(
         "SEBI REGN. NO. INZ000242534 • TRADING CODE NO: 23/10245 • CM BP ID: IN554382",
-        105,
-        44,
+        pageWidth / 2, margin + 36,
         { align: "center" }
     );
     pdfDoc.text(
         "CIN: U67120MH1997PLC108674 • GSTIN: 27AABCS • PAN NO AABCS9766K",
-        105,
-        51,
+        pageWidth / 2, margin + 43,
         { align: "center" }
     );
     pdfDoc.text(
         `Compliance Officer: Anil Sodhani • Phone: ${safeText(companyDetails?.phone)} • Email: ${safeText(companyDetails?.email)}`,
-        105,
-        58,
+        pageWidth / 2, margin + 51,
         { align: "center" }
     );
 
-    // Add company address in the top-right corner
+    // Company Address in the Top-Right Corner
+    const rightX = pageWidth - margin;
     pdfDoc.setFont("helvetica", "normal");
     pdfDoc.setFontSize(10);
-    const addressX = 50; // X-coordinate for right-aligned text
-    const addressY = 15; // Y-coordinate for starting address
-    pdfDoc.text(`${safeText(companyDetails?.addr1)}`, addressX, addressY, { align: "right" });
-    pdfDoc.text(`${safeText(companyDetails?.addr2)}`, addressX, addressY + 5, { align: "right" });
-    pdfDoc.text(`${safeText(companyDetails?.addr3)}`, addressX, addressY + 10, { align: "right" });
-    pdfDoc.text(`${safeText(companyDetails?.city)}`, addressX, addressY + 15, { align: "right" });
+    let addressY = margin + 10; // Starting position for the address
+    pdfDoc.text(`${safeText(companyDetails?.addr1)}`, rightX, addressY, { align: "right" });
+    pdfDoc.text(`${safeText(companyDetails?.addr2)}`, rightX, addressY + 5, { align: "right" });
+    pdfDoc.text(`${safeText(companyDetails?.addr3)}`, rightX, addressY + 10, { align: "right" });
+    pdfDoc.text(`${safeText(companyDetails?.city)}`, rightX, addressY + 15, { align: "right" });
 
     // Add Exchange Details section
     pdfDoc.setFont("helvetica", "bold");
@@ -98,19 +137,39 @@ export const generateSinglePDF = (companyDetails, excDetails, note) => {
         tableLineWidth: 0.2,
     });
 
-    // Add contract note details
-    pdfDoc.setFontSize(14);
-    pdfDoc.text("Contract Note Details", 10, pdfDoc.autoTable.previous.finalY + 10);
-    pdfDoc.autoTable({
-        startY: pdfDoc.autoTable.previous.finalY + 20,
-        head: [["Field", "Value"]],
-        body: Object.entries(note).map(([key, value]) => [key, safeText(value)]),
-        styles: {
-            fontSize: 10,
-            minCellHeight: 10,
-            cellPadding: 4,
-        },
-    });
+// Add contract note details
+pdfDoc.setFontSize(14);
+pdfDoc.text("Contract Note Details", 10, pdfDoc.autoTable.previous.finalY + 10);
+
+// Specify the keys to display
+const fieldsToDisplay = [
+    "client_cd",
+    "client_name",
+    "cont_note_no",
+    "corres_addr_1",
+    "corres_addr_2",
+    "corres_addr_3",
+    "corres_city",
+    "int_mkt_type",
+    "pan_no",
+];
+
+// Filter and map the response
+const contractNoteDetails = fieldsToDisplay.map((key) => [
+    key.replace(/_/g, " ").toUpperCase(), // Convert keys to uppercase with spaces
+    safeText(note[key]), // Get the corresponding value
+]);
+
+pdfDoc.autoTable({
+    startY: pdfDoc.autoTable.previous.finalY + 20,
+    head: [["Field", "Value"]],
+    body: contractNoteDetails, // Use the filtered and formatted data
+    styles: {
+        fontSize: 10,
+        minCellHeight: 10,
+        cellPadding: 4,
+    },
+});
 
     // Add security summary
     if (note.security_summary && note.security_summary.length > 0) {

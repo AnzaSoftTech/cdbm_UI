@@ -81,22 +81,22 @@ export const generateSinglePDF = async (companyDetails, excDetails, note) => {
     pdfDoc.setFontSize(10);
     pdfDoc.text(
         "MEMBER: NATIONAL STOCK EXCHANGE OF INDIA LTD",
-        pageWidth / 2, margin + 29,
+        pageWidth / 2, margin + 27,
         { align: "center" }
     );
     pdfDoc.text(
         "SEBI REGN. NO. INZ000242534 • TRADING CODE NO: 23/10245 • CM BP ID: IN554382",
-        pageWidth / 2, margin + 36,
+        pageWidth / 2, margin + 32,
         { align: "center" }
     );
     pdfDoc.text(
         "CIN: U67120MH1997PLC108674 • GSTIN: 27AABCS • PAN NO AABCS9766K",
-        pageWidth / 2, margin + 43,
+        pageWidth / 2, margin + 38,
         { align: "center" }
     );
     pdfDoc.text(
         `Compliance Officer: Anil Sodhani • Phone: ${safeText(companyDetails?.phone)} • Email: ${safeText(companyDetails?.email)}`,
-        pageWidth / 2, margin + 51,
+        pageWidth / 2, margin + 42,
         { align: "center" }
     );
 

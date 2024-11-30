@@ -377,6 +377,55 @@ const CashNetPosition = () => {
                 {parseFloat(row.net_value).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
             </div>,
         },
+
+        {
+            name: 'NSE Buy Val',
+            selector: row => row.nse_buy_value,
+            //sortable: true,
+            minWidth: '110px',
+            // maxWidth: '250px',
+            right: true, // Align text to the right
+            cell: (row) => <div style={{ textAlign: 'right' }}>
+                {parseFloat(row.nse_buy_value).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+            </div>,
+        },
+
+        {
+            name: 'NSE Sale Val',
+            selector: row => row.nse_sale_value,
+            //sortable: true,
+            minWidth: '110px',
+            // maxWidth: '250px',
+            right: true, // Align text to the right
+            cell: (row) => <div style={{ textAlign: 'right' }}>
+                {parseFloat(row.nse_sale_value).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+            </div>,
+        },
+
+        {
+            name: 'Tot. Charges',
+            selector: row => row.total_charges,
+            //sortable: true,
+            minWidth: '110px',
+            // maxWidth: '250px',
+            right: true, // Align text to the right
+            cell: (row) => <div style={{ textAlign: 'right' }}>
+                {parseFloat(row.total_charges).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+            </div>,
+        },
+
+        {
+            name: 'Tot. STT',
+            selector: row => row.total_stt,
+            //sortable: true,
+            minWidth: '110px',
+            // maxWidth: '250px',
+            right: true, // Align text to the right
+            cell: (row) => <div style={{ textAlign: 'right' }}>
+                {parseFloat(row.total_stt).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+            </div>,
+        },
+
         {
             name: 'Trade Date',
             selector: row => row.position_date,

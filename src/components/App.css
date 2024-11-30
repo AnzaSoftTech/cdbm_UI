@@ -112,11 +112,12 @@ body {
   padding-left: 20px; /* Indentation to show it's a sub-level */
   margin-top: 8px; /* Space between the main menu item and submenu items */
   display: block; /* Ensure that submenu items are displayed in a block layout */
-  background-color: #f9f9f9; /* Light background color for the submenu */
+ 
   border-left: 2px solid #ddd; /* Thin border to differentiate submenus */
   border-radius: 4px; /* Optional: Rounded corners for the submenu */
 }
 
+/* background-color: #f9f9f9; Light background color for the submenu */
 /* Style for each submenu item */
 .submenu-list .submenu-item {
   padding: 8px 0; /* Space between submenu items */

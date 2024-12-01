@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     header: {
-        fontSize: 16,
-        marginBottom: 2,
+        fontSize: 18,
+        marginBottom: 4,
         textAlign: 'center',
     },
     comp_name: {
@@ -27,14 +27,14 @@ const styles = StyleSheet.create({
         paddingTop: 22,
     },
     footerleftText: {
-        fontSize: 13,
+        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'left',
         marginBottom: 2,
         marginTop: 6,
     },
     footerRight: {
-        fontSize: 11,
+        fontSize: 16,
         textAlign: 'right',
         paddingTop: 100,
     },
@@ -68,25 +68,25 @@ const styles = StyleSheet.create({
         flex: 1.3,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 20,
     },
     newHeaderColumn2: {
         flex: 3.1,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 20,
     },
     newHeaderColumn3: {
         flex: 3.1,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 20,
     },
     newHeaderColumn4: {
         flex: 1.2,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 20,
     },
     borderRight: {
         borderRightWidth: 1.5,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 22,
     },
     tableRow: {
         flexDirection: 'row',
@@ -121,10 +121,10 @@ const styles = StyleSheet.create({
     tableCell: {
         flex: 1,
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 20,
         borderRightWidth: 1,
         borderRightColor: 'black',
-        padding: 5,
+        padding: 9,
     },
     footer: {
         marginTop: 'auto', // Push the footer to the bottom
@@ -168,7 +168,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 <Page
                     key={index}
                     style={styles.page}
-                    size={{ width: 1900, height: 1400 }}
+                    size={{ width: 2100, height: 1600 }}
                     orientation="portrait"
                 >
                     {/* Header Section */}
@@ -203,18 +203,61 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                     {/* Displaying each note's details and table data side by side */}
                     <View style={[styles.row, { alignItems: 'flex-start' }]}>
                         {/* Left side - Note details */}
-                        <View style={{ width: '50%', paddingRight: 10 }}>
-                            <Text style={styles.leftText}>Client Code: {note.client_cd}</Text>
-                            <Text style={styles.leftText}>Client Name: {note.client_name}</Text>
-                            {/* <Text style={styles.leftText}><b>Contract Note No: </b>{note.cont_note_no}</Text> */}
-                            <Text style={styles.leftText}>Address 1:{note.corres_addr_1}</Text>
-                            <Text style={styles.leftText}>Address 2:{note.corres_addr_2}</Text>
-                            <Text style={styles.leftText}>Address 3:{note.corres_addr_3} {note.corres_city}</Text>
-                            {/* <Text style={styles.leftText}>{note.corres_city}</Text> */}
-                            <Text style={styles.leftText}>Market Type: {note.int_mkt_type}</Text>
-                            <Text style={styles.leftText}>PAN Number: {note.pan_no}</Text>
-                            {/* <Text style={styles.leftText}>Trade Date: {note.trade_date}</Text> */}
-                            <Text style={styles.leftText}>Settlement No: {note.trd_settle_no}</Text>
+                        <View style={{ width: '35%', paddingRight: 10 }}>
+                            <View style={{
+                                borderWidth: 2,
+                                borderColor: '#000',
+                                padding: 18,
+                                marginBottom: 15,
+                            }}>
+                                {/* Row 1 */}
+                                <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>Client Code:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.client_cd}</Text>
+                                </View>
+
+                                {/* Row 2 */}
+                                <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>Client Name:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.client_name}</Text>
+                                </View>
+
+                                {/* Row 3 */}
+                                <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>Address 1:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.corres_addr_1}</Text>
+                                </View>
+
+                                {/* Row 4 */}
+                                <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>Address 2:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.corres_addr_2}</Text>
+                                </View>
+
+                                {/* Row 8 */}
+                                <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>Address 3:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.corres_addr_3} {note.corres_city}</Text>
+                                </View>
+
+                                {/* Row 6 */}
+                                <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>Market Type:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.int_mkt_type}</Text>
+                                </View>
+
+                                {/* Row 7 */}
+                                <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>PAN Number:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.pan_no}</Text>
+                                </View>
+
+                                {/* Row 8 */}
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>Settlement No:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.trd_settle_no}</Text>
+                                </View>
+                            </View>
                         </View>
 
                         {/* Right side - Table data */}
@@ -273,12 +316,12 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                         <Text style={{ fontSize: 8, marginBottom: 5 }}>Security Summary:</Text>
 
                         {/* New Header Row */}
-                        {/* <View style={styles.newHeaderRow}>
+                        <View style={styles.newHeaderRow}>
                             <Text style={[styles.newHeaderColumn1, styles.borderRight]}>Security Description</Text>
                             <Text style={[styles.newHeaderColumn2, styles.borderRight]}>Buy</Text>
                             <Text style={[styles.newHeaderColumn3, styles.borderRight]}>Sell</Text>
                             <Text style={[styles.newHeaderColumn4, styles.borderRight]}>Net Obligation</Text>
-                        </View> */}
+                        </View>
 
                         {/* Subheaders */}
                         <View style={styles.tableHeader}>
@@ -391,7 +434,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                         <Text fixed style={{ fontSize: 15, marginBottom: 5 }}>Detailed: </Text>
 
                         {/* Original Table Header */}
-                        <View style={styles.tableHeader} fixed>
+                        <View style={[styles.tableHeader, { borderBottomWidth: 1, borderColor: 'black' }]} fixed>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Ord No</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Order Time</Text>
                             <Text style={[styles.tableHeaderText, styles.borderRight]}>Trd No</Text>
@@ -408,9 +451,9 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                         {chunks.map((chunk, chunkIndex) => (
                             <View key={chunkIndex}>
                                 {/* New ISIN Summary Header for each chunk */}
-                                <View style={styles.tableHeader} fixed>
+                                <View style={[styles.tableHeader, { borderBottomWidth: 1, borderTopWidth: 1, borderColor: 'black', marginVertical: 5 }]} fixed>
                                     <Text style={[styles.tableHeaderText, styles.borderRight, { flex: 12 }]}>
-                                        ISIN Summary: {chunk[0].isin || '0.000'} SEPC-EQ: {chunk[0].trd_series || '0.000'}{/* Show ISIN for the first summary in this chunk */}
+                                        ISIN Summary: {chunk[0]?.isin || '0.000'} SEPC-EQ: {chunk[0]?.trd_series || '0.000'}
                                     </Text>
                                 </View>
 
@@ -432,6 +475,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                             </View>
                         ))}
                     </View>
+
 
 
 

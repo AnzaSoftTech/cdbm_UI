@@ -24,6 +24,7 @@ const DataTable = ({ columns, data }) => {
     const [contractNotes, setContractNotes] = useState([]);
     const [selectedDate, setSelectedDate] = useState('');
     const [headerInfo, setHeaderInfo] = useState({ client_cd: '', int_mkt_type: '', trd_settle_no: '' });
+    const [isDownloading, setIsDownloading] = useState(false); // State for loader
 
     const { page, prepareRow } = useTable(
         { columns, data, initialState: { pageIndex: 0 } },
@@ -94,12 +95,8 @@ const DataTable = ({ columns, data }) => {
                         contractNotes={[note]}
                     />
                 );
-    
-                // Generate the PDF as a blob using @react-pdf/renderer's pdf function
+
                 const pdfBlob = await pdf(pdfDoc).toBlob();
-                
-                // Use note.client_name for the PDF filename, or fallback to a default if it's not available
-                //const pdfFileName = note.client_name ? `${note.client_name}.pdf` : `Ledger_${chunk.indexOf(note) + 1}.pdf`;
                 const pdfFileName = 'Contract_Note_' + `${note.cont_note_no}` + `_` + `${note.client_cd}` +
                                       `_` + `${note.trd_settle_no}.pdf`;
                 pdfs.push({ pdfBlob, pdfFileName });
@@ -107,13 +104,13 @@ const DataTable = ({ columns, data }) => {
         }
         return pdfs;
     };
-    
+
     const handleDownloadAllPDFs = async () => {
+        setIsDownloading(true); // Show loader
         const pdfDocuments = await generateAllPDFs();
         const zip = new JSZip();
-    
-        // Add each PDF Blob to the ZIP file using the client_name or default name
-        pdfDocuments.forEach(({ pdfBlob, pdfFileName }, index) => {
+
+        pdfDocuments.forEach(({ pdfBlob, pdfFileName }) => {
             zip.file(pdfFileName, pdfBlob);
         });
     
@@ -122,6 +119,7 @@ const DataTable = ({ columns, data }) => {
             link.href = URL.createObjectURL(content);
             link.download = 'Contract_Notes.zip';
             link.click();
+            setIsDownloading(false); // Hide loader after download
         });
     };
     
@@ -161,8 +159,22 @@ const DataTable = ({ columns, data }) => {
                         variant="success"
                         className="d-block w-100 mb-3"
                         onClick={handleDownloadAllPDFs}
+                        disabled={isDownloading} // Disable button while downloading
                     >
-                        Download All PDFs as ZIP
+                        {isDownloading ? (
+                            <>
+                                <Spinner
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    className="me-2"
+                                />
+                                Downloading PDFs...
+                            </>
+                        ) : (
+                            'Download All PDFs as ZIP'
+                        )}
                     </Button>
                 </Card>
             ) : (

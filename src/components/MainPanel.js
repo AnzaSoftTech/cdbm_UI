@@ -14,8 +14,9 @@ import DRCRNOTEApp from '../pages/dr_cr_note/drcrnotesApp';
 import CONTRAENTERYApp from '../pages/Contra_Entry/contraenteryApp';
 import BANKRECOApp from '../pages/Bank_Reco/bankRecoApp';
 import OPENINGBALANCEApp from '../pages/openingBalance/openingbalanceApp';
-import CashBankMasterApp from '../pages/Cash_Bank_Master/Cash_Bank_MasterApp';
-
+import CASHBANK_MASTER from '../pages/cashbank_master/CashBank_MasterApp'
+import ACCOUNT_MASTER from '../pages/account_master/Account_MasterApp'
+import BOOKTYPE_MASTER from '../pages/booktype_master/Book_Type_MasterApp'
 
 function MainPanel() {
   
@@ -35,7 +36,9 @@ function MainPanel() {
         <Route path="Contra_Entry/contraenteryApp" element={<CONTRAENTERYApp  />}/>
         <Route path="Bank_Reco/bankRecoApp" element={<BANKRECOApp />}/>
         <Route path="openingBalance/openingbalanceApp" element={<OPENINGBALANCEApp />}/>
-        <Route path="Cash_Bank_Master/Cash_Bank_MasterApp" element={<CashBankMasterApp />}/>
+        <Route path="booktype_master/Book_Type_MasterApp" element={<BOOKTYPE_MASTER />}/>
+        <Route path="cashbank_master/CashBank_MasterApp" element={<CASHBANK_MASTER />}/>
+        <Route path="account_master/Account_MasterApp" element={<ACCOUNT_MASTER />}/>
         {/* <Route path="page2" element={<Page2 />} /> */}
       </Routes>
     </div>

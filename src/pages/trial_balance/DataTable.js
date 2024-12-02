@@ -58,32 +58,14 @@ const DataTable = ({ columns, data }) => {
   return (
     <Container className="align-items-center">
       <Row className="mb-3">
-        <Col xs={6} md={4}>
-          <Form.Group controlId="branchSelect">
-            <Form.Label>Branch</Form.Label>
-            <Form.Select aria-label="Default select example" value={branch} onChange={(e) => setBranch(e.target.value)} size="sm">
-              <option value="">Select Branch</option>
-              <option value="Branch1">DDL</option>
-              <option value="Branch2">Branch 2</option>
-              <option value="Branch3">Branch 3</option>
-            </Form.Select>
-            {/* <Form.Control as="select" value={branch} onChange={(e) => setBranch(e.target.value)} size="sm">
-              <option value="">Select Branch</option>
-              <option value="Branch1">Branch 1</option>
-              <option value="Branch2">Branch 2</option>
-              <option value="Branch3">Branch 3</option>
-            </Form.Control> */}
-          </Form.Group>
-        </Col>
+        
         <Col xs={6} md={4}>
           <Form.Group controlId="asOnDate">
             <Form.Label>As On Date</Form.Label>
             <Form.Control type="date" value={asOnDate} onChange={(e) => setAsOnDate(e.target.value)} size="sm" />
           </Form.Group>
         </Col>
-      </Row>
-      <Row className="mb-3">
-        <Col style={{ display: 'flex' }}>
+        <Col xs={6} md={4} style={{ display: 'flex' }}>
           <Form.Check
             type="radio"
             label="Partwise"
@@ -106,6 +88,9 @@ const DataTable = ({ columns, data }) => {
           />
         </Col>
       </Row>
+      {/* <Row className="mb-3">
+        
+      </Row> */}
       <Row className="mb-3">
         <Col>
           <Button variant="primary" onClick={handleRunReport} className="mr-2 custom-header">
@@ -124,7 +109,7 @@ const DataTable = ({ columns, data }) => {
               {headerGroups.map(headerGroup => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps(column.getSortByToggleProps())} style={{ width: column.id === 'bal_paticular' ? '1000px' : (column.id === 'bal_debit' || column.id === 'bal_credit' ? '200px' : 'auto') }} className="custom-header">
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())} style={{ width: column.id === 'paticular' ? '1000px' : (column.id === 'bal_debit' || column.id === 'bal_credit' ? '200px' : 'auto') }} className="custom-header">
                       {column.render('Header')}
                       <span>
                         {column.isSorted ? (column.isSortedDesc ? ' ↓' : ' ↑') : ''}

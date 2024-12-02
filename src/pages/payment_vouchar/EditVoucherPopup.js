@@ -110,7 +110,13 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                 />
             </div>
             <div className="form-group">
-                <label className='label-prop margin_prop5'>Book Type:</label>
+                {/* <label className='label-prop margin_prop5'>Book Type:</label> */}
+                        {/* <div className="form-group"> */}
+                <label className='label-prop'>Account Name:</label>
+                <input type="text" className="form-control input_prop"
+                            value={accountName}
+                            onChange={(e) => setAccountName(e.target.value)}/>
+                        {/* </div> */}
                 <select
                     className="form-select ddl_prop"
                     value={bookType}
@@ -124,27 +130,20 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
             </div>
         </div>
         <div className='d-flex flex-wrap justify-content-between'>
-            <div className="form-group">
-                <label className='label-prop'>Account Name:</label>
-                <input 
-                    type="text" 
-                    className="form-control input_prop" 
-                    value={accountName}  
-                    onChange={(e) => setAccountName(e.target.value)} 
-                    
-                />
-            </div>
+            
             <div className="form-group">
                 <label className='label-prop '>Transaction Type:</label>
                 <select className="form-control input_prop " value={TransactionType} onChange={(e) => setTransactionType(e.target.value)}>
                     <option value="Payment">Payment</option>
                     <option value="Receipt">Receipt</option>
                 </select>
-                <button className="btn btn-primary btn_height" onClick={handleSearch}>Search</button>
+                <button className="btn btn-primary " onClick={handleSearch}>Search</button> &nbsp;&nbsp;
+                <button className="btn btn-danger" onClick={onClose}>Close</button>
             </div>
         </div>
-        <div className='table-container-search'>
-                    <table className="table mt-0 table-wrapper">
+        <div >
+        {/* <div className='table-container-search' > */}
+                    <table className=" mt-0 table-wrapper"> 
                         <thead className='table-primary'>
                             <tr>
                             <th hidden>Fin year</th>
@@ -192,7 +191,7 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                         </tbody>
                     </table>
                 </div>
-        <button className="btn-warning close_btn-2" onClick={onClose}>Close</button>
+        
     </div>
 </div>
 

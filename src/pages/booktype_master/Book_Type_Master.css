@@ -1,0 +1,161 @@
+.card-header-css {
+    padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+    margin-bottom: 0;
+    color: white !important;
+    background-color: #0275d8 !important;
+    border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+    
+  }
+
+  
+  /* styles.css */
+.label-width {
+    width: 130px; 
+    /* Adjust as needed */
+}
+
+.input-smaller {
+    margin-left: 200px;
+}
+
+.input-smaller_cashbank {
+    margin-left: 70px;
+}
+
+.size_input_cashbank {
+    width: 380px !important;
+}
+
+
+.color_header{
+    background-color: #0275d8;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    appearance: auto;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.size_input{
+    width: 210px;
+}
+
+/* 
+*******************************************
+********** Cheque Book CSS ****************
+******************************************* 
+*/
+
+.table-container {
+    width: 100%; /* Adjust width as needed */
+    height: 'auto'; /* Adjust height as needed */
+    overflow: auto; /* Both horizontal and vertical scroll bars */
+    border: 1px solid #ddd; /* Optional: add border for visual separation */
+    border-radius: 4px; /* Optional: rounded corners */
+    
+    /* padding: 2px; Optional: padding inside the container */
+   
+}
+
+table {
+    width: 100%; /* Ensure table takes full width of the container */
+    border-collapse: collapse; /* Collapse borders for table */
+    white-space: nowrap;
+    
+}
+.text_wrap{
+    word-wrap:normal;
+}
+
+th, td {
+    border: 1px solid #ddd; /* Border for table cells */
+    /*padding: 8px;  Padding inside table cells */
+    text-align: left; /* Align text to the left */
+   
+}
+
+th {
+    background-color:#99bcef; /* Background color for table headers */
+    color: white
+}
+
+.add_btn{
+    background-color: rgb(17, 163, 17) !important;
+    margin-top: 10px !important;
+    padding: 8px 16px !important;
+    cursor: pointer !important;
+   
+    color: white!important;
+    border: none!important;
+    border-radius: 4px!important;
+    font-size: 14px!important;
+    margin-bottom:5px !important;
+}
+
+.add_btn:hover {
+    background-color: green !important; /* Slightly darker shade on hover */
+}
+
+
+.close_btn{
+    background-color: rgb(93, 95, 93) !important;
+    margin-top: 10px !important;
+    padding: 8px 16px !important;
+    cursor: pointer !important;
+    margin-bottom:5px;
+    color: white!important;
+    border: none!important;
+    border-radius: 4px!important;
+    font-size: 14px!important;
+}
+
+.close_btn:hover {
+    background-color: rgb(66, 66, 66) !important; /* Slightly darker shade on hover */
+}
+
+
+.save_btn{
+    background-color: SlateBlue !important;
+    margin-top: 10px !important;
+    padding: 8px 16px !important;
+    cursor: pointer !important;
+    margin-bottom:5px;
+    color: white!important;
+    border: none!important;
+    border-radius: 4px!important;
+    font-size: 14px!important;
+}
+
+.save_btn:hover {
+    background-color:rgb(67, 41, 240) !important; /* Slightly darker shade on hover */
+}
+
+.text_align_table{
+    text-align: right !important;
+}
+
+.select_color{
+    color: black ;
+}
+
+.label_color{
+    color:darkblue;
+}
+
+.text_size{
+    font-size: small;
+}
+
+

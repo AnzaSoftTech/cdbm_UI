@@ -65,7 +65,7 @@ function Payment_Voucher({ details, setDetails }) {
     }, []);
 
     useEffect(() => {
-        //'http://localhost:3001/api/cash_bank_master
+        //'http://localhost:3001/api/cash_bank_master 
         axios.get(`${BASE_URL}/api/cash_bank_master`)
             .then(response => setCBAccounts(response.data))
             .catch(error => console.error('Error fetching cash bank accounts:', error));
@@ -496,7 +496,7 @@ function Payment_Voucher({ details, setDetails }) {
             alert('Please Select NSE Bank Analyzer Code');
             return;
         }
-
+console.log('analyzerCode -> ', analyzerCode);
         if (!analyzerCode) {
             alert('Please Select SSL Bank Analyzer Code');
             return;
@@ -1056,7 +1056,7 @@ function Payment_Voucher({ details, setDetails }) {
         <div className="container-common">
             <div className="card">
                 <div className="card-header-css">
-                    <h3>{headerText}</h3>
+                    <h5>{headerText}</h5>
                 </div>
                 <div className="card-body">
                     {/*  Cash/Bank Account and Voucher No */}

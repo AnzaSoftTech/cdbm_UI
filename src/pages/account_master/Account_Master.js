@@ -152,10 +152,10 @@ function Account_Master() {
             alert('Please enter Acccount Name.');
             return;
         }
-        if (!activityCode) {
-            alert('Please select Activity Code.');
-            return;
-        }
+        // if (!activityCode) {
+        //     alert('Please select Activity Code.');
+        //     return;
+        // }
         // if (!panNo) {
         //     alert('Please enter PAN.');
         //     return;

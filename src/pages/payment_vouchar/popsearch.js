@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
 import './popsearch.css'; 
-
+import { BASE_URL } from "../constants";
 
 const PopupSearch = ({ onSelectRow, activity_cd, segment }) => {
   const [searchText, setSearchText] = useState('');
@@ -11,7 +11,7 @@ const PopupSearch = ({ onSelectRow, activity_cd, segment }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/searchAccount', {
+      const response = await axios.get(`${BASE_URL}/api/searchAccount`, {
         params: { name: searchText, activity_cd: activity_cd, segment: segment },
       });
       setSearchData(response.data); 
@@ -31,22 +31,22 @@ const PopupSearch = ({ onSelectRow, activity_cd, segment }) => {
   const handleRowClick = (row) => {
     // Pass all necessary data fields to onSelectRow function
     onSelectRow({
-      act_name: row.act_name,
+      act_name: row.account_name,
       act_cd: row.act_cd,
-      branch_cd: row.branch_cd,
-      cmp_cd: row.cmp_cd,
-      type_cd: row.type_cd,
+      // branch_cd: row.branch_cd,
+      // cmp_cd: row.cmp_cd,
+      // type_cd: row.type_cd,
     });
   };
 
   const columns = [
     {
       name: 'Account Name',
-      selector: 'act_name',
+      selector: 'account_name',
       sortable: true,
       cell: (row) => (
         <div onClick={() => handleRowClick(row)} style={{ cursor: 'pointer' }}>
-          {row.act_name}
+          {row.account_name}
         </div>
       ),
     },

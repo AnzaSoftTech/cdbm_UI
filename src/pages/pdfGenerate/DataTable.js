@@ -180,8 +180,8 @@ const DataTable = ({ columns, data }) => {
             ) : (
                 showTable && (
                     <div className="text-center">
-                        <Spinner animation="border" variant="primary" />
-                        <p className="mt-3">Fetching data...</p>
+                        {/* <Spinner animation="border" variant="primary" />
+                        <p className="mt-3">Fetching data...</p> */}
                     </div>
                 )
             )}

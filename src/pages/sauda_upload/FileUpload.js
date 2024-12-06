@@ -214,6 +214,26 @@ function FileUpload() {
     }
   };
 
+  const btn_auction_click = async e => {
+
+    const response = await axios.get(`${BASE_URL}/api/chk_auct_price_exists`,);
+
+    if (response.data.message === '0') 
+    {
+        alert('Upload Auction Price File !');
+        return;
+    }
+
+    const isConfirmed = window.confirm("Latest Auction Price File uploaded ?");
+
+    if (!isConfirmed)
+    {
+      return;
+    }
+
+    setShowAuctionPopup(true);
+  }
+
   // ***********************************************************************************************************
   // ***********************************************************************************************************
   //   Start : Auction Price Related Codes
@@ -228,6 +248,14 @@ function FileUpload() {
   const btn_auct_upld_click = async e => {
     e.preventDefault();
     const formData = new FormData();
+
+    const tradefileinput = document.getElementById('auctpricefile');
+
+    if (tradefileinput.files.length === 0) {
+      alert('Please select Auction Price file to upload!');
+      return;
+    }
+
 
     //formData.append('files', files);
     //formData.append('files', obligfiles);
@@ -379,7 +407,7 @@ function FileUpload() {
       const reply = response.data.message;
       setIsProcessing(false);
       onpageload();
-
+console.log('reply => ', reply);
       if (reply === "0") {
         alert('Trade File Processed succussfully !');
         
@@ -396,6 +424,10 @@ function FileUpload() {
       else if (reply === "51") {
         
         setIsButtonDisabled_client(false);
+      }
+      else if (reply === "55") {
+        alert('Auction Trade Found, please allocate Auction Client/Qty and re-upload the Trade file !');
+        
       }
       else {
         alert('Error Processing Trade File !');
@@ -502,7 +534,7 @@ function FileUpload() {
     <div className="me-2 flex-grow-1 mt-4 ms-3">
       <input 
         className="form-control form-control-sm" 
-        style={{ height: '35px', maxWidth: '550px' }} 
+        style={{ height: '35px', maxWidth: '600px' }} 
         id="formFileSm" 
         accept=".csv,.txt" 
         //onChange={onChange} 
@@ -517,9 +549,9 @@ function FileUpload() {
       <button 
         onClick={btn_trade_file_upld_click} 
         className="btn btn-outline-primary btn-sm" 
-        style={{ height: '35px', width: '100px' }}
+        style={{ height: '35px', width: '150px' }}
       >
-        Upload
+        Upload Trade File
       </button>
     </div>
 
@@ -566,7 +598,7 @@ function FileUpload() {
               <div className="mb-3 d-flex form-control" style={{ border: "1px solid lightgrey", padding: "15px", borderRadius: "5px", paddingLeft: "0px" }}>
                 <label style={{ display: "block" }}>&nbsp;&nbsp;</label>
                 <input className="form-control form-control-sm me-2 select_file_upl_width" style={{ height: '35px', width: '600px' }} id="auctpricefile" accept=".csv,.txt" onChange={onAuctPriceFileSelect} type="file" />
-                <button onClick={btn_auct_upld_click} className="btn btn-outline-primary btn-sm ml-1" style={{ height: '35px', width: '100px' }}>Upload</button>
+                <button onClick={btn_auct_upld_click} className="btn btn-outline-primary btn-sm ml-1" style={{ height: '35px', width: '180px' }}>Upload Auction File</button>
                 &nbsp;&nbsp;
               </div>
             </div>
@@ -582,7 +614,7 @@ function FileUpload() {
               {/* <button id="btn_view_log" className="btn btn-secondary" onClick={() => setShowClientPopup(true)} disabled={isButtonDisabled_client}>Client</button>
               {ClientPopup && <Client_Popup onCloseClick={handleClient}    wrongClients={wrongClients} />}
               &nbsp; */}
-              <button id="btn_view_log" className="btn btn-danger" onClick={() => setShowAuctionPopup(true)} disabled={isButtonDisabled_auction}>Auction</button>
+              <button id="btn_view_log" className="btn btn-danger" onClick={btn_auction_click} disabled={isButtonDisabled_auction}>Auction</button>
               {AuctionPopup && <AuctionTable onCloseClick={handleAuction}     />}
             </div>
             {/* </form>     */}
@@ -600,7 +632,7 @@ function FileUpload() {
       <input 
         className="form-control form-control-sm" 
         style={{ height: '35px', maxWidth: '600px' }} 
-        id="auctpricefile" 
+        id="inputobligfile" 
         accept=".csv" 
         onChange={onObligFileSelect} 
         type="file" 
@@ -612,9 +644,9 @@ function FileUpload() {
       <button 
         onClick={btn_oblg_upld_click} 
         className="btn btn-outline-primary btn-sm" 
-        style={{ height: '35px', width: '100px' }}
+        style={{ height: '35px', width: '150px' }}
       >
-        Upload
+        Upload Obligation
       </button>
     </div>
 

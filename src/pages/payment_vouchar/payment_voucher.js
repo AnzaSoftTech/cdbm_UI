@@ -17,7 +17,7 @@ function Payment_Voucher({ details, setDetails }) {
     const [drCrType, setDrCrType] = useState('');
     const [cbaccount, setCBAccount] = useState();
     const [cbaccounts, setCBAccounts] = useState([]);
-    const [paymentMode, setPaymentMode] = useState();
+    const [paymentMode, setPaymentMode] = useState('CHQ');
     const [payeeName, setPayeeName] = useState();
     const [refNo, setRefNo] = useState();
     const [chequeNo, setChequeNo] = useState();
@@ -391,6 +391,54 @@ function Payment_Voucher({ details, setDetails }) {
         var lv_sr_no = 1;
         var lv_msg_txt = '';
 
+        
+        // **************************************************
+        // Start : Header validation 
+        // **************************************************
+
+        let bal_amt = totals.balance;
+
+        if (!cbaccount) {
+            alert('Please Select Cash/Bank Account.');
+            return;
+        }
+
+        if (!voucherDate || !effectiveDate) {
+            alert('Please enter Voucher Date and Effective Date.');
+            return;
+        }
+
+        if (!paymentMode) {
+            alert('Please Select Payment Mode.');
+            return;
+        }
+
+        if (!nsebankanalyzerCode) {
+            alert('Please Select NSE Bank Analyzer Code');
+            return;
+        }
+
+        if (!analyzerCode) {
+            alert('Please Select SSL Bank Analyzer Code');
+            return;
+        }
+
+        if (!amount) {
+            alert('Please enter Cash/Bank Amount');
+            return;
+        }
+
+        if (!narration) {
+            alert('Please enter Narration');
+            return;
+        }
+
+
+        //// **************************************************
+        //// End : Header validation 
+        //// **************************************************
+
+
         // **************************************************
         // Start : Data table validations
         // **************************************************
@@ -473,48 +521,10 @@ function Payment_Voucher({ details, setDetails }) {
         // End : Data Table validations
         // **************************************************
 
-        // **************************************************
-        // Start : Header validation 
-        // **************************************************
-
-        if (!cbaccount) {
-            alert('Please Select Cash/Bank Account.');
+        if (bal_amt > 0) {
+            alert('Debit and Credit Amounts are not tallying.');
             return;
         }
-
-        if (!voucherDate || !effectiveDate) {
-            alert('Please enter Voucher Date and Effective Date.');
-            return;
-        }
-
-        if (!paymentMode) {
-            alert('Please Select Payment Mode.');
-            return;
-        }
-
-        if (!nsebankanalyzerCode) {
-            alert('Please Select NSE Bank Analyzer Code');
-            return;
-        }
-console.log('analyzerCode -> ', analyzerCode);
-        if (!analyzerCode) {
-            alert('Please Select SSL Bank Analyzer Code');
-            return;
-        }
-
-        if (!amount) {
-            alert('Please enter Cash/Bank Amount');
-            return;
-        }
-
-        if (!narration) {
-            alert('Please enter Narration');
-            return;
-        }
-
-        //// **************************************************
-        //// End : Header validation 
-        //// **************************************************
 
         const isConfirmed = window.confirm("Sure you want to Save the record ?");
 
@@ -557,19 +567,19 @@ console.log('analyzerCode -> ', analyzerCode);
 
         if (resValidate === 0) {
             if (!voucherNo) {
-                axios.post(`${BASE_URL}/api/voucher`, data)
+                axios.post(`${BASE_URL}/api/save_payment_voucher`, data)
                     .then(response => {
-                        alert('Voucher saved successfully!');
+                        alert('Voucher No. ' + response.data.message + ' saved successfully!');
                         // Reset form state after successful save
-                        setBookType('');
+                       // setBookType('');
                         setSegment('');
                         setHdrActivityCode('');
                         setVoucherDate('');
                         setEffectiveDate('');
                         setNarration('');
                         setVoucherNo('');
-                        setTransactionType('');
-                        setPaymentMode('');
+                       // setTransactionType('');
+                       // setPaymentMode('');
                         setPayeeName('');
                         setRefNo('');
                         setChequeNo('');
@@ -579,7 +589,7 @@ console.log('analyzerCode -> ', analyzerCode);
                         setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', segment: '', activity_cd: '', noraml_deposit: '', narration: '', analyzer_code: '' }]);
                         setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
                         setVendorDetails('');
-                        setCBAccount('');
+                       // setCBAccount('');
                         setEditMode(false);
                     })
                     .catch(error => console.error('Error saving voucher:', error));
@@ -595,7 +605,7 @@ console.log('analyzerCode -> ', analyzerCode);
                         setNarration('');
                         setVoucherNo('');
                         setTransactionType('');
-                        setPaymentMode('');
+                        setPaymentMode('CHQ');
                         setPayeeName('');
                         setRefNo('');
                         setChequeNo('');
@@ -612,7 +622,7 @@ console.log('analyzerCode -> ', analyzerCode);
             }
         }
         else {
-            alert('The difference between the two values is non-zero. Exiting without saving.');
+            alert('The difference between Debit/Credit Amount.');
         }
     };
 
@@ -869,7 +879,8 @@ console.log('analyzerCode -> ', analyzerCode);
             selector: row => row.dr_amount,
             cell: (row, index) => {
                 // Format the amount for display
-                const formattedAmount = parseFloat(row.dr_amount || '0').toLocaleString('en-IN', { maximumFractionDigits: 2 });
+                //const formattedAmount = parseFloat(row.dr_amount || '0').toLocaleString('en-IN', { maximumFractionDigits: 2 });
+                const formattedAmount = row.dr_amount;
 
                 return (
                     <input
@@ -893,7 +904,8 @@ console.log('analyzerCode -> ', analyzerCode);
             selector: row => row.cr_amount,
             cell: (row, index) => {
                 // Format the amount for display
-                const formattedAmount = parseFloat(row.cr_amount || '0').toLocaleString('en-IN', { maximumFractionDigits: 2 });
+                // const formattedAmount = parseFloat(row.cr_amount || '0').toLocaleString('en-IN', { maximumFractionDigits: 2 });
+                const formattedAmount = row.cr_amount;
 
                 return (
                     <input

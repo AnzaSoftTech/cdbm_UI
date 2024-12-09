@@ -11,10 +11,11 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 18,
         marginBottom: 4,
+        marginLeft: 34,
         textAlign: 'center',
     },
     comp_name: {
-        fontSize: 23,
+        fontSize: 26,
         textAlign: 'center',
         fontWeight: 'bold'
     },
@@ -151,6 +152,34 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 0
             );
 
+            // GST Summary totals calculation
+            const gstTotals = {
+                net_olig: 0,
+                net_oblig: 0,
+                stt_chrg: 0,
+                stamp_duty: 0,
+                sebi_turnover: 0,
+                other_chrg: 0,
+                taxable_val: 0,
+                brok_igst: 0,
+                brok_cgst: 0,
+                brok_sgst: 0
+            };
+
+            // Accumulate totals from the GST_summary
+            note.GST_summary?.forEach(summary => {
+                gstTotals.net_olig += parseFloat(summary.net_olig || 0);
+                gstTotals.net_oblig += parseFloat(summary.net_oblig || 0);
+                gstTotals.stt_chrg += parseFloat(summary.stt_chrg || 0);
+                gstTotals.stamp_duty += parseFloat(summary.stamp_duty || 0);
+                gstTotals.sebi_turnover += parseFloat(summary.sebi_turnover || 0);
+                gstTotals.other_chrg += parseFloat(summary.other_chrg || 0);
+                gstTotals.taxable_val += parseFloat(summary.taxable_val || 0);
+                gstTotals.brok_igst += parseFloat(summary.brok_igst || 0);
+                gstTotals.brok_cgst += parseFloat(summary.brok_cgst || 0);
+                gstTotals.brok_sgst += parseFloat(summary.brok_sgst || 0);
+            });
+
             const chunkArray = (array, chunkSize) => {
                 const chunks = [];
                 for (let i = 0; i < 3; i += chunkSize) {
@@ -173,10 +202,10 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                 >
                     {/* Header Section */}
                     <View fixed style={styles.row}>
-                        <View style={{ width: '15%' }}>
-                            <Image src={`${window.location.origin}/image.png`} style={styles.logo} />
+                        <View style={{ width: '35%' }}>
+                            <Image src={`${window.location.origin}/image.png`}/>
                         </View>
-                        <View style={{ width: '90%', alignItems: 'center' }}>
+                        <View style={{ width: '200%', alignItems: 'center' }}>
                             <Text style={styles.header}>CONTRACT NOTE CUM TAX INVOICE</Text>
                             <Text style={styles.header}>(TAX INVOICE UNDER SECTION 31 OF GST ACT)</Text>
                             <Text style={styles.comp_name}>
@@ -427,6 +456,24 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                                 <Text style={[styles.tableCell, styles.borderRight]}>{summary.brok_sgst || '0.000'}</Text>
                             </View>
                         ))}
+                        {/* Total Row for GST Summary */}
+                        <View style={[styles.tableRow, { backgroundColor: '#DCDCDC' }]}>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]} colSpan={2}>
+                                Total
+                            </Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>
+                                {isNaN(gstTotals.net_olig) || gstTotals.net_olig === 0 ? '' : gstTotals.net_olig.toFixed(2)}
+                            </Text>                            
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.net_oblig.toFixed(2)}</Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.stt_chrg.toFixed(2)}</Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.stamp_duty.toFixed(2)}</Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.sebi_turnover.toFixed(2)}</Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.other_chrg.toFixed(2)}</Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.taxable_val.toFixed(2)}</Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.brok_igst.toFixed(2)}</Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.brok_cgst.toFixed(2)}</Text>
+                            <Text style={[styles.tableCell, styles.borderRight, { fontWeight: 'bold' }]}>{gstTotals.brok_sgst.toFixed(2)}</Text>
+                        </View>
                     </View>
 
                     {/* Detailed Table with Chunking */}

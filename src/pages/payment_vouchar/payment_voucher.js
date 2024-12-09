@@ -572,8 +572,8 @@ function Payment_Voucher({ details, setDetails }) {
                         alert('Voucher No. ' + response.data.message + ' saved successfully!');
                         // Reset form state after successful save
                        // setBookType('');
-                        setSegment('');
-                        setHdrActivityCode('');
+                       // setSegment('');
+                        // setHdrActivityCode('');
                         setVoucherDate('');
                         setEffectiveDate('');
                         setNarration('');

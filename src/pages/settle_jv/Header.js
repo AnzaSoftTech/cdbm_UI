@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {  Button, Container, Form, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BASE_URL } from "../constants";
+
 
 const Header = () => {
   const [bookType, setBookType] = useState([]);
@@ -14,7 +16,7 @@ const Header = () => {
   
 
   useEffect(() => {
-    axios.get('http://localhost:3001/bookType')
+    axios.get(`${BASE_URL}/bookType`)
       .then(response => setBookTypes(response.data))
       .catch(error => console.error('Error fetching accounts:', error));
   }, []);

@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
 import './journal.css';
+import { BASE_URL } from "../constants";
 
 const PopupSearch = ({ onSelectRow, exchange, segment }) => {
   const [searchText, setSearchText] = useState('');
@@ -10,7 +11,7 @@ const PopupSearch = ({ onSelectRow, exchange, segment }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/Account', {
+      const response = await axios.get(`${BASE_URL}/api/Account`, {
         params: { name: searchText, exchange: exchange, segment: segment },
       });
       setSearchData(response.data);

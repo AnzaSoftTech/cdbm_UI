@@ -23,12 +23,12 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
     }, []);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/Account')
+        axios.get(`${BASE_URL}/api/Account`)
             .then(response => setAccountNames(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
     useEffect(() => {
-        axios.get('http://localhost:3001/api/branches')
+        axios.get(`${BASE_URL}/api/branches`)
             .then(response => {
                 setBranches(response.data);
                 // alert(response.data);
@@ -42,7 +42,7 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/api/searchContraEntry', {
+            const response = await axios.get(`${BASE_URL}/api/searchContraEntry`, {
                 params: {
                     accountName,
                     fromDate,
@@ -59,7 +59,7 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
 
     const handleSendData = async (selectedRow) => {
         try {
-            const response = await axios.get('http://localhost:3001/api/searchEditContra', {
+            const response = await axios.get(`${BASE_URL}/api/searchEditContra`, {
                 params: {
                     segment: selectedRow.segment || '',
                     exchange: selectedRow.exc_cd || '',

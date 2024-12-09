@@ -20,18 +20,18 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
     // Dropdown options (you can fetch these dynamically if needed)
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/bookType')
+        axios.get(`${BASE_URL}/api/bookType`)
             .then(response => setBookTypes(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
 
     // useEffect(() => {
-    //     axios.get('http://localhost:3001/api/Account')
+    //     axios.get(`${BASE_URL}/api/Account')
     //         .then(response => setAccountNames(response.data))
     //         .catch(error => console.error('Error fetching accounts:', error));
     // }, []);
     // useEffect(() => {
-    //     axios.get('http://localhost:3001/api/branches')
+    //     axios.get(`${BASE_URL}/api/branches')
     //         .then(response => {
     //             setBranches(response.data);
     //             // alert(response.data);
@@ -69,7 +69,7 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
         console.log('Sending Selected Row:', selectedRow);
 
         try {
-            const response = await axios.get('http://localhost:3001/api/searchEditVouchar', {
+            const response = await axios.get(`${BASE_URL}/api/searchEditVouchar`, {
                 params: {
                     segment: selectedRow.segment || '',
                     exchange: selectedRow.exc_cd || '',

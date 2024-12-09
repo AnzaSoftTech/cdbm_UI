@@ -1,0 +1,175 @@
+.popup_ring {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 100px 400px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 100%; /* Increased width */
+    max-width: 900px; /* Limit maximum width */
+    height: 100%; /* Increased height */
+    max-height: 600px; /* Limit maximum height */
+    overflow: auto; /* Enable scrollbar if content exceeds height */
+}
+
+.popup-inner_ring {
+    border: 1px solid #ccc;
+    height: auto; /* Ensure inner content can expand */
+}
+
+.div_header_ring {
+    background: rgb(166, 166, 250);
+    color: white;
+    text-align: center;
+    padding: 10px 0; /* Increased padding for better appearance */
+}
+.table_border {
+   /* Border around the table container */
+    overflow-y: auto; /*Prevent overflow from the container */
+    overflow-x: auto; /*Prevent overflow from the container */
+    margin-inline: auto;
+    width: 95%;
+}
+
+.tablering {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Collapse borders */
+    border: 1px solid darkblue; /* Add border to the table */
+}
+
+.theadring {
+    background-color: rgb(166, 166, 250); /* Light gray background for header */
+    color: #fff; /* Text color */
+    position: sticky;
+    top: 0;
+}
+
+.trring {
+    border-bottom: 1px solid #ddd; /* Bottom border for rows */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+.trring:hover {
+    background-color: rgb(189, 218, 247); /* Light hover effect */
+}
+
+.selectedrowcolor {
+    background-color: #7054eb; /* Change to your preferred color */
+    color:white
+}
+
+
+.thring {
+    
+    text-align: left; /* Align text to the left */
+    font-weight: bold; /* Bold font */
+    border: 1px solid darkblue;
+}
+
+.tdring {
+    
+    text-align: left; /* Align text to the left */
+    border: 1px solid darkblue;
+}
+
+.tdringNew {
+    
+    text-align: right; /* Align text to the left */
+    border: 1px solid darkblue;
+}
+
+.tdringCen {
+    
+    text-align: center; /* Align text to the left */
+    border: 1px solid darkblue;
+}
+
+.table-scroll {
+    max-height: 200px; /* Set maximum height */
+    overflow-y: auto; /* Enable vertical scrollbar */
+    overflow-x: auto; /* Enable horizontal scrollbar */
+    border: 1px solid #ddd; /* Add border around the scrollable area */
+}
+
+
+
+/* Optional: Responsive design */
+@media (max-width: 768px) {
+    .tablering {
+        display: block; /* Make it block for smaller screens */
+        overflow-x: auto; /* Enable horizontal scrolling */
+    }
+}
+
+.range_width{
+    width: 10rem;
+}
+
+.range_width1{
+    width: 15rem;
+}
+
+.gen-label{
+    font-size: larger;
+}
+
+.flex-end{
+    justify-content: flex-end;
+}
+.range-width{
+    width: 8rem;
+}
+
+.range-width-dates{
+    width: 6rem;
+}
+
+.range-width-rgName{
+    width: 5rem;
+}
+
+.range-width-sm{
+    width: 3rem;
+}
+
+.btnColorAddRow{
+    background-color: orange;
+    color: #fff;
+}
+
+.btnColorAddRow:hover{
+    background-color: rgb(235, 191, 111);
+    color: #fff;
+}
+
+.btnColorAddRow:disabled{
+    background-color: rgb(221, 180, 103);
+    border: none;
+    color: #fff;
+}
+
+.delDataTable{
+    margin-left: 1rem;
+    border-left: 1px solid darkblue;
+    overflow-x: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

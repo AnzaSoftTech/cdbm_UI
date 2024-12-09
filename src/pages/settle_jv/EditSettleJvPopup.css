@@ -1,0 +1,268 @@
+/* Popup Styles */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 15px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 100px 400px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 90%; /* Adjusted width for responsiveness */
+    max-width: 800px; /* Limit maximum width */
+    height: 80%; /* Adjusted height for responsiveness */
+    max-height: 80vh; /* Limit maximum height to viewport height */
+    overflow: auto; /* Enable scrollbar if content exceeds height */
+    border-radius: 15px;
+}
+
+/* Inner Popup Styles */
+.popup-inner {
+    border: 1px solid #ccc;
+    height: auto; /* Allow height to adjust based on content */
+    border-radius: 7px;
+}
+
+/* Table Styles */
+.popup-inner table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    overflow: hidden; /* Ensure no overflow */
+    height: auto; /* Allow height to adjust based on content */
+}
+
+/* Table Header Styles */
+.popup-inner table th,
+.popup-inner table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.popup-inner table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    white-space: nowrap;
+    background-color: #0275d8; /* Ensure header has background color */
+}
+
+/* Table Row Hover Effect */
+.popup-inner table tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+/* Button Styles */
+.popup-inner button {
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: #0275d8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.popup-inner button:hover {
+    background-color: #025aa5; /* Slightly darker shade on hover */
+}
+
+/* Margin and Padding Utilities */
+.input_margin,
+.table_margin,
+.margin_input {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.table_margin {
+    margin-bottom: 10px;
+}
+
+.margin_input {
+    margin-top: 5px;
+}
+
+/* Input and Select Styles */
+.popup-inner input,
+.popup-inner select {
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+    width: 100%; /* Ensure inputs and selects are responsive */
+}
+
+.popup-inner textarea {
+    width: 100%; /* Ensure textarea is responsive */
+    height: auto; /* Adjust height based on content */
+    min-height: 50px; /* Minimum height for better UX */
+    overflow: auto; /* Scroll if content overflows */
+}
+
+/* Padding and Sizing Utilities */
+.paddingScrip {
+    padding: 5px;
+}
+
+.header_color {
+    text-align: center;
+    background-color: #0275d8;
+    color: white;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 7px 7px 0px 0px;
+}
+
+.branch_width,
+.vouchar_width,
+.formDt_width,
+.todate_width,
+.accountName_width,
+.booktype_label {
+    margin-bottom: 10px;
+}
+
+.branch_width {
+    width: 105px;
+}
+
+.vouchar_width {
+    width: 90px;
+}
+
+.formDt_width {
+    width: 115px;
+}
+
+.height_vouchar_input {
+    height: 40px;
+    width: 234px;
+}
+
+.form_dt_input {
+    height: 40px;
+    width: 110px;
+}
+
+.todate_width {
+    width: 60px;
+}
+
+.todt_input {
+    width: 110px;
+}
+
+.accountName_width {
+    width: 115px;
+}
+
+.accountName_input {
+    width: 285px;
+}
+
+.booktype_label {
+    width: 90px;
+}
+
+.btn_height {
+    height: 40px;
+}
+
+.booktype_input {
+    height: 40px;
+    width: 234px;
+}
+
+.branch_input {
+    width: 285px;
+}
+
+/* Table Container and Wrapper */
+.table-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 200px; /* Adjust height as needed */
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow: auto;
+}
+
+/* Close Button */
+.close_btn {
+    margin-top: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .popup {
+        width: 95%; /* Increased width for smaller screens */
+        height: auto; /* Adjust height for smaller screens */
+        max-height: 90vh; /* Limit height to viewport height */
+    }
+
+    .popup-inner {
+        height: auto; /* Allow inner content to expand */
+    }
+
+    .popup-inner table {
+        height: auto; /* Allow table height to adjust */
+        max-height: 400px; /* Limit maximum height */
+    }
+
+    .branch_width,
+    .vouchar_width,
+    .formDt_width,
+    .todate_width,
+    .accountName_width,
+    .booktype_label {
+        width: auto; /* Allow width to adjust */
+    }
+
+    .height_vouchar_input,
+    .form_dt_input,
+    .todt_input,
+    .accountName_input,
+    .booktype_input,
+    .branch_input {
+        width: 100%; /* Ensure full width */
+    }
+}
+
+@media (max-width: 576px) {
+    .popup {
+        width: 100%; /* Full width for very small screens */
+        height: auto; /* Adjust height for very small screens */
+        max-height: 90vh; /* Limit height to viewport height */
+    }
+
+    .popup-inner {
+        height: auto; /* Allow inner content to expand */
+    }
+
+    .popup-inner table {
+        height: auto; /* Allow table height to adjust */
+        max-height: 300px; /* Limit maximum height */
+    }
+
+    .branch_width,
+    .vouchar_width,
+    .formDt_width,
+    .todate_width,
+    .accountName_width,
+    .booktype_label {
+        width: auto; /* Allow width to adjust */
+    }
+
+    .height_vouchar_input,
+    .form_dt_input,
+    .todt_input,
+    .accountName_input,
+    .booktype_input,
+    .branch_input {
+        width: 100%; /* Ensure full width */
+    }
+}

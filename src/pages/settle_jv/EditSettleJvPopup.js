@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './EditVoucherPopup.css'; // Adjust the path as per your file structure
+import './EditSettleJvPopup.css'; // Adjust the path as per your file structure
 import { BASE_URL } from "../constants";
 
-function EditVoucherPopup({ onClose, onRowSelect }) {
-    const [branchNamecd, setBranchName] = useState('');
-    const [voucherNo, setVoucherNo] = useState('');
+function EditSettleJvPopup({ onClose, onRowSelect }) {
     const [accountName, setAccountName] = useState('');
     // const [accountNames, setAccountNames] = useState([]);
     const [fromDate, setFromDate] = useState('');
@@ -13,49 +11,29 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
     const [bookTypes, setBookTypes] = useState([]);
     const [bookType, setBookType] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [branches, setBranches] = useState([]);
-    const [activityCode, setActivityCode] = useState();
 
 
     // Dropdown options (you can fetch these dynamically if needed)
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/bookType')
+        axios.get(`${BASE_URL}/api/bookType`)
             .then(response => setBookTypes(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
-
-    // useEffect(() => {
-    //     axios.get('http://localhost:3001/api/Account')
-    //         .then(response => setAccountNames(response.data))
-    //         .catch(error => console.error('Error fetching accounts:', error));
-    // }, []);
-    // useEffect(() => {
-    //     axios.get('http://localhost:3001/api/branches')
-    //         .then(response => {
-    //             setBranches(response.data);
-    //             // alert(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.error("There was an error fetching the data!", error);
-    //         });
-    // },
-    //     []);
 
 
     const handleSearch = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/api/searchJv`, {
                 params: {
-                    accountName,
+                    accountName: accountName || null,
                     fromDate,
                     toDate,
-                    bookType,
-                    tran_type: 'JV'
+                    bookType: bookType || null,
+                    tran_type: 'SETTLEMENT',
                 }
             });
             setSearchResults(response.data);
-            console.log('hiii---', response.data)
         } catch (error) {
             console.error('Error searching vouchers:', error);
         }
@@ -69,7 +47,7 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
         console.log('Sending Selected Row:', selectedRow);
 
         try {
-            const response = await axios.get('http://localhost:3001/api/searchEditVouchar', {
+            const response = await axios.get(`${BASE_URL}/api/searchEditVouchar`, {
                 params: {
                     segment: selectedRow.segment || '',
                     exchange: selectedRow.exc_cd || '',
@@ -83,9 +61,10 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
             });
 
 
-            console.log('API response data:', response.data);
+           // console.log('API response data:', response.data);
 
             // Pass the selected row to the main component
+            //console.log('response.data => ', response.data);
             onRowSelect(response.data);
             onClose();
 
@@ -102,11 +81,11 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                 <div className='d-flex justify-content-between'>
                     <div className="form-group d-flex" style={{ marginLeft: '10px' }}>
                         <label className='form-label' style={{ width: '150px' }}>From Date:</label>
-                        <input 
+                        <input
                             type="date"
                             className="form-control"
                             value={fromDate}
-                            onChange={(e) => setFromDate(e.target.value)} 
+                            onChange={(e) => setFromDate(e.target.value)}
                             size="sm"
                         />
                     </div>
@@ -119,37 +98,9 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                             onChange={(e) => setToDate(e.target.value)}
                             size="sm"
                         />
-                    </div>                    
-                </div>
-                <div className='d-flex justify-content-between'>
-                    <div className="form-group d-flex" style={{ marginLeft: '10px' }}>
-                        <select
-                            id="bookType"
-                            className="form-control"
-                            name='bookType'
-                            value={bookType}
-                            style={{ width: '287px' }}
-                            onChange={(e) => setBookType(e.target.value)}
-                        >
-                            <option value="">Select Book Type</option>
-                            {bookTypes.map(BookTypes => (
-                                <option key={BookTypes.book_type} value={BookTypes.book_type}>{BookTypes.book_type}</option>
-                            ))}
-                        </select>
                     </div>
-                    <div className="form-group d-flex">
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={accountName}
-                            style={{width: '287px'}}
-                            placeholder='Enter Account Name'
-                            onChange={(e) => setAccountName(e.target.value)}
-                            size="sm"
-                        />
-                    </div>                    
                 </div>
-                <div className='d-flex justify-content-between' style={{ float: 'right', marginBottom: '20px' }}>
+                <div className='d-flex justify-content-between' style={{float:'right', marginBottom: '20px'}}>
                     <div className='d-flex justify-content-end'>
                         <button className="btn btn-primary me-3 btn-sm btn_height" onClick={handleSearch} >Search</button>
                         <button
@@ -160,6 +111,9 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                             Close
                         </button>
                     </div>
+                </div>
+                <div className='d-flex justify-content-between' style={{ float: 'right', marginBottom: '20px' }}>
+
                 </div>
                 <div className=' table-container'>
                     <table className="table mt-3 table-wrapper">
@@ -222,4 +176,4 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
     );
 }
 
-export default EditVoucherPopup;
+export default EditSettleJvPopup;

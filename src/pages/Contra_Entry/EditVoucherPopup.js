@@ -7,83 +7,68 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
     const [branchNamecd, setBranchName] = useState('');
     const [voucherNo, setVoucherNo] = useState('');
     const [accountName, setAccountName] = useState('');
-    // const [accountNames, setAccountNames] = useState([]);
+    const [accountNames, setAccountNames] = useState([]);
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
     const [bookTypes, setBookTypes] = useState([]);
     const [bookType, setBookType] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [branches, setBranches] = useState([]);
-    const [activityCode, setActivityCode] = useState();
-
-
     // Dropdown options (you can fetch these dynamically if needed)
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/bookType')
-            .then(response => setBookTypes(response.data))
+        axios.get(`${BASE_URL}/api/bookType`)
+            .then(response => {setBookTypes(response.data)})
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
 
-    // useEffect(() => {
-    //     axios.get('http://localhost:3001/api/Account')
-    //         .then(response => setAccountNames(response.data))
-    //         .catch(error => console.error('Error fetching accounts:', error));
-    // }, []);
-    // useEffect(() => {
-    //     axios.get('http://localhost:3001/api/branches')
-    //         .then(response => {
-    //             setBranches(response.data);
-    //             // alert(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.error("There was an error fetching the data!", error);
-    //         });
-    // },
-    //     []);
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/Account')
+            .then(response => setAccountNames(response.data))
+            .catch(error => console.error('Error fetching accounts:', error));
+    }, []);
+    useEffect(() => {
+        axios.get('http://localhost:3001/api/branches')
+            .then(response => {
+                setBranches(response.data);
+                // alert(response.data);
+            })
+            .catch(error => {
+                console.error("There was an error fetching the data!", error);
+            });
+    },
+        []);
 
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/api/searchJv`, {
+            const response = await axios.get('http://localhost:3001/api/searchContraEntry', {
                 params: {
                     accountName,
                     fromDate,
                     toDate,
                     bookType,
-                    tran_type: 'JV'
+                    tran_type : 'Contra',
                 }
             });
             setSearchResults(response.data);
-            console.log('hiii---', response.data)
         } catch (error) {
             console.error('Error searching vouchers:', error);
         }
     };
-    // console.log('result----', searchResults)
-    // const handleSendData = () => {
-    //     onRowSelect(searchResults); // Send all rows to the main component
-    //     // Log the data being sent
-    // };
-    const handleSendData = async (selectedRow) => {
-        console.log('Sending Selected Row:', selectedRow);
 
+    const handleSendData = async (selectedRow) => {
         try {
-            const response = await axios.get('http://localhost:3001/api/searchEditVouchar', {
+            const response = await axios.get('http://localhost:3001/api/searchEditContra', {
                 params: {
                     segment: selectedRow.segment || '',
                     exchange: selectedRow.exc_cd || '',
-                    nor_depos: selectedRow.nor_depos || '',
+                    activity: selectedRow.cmp_cd || '',
                     fin_year: selectedRow.fin_year || '',
                     voucherNo: selectedRow.voucher_no || '',
                     bookType: selectedRow.book_type || '',
-                    act_cd: selectedRow.act_cd || '',
-                    activityCode: selectedRow.cmp_cd || ''
                 }
             });
-
-
-            console.log('API response data:', response.data);
 
             // Pass the selected row to the main component
             onRowSelect(response.data);
@@ -102,11 +87,11 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                 <div className='d-flex justify-content-between'>
                     <div className="form-group d-flex" style={{ marginLeft: '10px' }}>
                         <label className='form-label' style={{ width: '150px' }}>From Date:</label>
-                        <input 
+                        <input
                             type="date"
                             className="form-control"
                             value={fromDate}
-                            onChange={(e) => setFromDate(e.target.value)} 
+                            onChange={(e) => setFromDate(e.target.value)}
                             size="sm"
                         />
                     </div>
@@ -119,7 +104,7 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                             onChange={(e) => setToDate(e.target.value)}
                             size="sm"
                         />
-                    </div>                    
+                    </div>
                 </div>
                 <div className='d-flex justify-content-between'>
                     <div className="form-group d-flex" style={{ marginLeft: '10px' }}>
@@ -142,12 +127,12 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                             type="text"
                             className="form-control"
                             value={accountName}
-                            style={{width: '287px'}}
-                            placeholder='Enter Account Name'
+                            style={{ width: '287px' }}
+                            placeholder='Enter Cash/Bank Name'
                             onChange={(e) => setAccountName(e.target.value)}
                             size="sm"
                         />
-                    </div>                    
+                    </div>
                 </div>
                 <div className='d-flex justify-content-between' style={{ float: 'right', marginBottom: '20px' }}>
                     <div className='d-flex justify-content-end'>
@@ -169,23 +154,18 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                                 <th>Voucher No</th>
                                 <th>Book Type</th>
                                 <th >Trans_Date</th>
-                                <th hidden>Effective_Date</th>
-                                <th>Account Name</th>
-
+                                <th>Cash/Bank Name</th>
                                 <th>Amount</th>
                                 <th>Dr/Cr</th>
                                 <th hidden>Segment</th>
                                 <th hidden>Exchange</th>
                                 <th hidden>Branch</th>
-                                <th hidden>Company</th>
-                                <th hidden>Normal/Depositor</th>
-                                <th hidden>Account Code</th>
+                                <th hidden>drcr</th>
+                                <th hidden>cb_act_cd</th>
                                 <th hidden>Narration</th>
                                 <th hidden>analyzer_code</th>
-                                <th hidden>activity_cd</th>
-
-
-
+                                <th hidden>Effective_Date</th>
+                                <th hidden>eff_date</th>
                             </tr>
 
                         </thead>
@@ -196,27 +176,22 @@ function EditVoucherPopup({ onClose, onRowSelect }) {
                                     <td>{result.voucher_no}</td>
                                     <td>{result.book_type}</td>
                                     <td>{new Date(result.trans_date).toLocaleDateString()}</td>
-                                    <td hidden>{new Date(result.eff_date).toLocaleDateString()}</td>
-                                    <td>{result.account_name}</td>
-
+                                    <td>{result.account_title}</td>
                                     <td>{result.amount}</td>
                                     <td>{result.drcr}</td>
                                     <td hidden>{result.segment}</td>
                                     <td hidden>{result.exc_cd}</td>
                                     <td hidden>{result.branch_cd}</td>
-                                    <td hidden>{result.cmp_cd}</td>
-                                    <td hidden>{result.nor_depos}</td>
-                                    <td hidden>{result.act_cd}</td>
+                                    <td hidden>{result.drcr}</td>
+                                    <td hidden>{result.cb_act_cd}</td>
                                     <td hidden>{result.narration}</td>
                                     <td hidden>{result.narr_code}</td>
-                                    <td hidden>{result.activity_cd}</td>
+                                    <td hidden>{new Date(result.eff_date).toLocaleDateString()}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-
-
             </div>
         </div>
     );

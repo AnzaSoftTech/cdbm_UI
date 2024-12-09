@@ -31,22 +31,19 @@ const PopupSearch = ({ onSelectRow, exchange, segment }) => {
   const handleRowClick = (row) => {
     // Pass all necessary data fields to onSelectRow function
     onSelectRow({
-      act_name: row.act_name,
+      act_name: row.account_name,
       act_cd: row.act_cd,
-      branch_cd: row.branch_cd,
-      cmp_cd: row.cmp_cd,
-      type_cd: row.type_cd,
     });
   };
 
   const columns = [
     {
       name: 'Account Name',
-      selector: 'act_name',
+      selector: 'account_name',
       sortable: true,
       cell: (row) => (
         <div onClick={() => handleRowClick(row)} style={{ cursor: 'pointer' }}>
-          {row.act_name}
+          {row.account_name}
         </div>
       ),
     },

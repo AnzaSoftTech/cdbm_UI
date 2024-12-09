@@ -111,6 +111,7 @@ const toggleMenu = (menuName) => {
                   <div className="submenu-item"><Link to="/dashboard/account_master/Account_MasterApp" className="sidebar_link"><BsJournals style={{ marginRight: '8px' }} />Account Master</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/payment_vouchar/Payment_voucharApp" className="sidebar_link"><FaHandHoldingDollar style={{ marginRight: '8px' }} /> Payment/Receipt </Link></div>
                   <div className="submenu-item"><Link to="/dashboard/journal_vouchar/JOURNALApp " className="sidebar_link"><BsLayoutTextWindow style={{ marginRight: '8px' }} />Journal Voucher</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/settle_jv/SettleJvApp " className="sidebar_link"><BsLayoutTextWindow style={{ marginRight: '8px' }} />Settle JV</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/dr_cr_note/drcrnotesApp " className="sidebar_link"><FaPlusMinus style={{ marginRight: '8px' }} />Debit/Credit Notes</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/Contra_Entry/contraenteryApp " className="sidebar_link"><BsJournalCode style={{ marginRight: '8px' }} /> Contra Entry</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/Bank_Reco/bankRecoApp " className="sidebar_link"><FaScaleBalanced style={{ marginRight: '8px' }} /> Bank Reco</Link></div>
@@ -128,8 +129,9 @@ const toggleMenu = (menuName) => {
             </div>
             {openMenus.masters && (
               <div className="submenu">
-                  <div className="submenu-item"><Link to="/dashboard/" className="sidebar_link"><BsBuildings style={{ marginRight: '8px' }} />MII Master</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/mii_master/MII_MasterApp" className="sidebar_link"><BsBuildings style={{ marginRight: '8px' }} />MII Master</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/" className="sidebar_link"><FaUserTag style={{ marginRight: '8px' }} />Vendor Master</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/doc_mapp_master/Doc_Mapp_Master_MasterApp" className="sidebar_link"><FaUserTag style={{ marginRight: '8px' }} />Doc Mapp Master</Link></div>
                 {/* Additional financial submenu items here */}
               </div>
             )}
@@ -137,19 +139,22 @@ const toggleMenu = (menuName) => {
 
            {/* Client Masters */}
 
-           {/* <div className="menu-item">
+           <div className="menu-item">
             <div className="menu-title" onClick={() => toggleMenu("clientmaster")}>
               <FaUserTie style={{ fontSize: '23px' }} />
               Client Master {openMenus.clientmaster ? <FaAngleDown /> : <FaAngleRight />}
             </div>
             {openMenus.clientmaster && (
               <div className="submenu">
-                  <div className="submenu-item"><Link to="/dashboard/" className="sidebar_link"><FaUserPen style={{ marginRight: '8px' }} />Client Registration</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/" className="sidebar_link"><BsPercent style={{ marginRight: '8px' }} />Brokerage Slab</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/" className="sidebar_link"><FaLink style={{ marginRight: '8px' }} />Link Client/Slab</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/Client_Master/client_masterApp" className="sidebar_link"><FaUserPen style={{ marginRight: '8px' }} />Client Registration</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/brok_slab/Brok_slab_masterApp" className="sidebar_link"><BsPercent style={{ marginRight: '8px' }} />Brokerage Slab</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/client_link_slab/Client_link_slab_masterApp" className="sidebar_link"><FaLink style={{ marginRight: '8px' }} />Link Client/Slab</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/family_grp/FamGrp_MasterApp" className="sidebar_link"><FaLink style={{ marginRight: '8px' }} />Family Group</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/client_grp/ClientGrp_MasterApp" className="sidebar_link"><FaLink style={{ marginRight: '8px' }} />Client Group</Link></div>
+
               </div>
             )}
-          </div> */}
+          </div>
 
 
           {/* Reports */}

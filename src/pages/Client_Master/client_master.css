@@ -1,0 +1,365 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.tabs-containerclient {
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    max-width: 90vw;
+    padding: 1rem;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    background-color: #fff;
+    margin:20px;
+}
+
+.addr-label{
+    font-size: larger;
+    font-weight: 400;
+}
+
+.color_header{
+    background-color:rgb(46, 84, 250) ;
+}
+
+.slabheader {
+    text-align: center;
+    
+    color: white; /* Darker title color */
+    
+}
+
+.address-styles{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.label-styles{
+    width: 100%;
+    text-align: center;
+}
+
+.form-containerclient {
+    margin-bottom: 20px; /* Space between form and tabs */
+}
+
+.b{
+    border: 1px solid black;
+}
+
+label{
+    color: black;
+}
+
+.table-heading{
+    color: black;
+}
+
+.main-box{
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 34rem;
+    max-width:97%;
+}
+
+.common_input:focus, .common_select:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none;
+}
+
+.button-group1 {
+    display: flex;
+    
+}
+
+
+
+.commom_button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.commom_button:hover {
+    background-color: #0056b3; /* Darken button on hover */
+}
+
+.tabs1 {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid #ccc;
+    margin: 0;
+}
+
+.tab1 {
+    cursor: pointer;
+    padding: 12px 20px;
+    transition: background-color 0.3s;
+    border-radius: 4px 4px 0 0;
+}
+
+.tab1.active {
+    border-bottom: 2px solid #007bff;
+    font-weight: bold;
+    color: #007bff;
+    background-color: #94cdff; /* Highlight active tab */
+}
+
+.tab-content1 {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #94a3f8;
+    border-radius: 0 0 4px 4px;
+}
+
+.tab-pane1 {
+    display: none;
+}
+
+.tab-pane1.active {
+    display: block;
+}
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+    .form-containerclient,
+    .tabs-containerclient {
+        padding: 0 !important; /* Remove padding */
+        margin: 0 !important; /* Remove margin */
+    }
+
+    .form-containerclient .mb-1,
+    .form-containerclient .mb-3,
+    .form-containerclient .me-2,
+    .form-containerclient .ms-3,
+    .form-containerclient .mx-3,
+    .form-containerclient .mx-1,
+    .form-containerclient .my-2,
+    .form-containerclient .mt-1,
+    .form-containerclient .mt-2 {
+        margin: 0 !important; /* Remove any remaining margin */
+    }
+
+    .form-containerclient .common_flex {
+        display: block; /* Stack elements vertically */
+    }
+
+    .form-containerclient .col-md-4, 
+    .form-containerclient .col-md-6,
+    .form-containerclient .col-md-3,
+    .form-containerclient .col-md-2 {
+        flex: 0 0 100%; /* Full width on small screens */
+        max-width: 100%; /* Ensure full width */
+    }
+
+    .tabs1 {
+        flex-direction: column; /* Stack tabs vertically */
+        margin-bottom: 1rem; /* Add space between tabs and content */
+    }
+
+    .tab1 {
+        width: 100%; /* Full width for each tab */
+        text-align: left; /* Align text to the left */
+    }
+
+    .tab-content1 {
+        padding: 1rem; /* Adjust padding */
+    }
+    .data-table {
+        font-size: 0.85rem; /* Smaller font size for smaller screens */
+    }
+
+    .data-table .form-select,
+    .data-table .form-control {
+        width: 100%; /* Full width for inputs and selects */
+        box-sizing: border-box; /* Include padding and border in width */
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 0.5rem; /* Reduce padding for table cells */
+    }
+}
+
+
+
+.common_width{
+    width: 8rem;
+}
+
+.common_flex{
+    display: flex;
+    align-items: center;
+}
+
+.common_width1{
+    width: 12rem;
+}
+
+.common_width5{
+    width: 16rem;
+}
+
+.common_width6{
+    width: 28.5rem;
+}
+
+.common_width2{
+    width: 20rem;
+}
+
+
+
+.common_size_input{
+    width: 6rem;
+}
+
+.common_width3{
+    width: 9.5rem;
+    align-items: center;
+}
+
+.common_width8{
+    width: 8rem;
+    align-items: center;
+}
+
+
+
+
+
+
+.common_size_input1{
+    width: 15rem;
+}
+
+
+
+.inputOnText {
+    position: relative;
+}
+.inputOnText .labelAddress {
+    position: absolute;
+    top: -17px ;
+    left: 5rem;
+    padding: 0.1rem;
+    z-index: 1;
+    color: blue;
+    font-size: large;
+   
+}
+.labelAddress:after {
+    content: " ";
+    background-color: #fff;
+    width: 100%;
+    height: 13px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.size_address{
+    width: 85vw !important;
+    padding-top: 1em;
+    border-radius: 1.5rem;
+}
+
+
+.textareacontact {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    resize: both;
+    min-height: 5px;
+    line-height: 5px;
+    min-width: 80px;
+  }
+
+  .size_datatable_input{
+font-size: 0.89rem;
+}
+
+.color_input{
+    background-color: #dfedfc !important;
+}
+
+.large-checkbox{
+    width: 2rem !important;
+    height: 1.5rem !important;
+    margin-top: 0 !important;
+    vertical-align: middle !important;
+   
+    
+}
+
+.allselectmargin{
+    margin-left: 1rem !important;
+}
+
+
+
+/* ************* Nav tab css *****************************/
+
+.tabs1 {
+    border-bottom: 2px solid #007bff; /* Bottom border for the tab container */
+}
+
+.nav-item {
+    margin-right: 15px; /* Space between tabs */
+}
+
+.nav-link {
+    padding: 10px 15px; /* Padding for each tab */
+    border: 1px solid transparent; /* Initial border */
+    border-radius: 4px 4px 0 0; /* Rounded corners for the top */
+    color: #007bff; /* Default text color */
+    background-color: #f8f9fa; /* Background color for inactive tabs */
+    transition: background-color 0.3s, color 0.3s; /* Transition effects */
+}
+
+.nav-link:hover {
+    background-color: #e9ecef; /* Hover background color */
+    color: #0056b3; /* Hover text color */
+}
+
+.nav-link.active {
+    color: #fff; /* Active tab text color */
+    background-color: #007bff; /* Active tab background color */
+    border-color: #007bff; /* Border color to match active background */
+}
+
+/* Remove the arrow up and down from input field (spinnear)  */
+/* For Webkit Browsers (Chrome, Safari) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+
+
+

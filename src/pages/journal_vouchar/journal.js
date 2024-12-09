@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DataTable from 'react-data-table-component';
 import { Modal, Button } from 'react-bootstrap';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PopupSearch from './popsearch';
 import EditVoucherPopup from './EditVoucherPopup.js';
@@ -28,7 +28,12 @@ function Journal({ details, setDetails }) {
     const [drCrType, setDrCrType] = useState('');
     const [header, setHeader] = useState({});
     const [segment, setSegment] = useState('');
-    //const [segments, setSegments] = useState([]);
+    const [activityCode, setActivityCode] = useState();
+    const [activityCodes, setActivityCodes] = useState([]);
+    const [addMode, setAddMode] = useState(true);
+    const [segments, setSegments] = useState([]);
+    const [finYear, setFinYear] = useState();
+
     const [normal_deposit, setNormal_deposit] = useState([]);
     const [voucherDetails, setVoucherDetails] = useState({
         bookType: '',
@@ -38,7 +43,7 @@ function Journal({ details, setDetails }) {
         segment: '',
         exchanges: '',
         normal_deposit: '',
-        accountName: '',
+        act_name: '',
         drCr: '',
         drAmount: '',
         crAmount: '',
@@ -47,16 +52,26 @@ function Journal({ details, setDetails }) {
 
     });
 
+
+
+
+
     useEffect(() => {
         axios.get(`${BASE_URL}/api/bookType`)
             .then(response => setBookTypes(response.data))
-            .catch(error => console.error('Error fetching accounts:', error));
+            .catch(error => console.error('Error fetching Book Type:', error));
     }, []);
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/exchange`)
+        axios.get(`${BASE_URL}/api/ddl_exchange`)
             .then(response => setExchanges(response.data))
-            .catch(error => console.error('Error fetching accounts:', error));
+            .catch(error => console.error('Error fetching Exchange:', error));
+    }, []);
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/api/ddl_segment`)
+            .then(response => setSegments(response.data))
+            .catch(error => console.error('Error fetching Segment:', error));
     }, []);
 
     useState(() => {
@@ -64,6 +79,27 @@ function Journal({ details, setDetails }) {
             setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', narration: '', analyzer_code: '' }]);
         }
     });
+
+    const handleSegment = async (p_Segment) => {
+        try {
+
+            setSegment(p_Segment);
+
+            if (p_Segment) {
+                setActivityCodes([]);
+                await axios.get(`${BASE_URL}/api/ddl_activity_master?p_segment_cd=` + p_Segment)
+                    .then(response => setActivityCodes(response.data))
+                    .catch(error => console.error('Error fetching activity:', error));
+            }
+            else {
+                setActivityCodes([]);
+            }
+
+        }
+        catch (error) {
+            console.error("Error in Account Type Selection! ", error);
+        }
+    }
 
     const handleAddRow = () => {
         setDetails([...details, { act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', narration: '', analyzer_code: '' }]);
@@ -86,7 +122,8 @@ function Journal({ details, setDetails }) {
 
     const handleDeleteRow = (index) => {
         const deletedRow = details[index];
-        setDetails(details.filter((_, i) => i !== index));
+        const temp = details.filter((_, i) => i !== index);
+        setDetails(temp);
 
         // Recalculate totals after deleting row
         if (deletedRow.dr_cr === 'Dr') {
@@ -98,6 +135,8 @@ function Journal({ details, setDetails }) {
             const balance = Math.abs(totals.drTotal - crTotal);
             setTotals({ ...totals, crTotal, balance });
         }
+        console.log(temp);
+        console.log(details);
     };
 
     const handleInputChange = (index, field, value) => {
@@ -146,7 +185,6 @@ function Journal({ details, setDetails }) {
         // Ensure vouchers is an array
         if (Array.isArray(vouchers)) {
             const voucherDetailsList = vouchers.map(voucher => {
-                console.log('Processing voucher:', voucher);
 
                 // Ensure numeric fields are properly converted
                 const parseAmount = (value) => {
@@ -162,7 +200,7 @@ function Journal({ details, setDetails }) {
                     segment: voucher.segment || '',
                     exchange: voucher.exc_cd || '',
                     normal_deposit: voucher.nor_depos || '',
-                    accountName: voucher.act_name || '',
+                    act_name: voucher.act_name || '',
                     drCr: voucher.drcr || '',
                     drAmount: voucher.drcr === 'Dr' ? parseAmount(voucher.amount) : 0,
                     crAmount: voucher.drcr === 'Cr' ? parseAmount(voucher.amount) : 0,
@@ -179,22 +217,20 @@ function Journal({ details, setDetails }) {
             const formattedVoucherDate = formatDate(vouchers[0].trans_date);
             const formattedEffectiveDate = formatDate(vouchers[0].eff_date);
 
-            console.log('start', formattedVoucherDate);
-            console.log('end', formattedEffectiveDate);
-
-            console.log('Voucher Details List:', voucherDetailsList);
-
             if (vouchers.length > 0) {
+                console.log('finyear ',vouchers[0].fin_year);
+                setFinYear(vouchers[0].fin_year)
                 setBookType(vouchers[0].book_type);
                 setEffectiveDate(formattedEffectiveDate);
                 setVoucherDate(formattedVoucherDate);
                 setVoucherNo(vouchers[0].voucher_no);
                 setSegment(vouchers[0].segment);
                 setExchange(vouchers[0].exc_cd);
+                setActivityCode(vouchers[0].cmp_cd);
                 setNormal_deposit(vouchers[0].nor_depos);
             }
             const newDetails = voucherDetailsList.map(details => ({
-                act_name: details.accountName,
+                act_name: details.act_name,
                 dr_cr: details.drCr,
                 dr_amount: details.drAmount,
                 cr_amount: details.crAmount,
@@ -209,17 +245,22 @@ function Journal({ details, setDetails }) {
                 cmp_cd: details.cmpCd
             }));
 
-            // Log the new details array
-            console.log('New Details Array:', newDetails);
-            console.log('Deposit:',normal_deposit)
 
             // Update the state with selected voucher details
             setVoucherDetails(voucherDetailsList);
 
             // Update details state
             setDetails(newDetails);
+            const drTotal = newDetails.reduce((sum, item) => item.dr_cr === 'Dr' ? sum + parseFloat(item.dr_amount || 0) : sum, 0);
+            const crTotal = newDetails.reduce((sum, item) => item.dr_cr === 'Cr' ? sum + parseFloat(item.cr_amount || 0) : sum, 0);
+            const balance = Math.abs(drTotal - crTotal);
+
+            setTotals({ drTotal, crTotal, balance });
 
             setShowModal(false);
+
+            setAddMode(false);
+
 
             // Log modal state update
             console.log('Modal Closed');
@@ -240,7 +281,7 @@ function Journal({ details, setDetails }) {
         newDetails[selectedRowIndex].branch_cd = branch_cd;
         newDetails[selectedRowIndex].cmp_cd = cmp_cd;
         newDetails[selectedRowIndex].type_cd = type_cd;
-        console.log("accountName", act_name)
+        console.log("act_name", act_name)
         console.log("act_cd", act_cd)
         console.log("comp_cd", cmp_cd)
         console.log("type_cd", type_cd)
@@ -259,6 +300,31 @@ function Journal({ details, setDetails }) {
         setDetails(newDetails);
         setDrCrType(type);
     };
+    const handleAdd = () => {
+        setAddMode(false);
+    }
+    const handleClear = () => {
+
+        const isCleared = window.confirm('Sure, you want to clear?');
+        
+        if (!isCleared) {
+            return;
+        }
+
+        setFinYear('');
+        setBookType('');
+        setVoucherDate('');
+        setVoucherNo('');
+        setEffectiveDate('');
+        setExchange('');
+        setSegment('');
+        setActivityCode('');
+        setNormal_deposit('');
+        setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', narration: '', analyzer_code: '' }]);
+        setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
+        setAddMode(true);
+        setActivityCodes([]);
+    }
     const handleFinalSave = () => {
         if (!voucherDate || !effectiveDate) {
             alert('Please enter Voucher Date and Effective Date.');
@@ -269,13 +335,75 @@ function Journal({ details, setDetails }) {
             return;
         }
 
+        
+        if (details.length === 0) {
+            alert('Please add atleast one transaction');
+            return;
+        }
+
+
+        for (let i = 0; i < details.length; i++) {
+            if (!details[i].act_name) {
+                alert('Please Enter Account Name.');
+                return;
+            }
+
+            if (!details[i].dr_cr) {
+                alert('Please Select Dr/Cr.');
+                return;
+            }
+            if (!details[i].narration) {
+                alert('Please Enter Narration.');
+                return;
+            }
+            if (!details[i].analyzer_code) {
+                alert('Please Select Analyzer Code.');
+                return;
+            }
+            if (details[i].dr_cr === 'Cr') {
+                if (details[i].cr_amount <= 0) {
+                    alert('Cr amount should be greater than 0.');
+                    return;
+                }
+            }
+            else if (details[i].dr_cr === 'Dr') {
+                if (details[i].dr_amount <= 0) {
+                    alert('Dr amount should be greater than 0.');
+                    return;
+                }
+            }
+        } // end for : for (let i = 0; i < details.length; i++) 
+
+        let dupFlag = 0;
+        let tempActName = '';
+
+        for (let i = 0; i < details.length; i++) {
+            for (let j = i + 1; j < details.length; j++) {
+                if (details[i].act_name === details[j].act_name) {
+                    dupFlag = 1;
+                    tempActName = details[i].act_name;
+                    break;
+                }
+            }
+            if(dupFlag === 1){
+                break;
+            }
+        }
+
+        if (dupFlag === 1) {
+            alert(`Can not select dupilicate Account Name: ${tempActName}`);
+            return;
+        }
+        
         const headerData = {
+            finYear,
             bookType,
             voucherDate,
             effectiveDate,
             voucherNo,
             segment,
             exchange,
+            activityCode,
             normal_deposit,
             // Ayaan : add segment, exc and normal
         };
@@ -284,13 +412,20 @@ function Journal({ details, setDetails }) {
             header: headerData,
             details: details,
         };
-       // alert(JSON.stringify(data));
+        // alert(JSON.stringify(data));
         var resValidate = calculateTotals(details);
-       // console.log('resValidate', resValidate)
+        // console.log('resValidate', resValidate)
         if (resValidate == 0) {
+
+            const isConfirmed = window.confirm('Sure, you want to save?');
+            if(!isConfirmed){
+                return;
+            }
+
             axios.post(`${BASE_URL}/api/save_journal_voucher`, data)
                 .then(response => {
                     alert('Voucher saved successfully!');
+                    setFinYear('');
                     setBookType('');
                     setVoucherDate('');
                     setEffectiveDate('');
@@ -298,9 +433,11 @@ function Journal({ details, setDetails }) {
                     setVoucherNo('');
                     setSegment('');
                     setExchange('');
+                    setActivityCode('');
                     setNormal_deposit('');
-                    setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '',  narration: '', analyzer_code: '' }]);
+                    setDetails([{ act_name: '', cr_amount: '', dr_amount: '', dr_cr: '', narration: '', analyzer_code: '' }]);
                     setTotals({ drTotal: 0, crTotal: 0, balance: 0 });
+                    setAddMode(true);
                 })
 
 
@@ -398,6 +535,7 @@ function Journal({ details, setDetails }) {
                     <input
                         type="text"
                         value={row.act_name}
+                        readOnly
                         onChange={e => handleInputChange(index, 'act_name', e.target.value)}
                         className="form-control"
                         style={{ marginRight: '0.625rem' }}
@@ -617,128 +755,163 @@ function Journal({ details, setDetails }) {
 
     return (
         <div className="container-common">
-          <div className="card">
-            <div className="card-header-css">
-              <h3 className="text-center">Journal Voucher</h3>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                {/* Book Type and Voucher Date */}
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="bookType" className="form-label form-label-jv label-color-common">Book Type</label>
-                    <select
-                      id="bookType"
-                      className="form-select form-select-jv"
-                      name='bookType'
-                      value={bookType}
-                      onChange={(e) => setBookType(e.target.value)}
-                    >
-                      <option value="">Select Book Type</option>
-                      {bookTypes.map(bookType => (
-                        <option key={bookType.book_type} value={bookType.book_type}>
-                          {bookType.book_type}
-                        </option>
-                      ))}
-                    </select>
+            <div className="card">
+                <div className="card-header-css">
+                    <h5 className="text-center">Journal Voucher</h5>
                 </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="voucherDate" className="form-label form-label-jv label-color-common">Voucher Date</label>
-                    <input
-                      id="voucherDate"
-                      type="date"
-                      className="form-control form-control-jv"
-                      value={voucherDate}
-                      onChange={(e) => setVoucherDate(e.target.value)}
-                    />
-                  </div>
-                </div>
-    
-              <div className="row">
-                {/* Voucher No and Effective Date */}
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="voucherNo" className="form-label form-label-jv label-color-common">Voucher No</label>
-                    <input
-                      id="voucherNo"
-                      type="number"
-                      className="form-control form-control-jv"
-                      value={voucherNo}
-                      readOnly
-                    />
-                </div>
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="effectiveDate" className="form-label form-label-jv label-color-common">Effective Date</label>
-                    <input
-                      id="effectiveDate"
-                      type="date"
-                      className="form-control form-control-jv"
-                      value={effectiveDate}
-                      onChange={(e) => setEffectiveDate(e.target.value)}
-                    />
-                </div>
-              </div>
-    
-              <div className="row">
-                {/* Segment, Exchange, and Normal/Deposit */}
-                <div className="col-md-6 mb-2 d-flex">
-                    <label htmlFor="segment" className="form-label form-label-jv form-label-jv label-color-common">Segment</label>
-                    <select
-                      id="segment"
-                      className="form-select form-select-jv"
-                      name="segment"
-                      value={segment}
-                      onChange={(e) => setSegment(e.target.value)}
-                    >
-                      <option value="">Select Segment</option>
-                      <option value="C">Cash Market</option>
-                    </select>
-                </div>
-                <div className="col-md-6 mb-3 d-flex">
-                    <label htmlFor="exchange" className="form-label form-label-jv label-color-common">Exchange</label>
-                    <select
-                      id="exchange"
-                      className="form-select form-select-jv"
-                      name="exchange"
-                      value={exchange}
-                      onChange={(e) => setExchange(e.target.value)}
-                    >
-                      <option value="">Select Exchange</option>
-                      {exchangess.map(exchange => (
-                        <option key={exchange.exc_cd} value={exchange.exc_cd}>
-                          {exchange.exc_name}
-                        </option>
-                      ))}
-                    </select>
-                </div>
-                <div className="col-md-6 mb-3 d-flex">
+                <div className="card-body">
+                    <div className="row">
+                        {/* Book Type and Voucher Date */}
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="bookType" className="form-label form-label-jv label-color-common">Book Type</label>
+                            <select
+                                id="bookType"
+                                className="form-select form-select-jv"
+                                name='bookType'
+                                value={bookType}
+                                disabled={voucherNo ? true : addMode}
+                                onChange={(e) => setBookType(e.target.value)}
+                            >
+                                <option value="">Select Book Type</option>
+                                {bookTypes.map(bookType => (
+                                    <option key={bookType.book_type} value={bookType.book_type}>
+                                        {bookType.book_type}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="voucherDate" className="form-label form-label-jv label-color-common">Voucher Date</label>
+                            <input
+                                id="voucherDate"
+                                type="date"
+                                className="form-control form-control-jv"
+                                value={voucherDate}
+                                disabled={addMode}
+                                onChange={(e) => setVoucherDate(e.target.value)}
+                            />
+                        </div>
+                    </div>
 
-                    <label htmlFor="normal_deposit" className="form-label form-label-jv label-color-common">Normal/Deposit</label>
-                    <select
-                      id="normal_deposit"
-                      className="form-select form-select-jv"
-                      name="normal_deposit"
-                      value={normal_deposit}
-                      onChange={(e) => setNormal_deposit(e.target.value)}
-                    >
-                      <option value="">Select Normal/Deposit</option>
-                      <option value="N">Normal</option>
-                      <option value="D">Depositor</option>
-                    </select>
-                </div>
-                <div className="col-md-6 mb-3 d-flex justify-content-end">
-                  <button className="btn btn-primary me-2" style={{width:'9rem'}} onClick={handleEditClick}>Edit Voucher</button>
-                  {showPopup && <EditVoucherPopup onClose={handleClosePopup} onRowSelect={handleVoucharRowSelect} />}
-                  <button className="btn btn-success" style={{width:'9rem'}} onClick={handleFinalSave}>Save</button>
-                </div>
-              </div>
-    
-              <div className="row">
-                <div className="col">
-                  <DataTable columns={columns} data={details} customStyles={customStyles} responsive />
-                </div>
-              </div>
-    
-              
-    
+                    <div className="row">
+                        {/* Voucher No and Effective Date */}
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="voucherNo" className="form-label form-label-jv label-color-common">Voucher No</label>
+                            <input
+                                id="voucherNo"
+                                type="number"
+                                className="form-control form-control-jv"
+                                value={voucherNo}
+                                readOnly
+                            />
+                        </div>
+                        <div className="col-md-6 mb-2 d-flex">
+                            <label htmlFor="effectiveDate" className="form-label form-label-jv label-color-common">Effective Date</label>
+                            <input
+                                id="effectiveDate"
+                                type="date"
+                                className="form-control form-control-jv"
+                                value={effectiveDate}
+                                disabled={addMode}
+                                onChange={(e) => setEffectiveDate(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        {/* Segment, Exchange, and Normal/Deposit */}
+                        <div className="col-md-6 mb-3 d-flex">
+                            <label htmlFor="exchange" className="form-label form-label-jv label-color-common">Exchange</label>
+                            <select
+                                id="exchange"
+                                className="form-select form-select-jv"
+                                name="exchange"
+                                value={exchange}
+                                disabled={voucherNo ? true : addMode}
+                                onChange={(e) => setExchange(e.target.value)}
+                            >
+                                <option value="">Select Exchange</option>
+                                {exchangess.map(exchange => (
+                                    <option key={exchange.mii_id} value={exchange.mii_id}>
+                                        {exchange.mii_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-3 d-flex">
+                            <label htmlFor="segment" className="form-label form-label-jv label-color-common">Segment</label>
+                            <select
+                                id="segment"
+                                className="form-select form-select-jv"
+                                name="segment"
+                                value={segment}
+                                disabled={voucherNo ? true : addMode}
+                                onChange={(e) => handleSegment(e.target.value)}
+                            >
+                                <option value="">Select Segment</option>
+                                {segments.map(result => (
+                                    <option value={result.seg_code} key={result.seg_code}>{result.seg_name}</option>
+                                ))}  
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-3 d-flex">
+                            <label htmlFor="activityCode" className="form-label form-label-jv label-color-common">Activity Code</label>
+                            <select
+                                id="activityCode"
+                                className="form-select form-select-jv"
+                                name='activityCode'
+                                value={activityCode}
+                                disabled={voucherNo ? true : addMode}
+                                onChange={(e) => setActivityCode(e.target.value)} 
+                            >
+                                <option value=" ">Select Activity Code</option>
+                                {activityCodes.map(Act_Code => (
+                                    <option key={Act_Code.activity_cd} value={Act_Code.activity_cd}>{Act_Code.act_name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-3 d-flex">
+                            <label htmlFor="normal_deposit" className="form-label form-label-jv label-color-common">Normal/Deposit</label>
+                            <select
+                                id="normal_deposit"
+                                className="form-select form-select-jv"
+                                name="normal_deposit"
+                                value={normal_deposit}
+                                disabled={voucherNo ? true : addMode}
+                                onChange={(e) => setNormal_deposit(e.target.value)}
+                            >
+                                <option value="">Select Normal/Deposit</option>
+                                <option value="N">Normal</option>
+                                <option value="D">Depositor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6 mb-3 d-flex">
+
+                        </div>
+                        <div className="col-md-6 mb-3 d-flex justify-content-end" >
+                            <button className="btn btn-primary me-2" style={{ width: '9rem' }} disabled={!addMode}
+                                onClick={handleAdd}>Add</button>
+                            <button className="btn btn-secondary me-2" style={{ width: '9rem' }} disabled={addMode}
+                                onClick={handleClear}>Clear</button>
+                            <button className="btn btn-primary me-2" style={{ width: '9rem' }} disabled={!addMode}
+                                onClick={handleEditClick}>Search Voucher</button>
+                            {showPopup && <EditVoucherPopup onClose={handleClosePopup} onRowSelect={handleVoucharRowSelect} />}
+                            <button className="btn btn-success" style={{ width: '9rem' }} disabled={addMode}
+                                onClick={handleFinalSave}>Save</button>
+                        </div>
+                    </div>
+
+
+                    <div className="row">
+                        <div className="col">
+                            <DataTable columns={columns} data={details} customStyles={customStyles} responsive />
+                        </div>
+                    </div>
+
+
+
                     <div className="d-flex justify-content-evenly mb-3 mt-3 ">
                         {/* <div>
                      <p className="label-color-common">Total Dr: {totals.drTotal}</p>
@@ -760,14 +933,14 @@ function Journal({ details, setDetails }) {
                             <p><b>Balance: {formatNumber(totals.balance)}</b></p>
                         </div>
                         <div className="d-flex">
-                            <button className="btn btn-warning" style={{width:'7rem'}} onClick={handleAddRow}>Add Row</button>
+                            <button className="btn btn-warning" style={{ width: '7rem' }} onClick={handleAddRow}>Add Row</button>
                         </div>
                     </div>
-              
+
+                </div>
             </div>
-          </div>
         </div>
-      );
-    };
-    
+    );
+};
+
 export default Journal;

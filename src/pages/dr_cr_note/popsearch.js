@@ -3,16 +3,20 @@ import DataTable from 'react-data-table-component';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
 import './popsearch.css';
+import { BASE_URL } from "../constants";
 
-const PopupSearch = ({ onSelectRow, exchange, segment }) => {
+
+const PopupSearch = ({ onSelectRow, activity, segment }) => {
   const [searchText, setSearchText] = useState('');
   const [searchData, setSearchData] = useState([]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/searchAccount', {
-        params: { name: searchText, exchange: exchange, segment: segment },
+      console.log('activity ', activity);
+      const response = await axios.get(`${BASE_URL}/api/searchAccountDrCr`, {
+        params: { name: searchText, activity: activity, segment: segment },
       });
+      console.log('response.data ', response.data);
       setSearchData(response.data); 
     } catch (error) {
       console.error('Error fetching accounts:', error);
@@ -30,11 +34,8 @@ const PopupSearch = ({ onSelectRow, exchange, segment }) => {
   const handleRowClick = (row) => {
     // Pass all necessary data fields to onSelectRow function
     onSelectRow({
-      act_name: row.act_name,
+      act_name: row.account_name,
       act_cd: row.act_cd,
-      branch_cd: row.branch_cd,
-      cmp_cd: row.cmp_cd,
-      type_cd: row.type_cd,
     });
   };
 
@@ -45,7 +46,7 @@ const PopupSearch = ({ onSelectRow, exchange, segment }) => {
       sortable: true,
       cell: (row) => (
         <div onClick={() => handleRowClick(row)} style={{ cursor: 'pointer' }}>
-          {row.act_name}
+          {row.account_name}
         </div>
       ),
     },

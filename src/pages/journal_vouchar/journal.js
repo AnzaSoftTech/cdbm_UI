@@ -33,6 +33,7 @@ function Journal({ details, setDetails }) {
     const [addMode, setAddMode] = useState(true);
     const [segments, setSegments] = useState([]);
     const [finYear, setFinYear] = useState();
+    const [userId, setUserId] = useState(1);
 
     const [normal_deposit, setNormal_deposit] = useState([]);
     const [voucherDetails, setVoucherDetails] = useState({
@@ -395,6 +396,7 @@ function Journal({ details, setDetails }) {
             return;
         }
         
+        //changes on 10/12/2024, added userId
         const headerData = {
             finYear,
             bookType,
@@ -405,6 +407,7 @@ function Journal({ details, setDetails }) {
             exchange,
             activityCode,
             normal_deposit,
+            userId,
             // Ayaan : add segment, exc and normal
         };
         setHeader(headerData);
@@ -469,63 +472,6 @@ function Journal({ details, setDetails }) {
 
 
     const columns = [
-        // {
-        //     name: 'Sr No.',
-        //     selector: (row, index) => index + 1,
-        //     sortable: false,
-        // },
-
-        // {
-        //     name: 'Segment',
-        //     selector: row => row.segment,
-        //     cell: (row, index) => (
-        //         <select
-        //             value={row.segment}
-        //             onChange={e => handleInputChange(index, 'segment', e.target.value)}
-        //             className="form-control" 
-        //         >
-        //             <option value="">Select Segment</option>
-        //             <option value="C">Segment 1</option>
-        //             <option value="2">Segment 2</option>
-        //             {/* Add more options as needed */}
-        //         </select>
-        //     ),
-        //     width: '100px',
-        // },
-        // {
-        //     name: 'Exchange',
-        //     selector: row => row.exchange,
-        //     cell: (row, index) => (
-        //         <select
-        //             value={row.exchange}
-        //             onChange={e => handleInputChange(index, 'exchange', e.target.value)}
-        //             className="form-control" 
-        //         >
-        //             <option value="">Select Exchange</option>
-        //             {exchange.map(exchange => (
-        //                 <option key={exchange.exc_cd} value={exchange.exc_cd}>{exchange.exc_name}</option>
-        //             ))}
-        //         </select>
-        //     ),
-        //     width: '100px',
-        // },
-        // {
-        //     name: 'Normal/Deposit',
-        //     selector: row => row.normal_deposit,
-        //     cell: (row, index) => (
-        //         <select
-        //             value={row.normal_deposit}
-        //             onChange={e => handleInputChange(index, 'normal_deposit', e.target.value)}
-        //             className="form-control select_color" 
-        //         >
-        //             <option value="">Select Normal/Deposit</option>
-        //             <option value="N">Normal</option>
-        //             <option value="D">Depositor</option>
-        //             {/* Add more options as needed */}
-        //         </select>
-        //     ),
-        //     width: '100px',
-        // },
         {
             name: 'Account Name',
             selector: 'act_name',

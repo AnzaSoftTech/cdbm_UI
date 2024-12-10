@@ -62,26 +62,27 @@ function EditPopup({ onClose ,onRowSelect }) {
     return (
         <div className="popup">
             <div className="popup-inner">
-                <h4 className='header_color_search'>Edit Account Master</h4>
+                <h4 className='header_color'>Edit Account Master</h4>
                 <div className='d-flex justify-content-between'>
-                    <div className="form-group d-flex ">
-                        <label style={{ width: '150px', marginLeft: '8px' }} >Account Name</label>
-                        <input type="text" className="form-control me-1 mb-3" value={searchAcctName}
-                            onChange={(e) => setSearchAcctName(e.target.value)} size="sm" />
+                    <div className="form-group d-flex " style={{ marginLeft: '10px' }}>
+                        {/* <label  className='form-label' >Account Name</label> */}
+                        <input type="text" className="form-control" value={searchAcctName} style={{ width: '287px' }}
+                            onChange={(e) => setSearchAcctName(e.target.value)} placeholder='Enter Account Name' size="sm" />
                     </div>
-                    
-                </div>
-                <div className='d-flex justify-content-between'>
                     <div className="form-group d-flex ">
-                        <label htmlFor="groupCode" style={{ width: '100px', marginLeft: '8px' }}>Group</label>
-                        <select id="groupCode" className="form-control me-1 mb-3" style={{width: '232px', height: '40px'}}  name='groupCode'
-                            value={groupCode} onChange={(e) => setGroupCode(e.target.value)}>
+                        {/* <label htmlFor="groupCode" style={{ width: '100px', marginLeft: '8px' }}>Group</label> */}
+                        <select id="groupCode" className="form-control" name='groupCode' style={{ width: '287px' }}
+                            value={groupCode} placeholder='Select Group' onChange={(e) => setGroupCode(e.target.value)} >
                             <option value="">Select Group</option>
                             {groupCodes.map(Grp => (
                                 <option key={Grp.grp_cd_lvl2} value={Grp.grp_cd_lvl2}>{Grp.grp_desc}</option>
                             ))}
                         </select>
                     </div>
+                    
+                </div>
+                <div className='d-flex justify-content-between' style={{float: 'right', marginBottom: '20px'}}>
+                    
                     <div className='d-flex justify-content-end'>
                         <button style={{ width: '150px', height: '40px' }} className="btn btn-primary me-3 btn-sm"
                             onClick={handleSearch} >Search</button>
@@ -124,7 +125,7 @@ function EditPopup({ onClose ,onRowSelect }) {
 
                
             </div>
-            <button className="btn btn-secondary close_btn" onClick={onClose}>Close</button>
+            <button className="btn btn-secondary close_btn" onClick={onClose} style={{ float: 'left' }}>Close</button>
         </div>
     );
 }

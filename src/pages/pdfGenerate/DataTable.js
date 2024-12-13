@@ -82,7 +82,7 @@ const DataTable = ({ columns, data }) => {
     const fetchData = async (date) => {
         try {
             const formattedDate = formatDate(date);
-            const endpoint = `${BASE_URL}/api/contract_notes?p_transaction_date=3/06/2024`;
+            const endpoint = `${BASE_URL}/api/contract_notes?p_transaction_date=${formattedDate}`;
             //  const endpoint = `http://localhost:3001/api/contract_notes?p_transaction_date=${formattedDate}`;
 
             // const [

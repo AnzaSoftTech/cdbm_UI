@@ -52,7 +52,7 @@ const DataTable = ({ columns, data }) => {
 
     const handleImportFiles = async () => {
         if (selectedFiles.length === 0) {
-            alert("Please select at least one file to import.");
+            // alert("Please select at least one file to import.");
             return;
         }
 
@@ -70,7 +70,7 @@ const DataTable = ({ columns, data }) => {
                 },
                 
             });
-            alert("Files imported successfully!");
+            // alert("Files imported successfully!");
         } catch (error) {
             console.error("Error importing files:", error);
             // alert("Failed to import files.");

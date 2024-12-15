@@ -214,7 +214,7 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                             <Text style={styles.header}>MEMBER: NATIONAL STOCK EXCHANGE OF INDIA LTD</Text>
                             <Text style={styles.header}>SEBI REGN. NO. INZ000242534 • TRADING CODE NO: 23/10245 • CM BP ID: IN554382</Text>
                             <Text style={styles.header}>CIN: U67120MH1997PLC108674 • GSTIN: 27AABCS • PAN NO AABCS9766K</Text>
-                            <Text style={styles.header}>Compliance Officer: Anil Sodhani • Phone: {companyDetails?.phone} • Email: {companyDetails?.email}</Text>
+                            <Text style={styles.header}>Compliance Officer: Anil Sodhani • Phone: {companyDetails?.phone}</Text>
                         </View>
                         <View style={{ width: '40%', alignItems: 'right' }}>
                             <Text style={styles.righttext}>{companyDetails?.addr1}</Text>
@@ -249,6 +249,10 @@ const MyPDFDocument = ({ tableData, companyDetails, excDetails, contractNotes })
                                 <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
                                     <Text style={{ width: '30%', fontSize: 23 }}>Client Name:</Text>
                                     <Text style={{ width: '70%', fontSize: 23 }}>{note.client_name}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', marginBottom: 11, borderBottomWidth: 1, borderBottomColor: '#000', paddingBottom: 8 }}>
+                                    <Text style={{ width: '30%', fontSize: 23 }}>Client Email:</Text>
+                                    <Text style={{ width: '70%', fontSize: 23 }}>{note.email_id}</Text>
                                 </View>
 
                                 {/* Row 3 */}

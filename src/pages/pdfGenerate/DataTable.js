@@ -2,7 +2,7 @@ import JSZip from 'jszip'; // Import JSZip
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
-import { Button, Container, Form, Row, Col, Spinner, Card } from 'react-bootstrap';
+import { Button, Container, Form, Row, Col, Spinner, Card, ListGroup, CloseButton } from 'react-bootstrap';
 import { pdf } from '@react-pdf/renderer'; // Import pdf function from @react-pdf/renderer
 import MyPDFDocument from './generatePDF'; // Assuming MyPDFDocument is the component for generating the PDF
 import './DataTable.css';
@@ -18,6 +18,8 @@ const formatDate = (dateString) => {
 };
 
 const DataTable = ({ columns, data }) => {
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [isUploading, setIsUploading] = useState(false);
     const [showTable, setShowTable] = useState(false);
     const [companyDetails, setCompanyDetails] = useState(null);
     const [excDetails, setExcDetails] = useState(null);
@@ -38,11 +40,50 @@ const DataTable = ({ columns, data }) => {
         await fetchData(selectedDate);
     };
 
+    const handleFileChange = (event) => {
+        setSelectedFiles([...event.target.files]);
+    };
+
+    const handleRemoveFile = (index) => {
+        const updatedFiles = [...selectedFiles];
+        updatedFiles.splice(index, 1);
+        setSelectedFiles(updatedFiles);
+    };
+
+    const handleImportFiles = async () => {
+        if (selectedFiles.length === 0) {
+            // alert("Please select at least one file to import.");
+            return;
+        }
+
+        const formData = new FormData();
+        for (let i = 0; i < selectedFiles.length; i++) {
+            formData.append("files", selectedFiles[i]);
+        }
+
+        setIsUploading(true);
+
+        try {
+            await axios.post(`${BASE_URL}/api/sendEmails`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                
+            });
+            // alert("Files imported successfully!");
+        } catch (error) {
+            console.error("Error importing files:", error);
+            // alert("Failed to import files.");
+        } finally {
+            setIsUploading(false);
+            setSelectedFiles([]); // Reset file input
+        }
+    };
     const fetchData = async (date) => {
         try {
             const formattedDate = formatDate(date);
-           const endpoint = `${BASE_URL}/api/contract_notes?p_transaction_date=${formattedDate}`;
-           //  const endpoint = `http://localhost:3001/api/contract_notes?p_transaction_date=${formattedDate}`;
+            const endpoint = `${BASE_URL}/api/contract_notes?p_transaction_date=${formattedDate}`;
+            //  const endpoint = `http://localhost:3001/api/contract_notes?p_transaction_date=${formattedDate}`;
 
             // const [
             //     companyResponse,
@@ -98,7 +139,7 @@ const DataTable = ({ columns, data }) => {
 
                 const pdfBlob = await pdf(pdfDoc).toBlob();
                 const pdfFileName = 'Contract_Note_' + `${note.cont_note_no}` + `_` + `${note.client_cd}` +
-                                      `_` + `${note.trd_settle_no}.pdf`;
+                    `_` + `${note.trd_settle_no}.pdf`;
                 pdfs.push({ pdfBlob, pdfFileName });
             }
         }
@@ -185,7 +226,58 @@ const DataTable = ({ columns, data }) => {
                     </div>
                 )
             )}
+            <Container className="py-4">
+            <Card className="shadow-sm p-4 mb-4">
+                <Row className="align-items-center mb-4">
+                    <Col xs={12} md={6}>
+                        <Form.Group>
+                            <Form.Label className="fw-bold">Select Files:</Form.Label>
+                            <Form.Control
+                                type="file"
+                                multiple
+                                onChange={handleFileChange}
+                            />
+                            {selectedFiles.length > 0 && (
+                                <ListGroup className="mt-3">
+                                    {selectedFiles.map((file, index) => (
+                                        <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
+                                            {file.name}
+                                            <CloseButton onClick={() => handleRemoveFile(index)} />
+                                        </ListGroup.Item>
+                                    ))}
+                                </ListGroup>
+                            )}
+                        </Form.Group>
+                    </Col>
+                    <Col xs={12} md={6} className="d-flex justify-content-md-end">
+                        <Button
+                            variant="primary"
+                            onClick={handleImportFiles}
+                            className="mt-3 mt-md-0"
+                            style={{ minHeight: '40px', fontWeight: '500' }}
+                            disabled={isUploading} // Disable button while uploading
+                        >
+                            {isUploading ? (
+                                <>
+                                    <Spinner
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                        className="me-2"
+                                    />
+                                    Uploading Files...
+                                </>
+                            ) : (
+                                'Import Files'
+                            )}
+                        </Button>
+                    </Col>
+                </Row>
+            </Card>
         </Container>
+        </Container>
+
     );
 };
 

@@ -9,9 +9,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import ScripSearchPop from './scripSearch.js'
 import axios from 'axios';
 import { BASE_URL } from "../constants";
+// import Select from 'react-select';
+//import { MenuItem, Select, Checkbox, ListItemText, InputLabel, FormControl } from '@mui/material';
 import { format, parseISO } from 'date-fns'
+import { Heading } from '@chakra-ui/react';
 //import Select from 'react-select';
 
+// for reference
+// npm install @mui/material @emotion/react @emotion/styled
 
 const Trial_Balance = () => {
     // const [branches, setBranches] = useState([]);
@@ -46,12 +51,6 @@ const Trial_Balance = () => {
         Settle_tp: '',
         SetleNo: '',
     });
-
-    // if (asonDate) {
-    //     var dateString = asonDate;
-    //     const formattedDate = format(parseISO(dateString), 'yyyy-MM-dd');
-    //     setAsOnDate(formattedDate);
-    // }
 
     const handleChange = (e) => {
         setFilters({

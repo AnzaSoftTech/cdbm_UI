@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './EditVoucherPopup.css'; // Adjust the path as per your file structure
+import { BASE_URL } from "../constants";
 
-function EditVoucherPopup({ onClose ,onRowSelect }) {
+
+function EditVoucherPopup({ onClose, onRowSelect }) {
     const [branchNamecd, setBranchName] = useState('');
     const [voucherNo, setVoucherNo] = useState('');
-    const [accountNamecd, setAccountName] = useState('');
+    const [accountName, setAccountName] = useState('');
     const [accountNames, setAccountNames] = useState([]);
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
@@ -13,42 +15,27 @@ function EditVoucherPopup({ onClose ,onRowSelect }) {
     const [bookType, setBookType] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [branches, setBranches] = useState([]);
+    const [finYear, setFinYear] = useState();
+    const [accountType, setAccountType] = useState('account');
     // Dropdown options (you can fetch these dynamically if needed)
 
     useEffect(() => {
-        axios.get('http://localhost:3001/bookType')
-            .then(response => setBookTypes(response.data))
+        axios.get(`${BASE_URL}/api/get_fin_year`)
+            .then(response => setFinYear(response.data))
             .catch(error => console.error('Error fetching accounts:', error));
     }, []);
-
-    useEffect(() => {
-        axios.get('http://localhost:3001/api/Account')
-            .then(response => setAccountNames(response.data))
-            .catch(error => console.error('Error fetching accounts:', error));
-    }, []);
-    useEffect(() => {
-        axios.get('http://localhost:3001/api/branches')
-            .then(response => {
-                setBranches(response.data);
-                // alert(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the data!", error);
-            });
-    },
-        []);
-
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/api/searchVouchers', {
+            if(!finYear){
+                alert('Please Enter Fin Year');
+                return;
+            }
+            const response = await axios.get(`${BASE_URL}/api/searchOpenBal`, {
                 params: {
-                    branchNamecd,
-                    voucherNo,
-                    accountNamecd,
-                    fromDate,
-                    toDate,
-                    bookType
+                    finYear,
+                    accountType,
+                    accountName,
                 }
             });
             setSearchResults(response.data);
@@ -56,123 +43,81 @@ function EditVoucherPopup({ onClose ,onRowSelect }) {
             console.error('Error searching vouchers:', error);
         }
     };
-    
+
+    const handleSendData = (result) => {
+        onRowSelect(result);
+        onClose();
+    }
+
 
     return (
         <div className="popup">
             <div className="popup-inner">
-                <h4 className='header_color'>Edit Voucher</h4>
+                <h5 className='header_color'>Edit Openinig Balance</h5>
                 <div className='d-flex justify-content-between'>
-                    <div className="form-group d-flex ">
-                        <label className='branch_width'>Branch Name:</label>
-                        <select
-                            className="form-control mb-3  branch_input"
-                            value={branchNamecd}
-                            onChange={(e) => setBranchName(e.target.value)}
-                            size="sm"
-                        >
-                            <option value="">Select Branch</option>
-                            {branches.map(branch => (<option key={branch.branch_cd} value={branch.branch_cd}>{branch.branch_name}</option>))}
-                        </select>
-                    </div>
-                    <div className="form-group d-flex">
-                        <label className='vouchar_width'>Voucher No:</label>
-                        <input type="text" className="form-control me-1 height_vouchar_input mb-3" value={voucherNo} onChange={(e) => setVoucherNo(e.target.value)} size="sm" />
+                    <div className="form-group d-flex" style={{ marginLeft: '10px' }}>
+                        <label className='form-label' style={{ width: '110px' }}>Fin Year:</label>
+                        <input id="finYear" className="form-control" style={{ marginRight: '0.625rem', width: '227px' }}
+                            value={finYear} onChange={(e) => setFinYear(e.target.value)} />
                     </div>
                 </div>
                 <div className='d-flex justify-content-between'>
-                    <div className="form-group d-flex">
-                        <label className='formDt_width'>From Date:</label>
-                        <input type="date" className="form-control form_dt_input mb-3" value={fromDate} onChange={(e) => setFromDate(e.target.value)} size="sm" />
-                        <label className='todate_width'>To Date:</label>
-                        <input type="date" className="form-control   mb-3 todt_input" value={toDate} onChange={(e) => setToDate(e.target.value)} size="sm" />
-                    </div>
-
-                    <div className="form-group d-flex">
-                        <label className='booktype_label'>Book Type:</label>
-
-                        <select id="bookType" className="form-select   booktype_input me-1" name='bookType' value={bookType} onChange={(e) => setBookType(e.target.value)}>
-                            <option value="">Select Book Type</option>
-                            {bookTypes.map(BookTypes => (
-                                <option key={BookTypes.book_type} value={BookTypes.book_type}>{BookTypes.book_type}</option>
-                            ))}
+                    <div className="form-group d-flex " style={{ marginLeft: '10px' }}>
+                        <label className='form-label' style={{width: '110px'}}>Account Type:</label>
+                        <select
+                            value={accountType}
+                            onChange={e => setAccountType(e.target.value)}
+                            style={{width: '227px', height: '40px'}}
+                            className="form-control"
+                        >
+                            <option value="account">Account</option>
+                            <option value="cb_account">Cash/Bank</option>
                         </select>
+                    </div>
+                    <div className="form-group d-flex" style={{ marginLeft: '10px' }}>
+                        {/* <label className='form-label' style={{ width: '110px' }}>Account Name:</label> */}
+                        <input id="accountName" className="form-control" style={{ marginRight: '0.625rem', width: '287px' }}
+                            value={accountName} onChange={(e) => setAccountName(e.target.value)} 
+                            placeholder='Enter Account Name/ Cash/Bank Name' />
                     </div>
                 </div>
-                <div className='d-flex justify-content-between'>
-                    <div className="form-group d-flex">
-                        <label className='accountName_width'>Account Name:</label>
-                        <select
-                            className="form-control accountName_input mb-3"
-                            value={accountNamecd}
-                            onChange={(e) => setAccountName(e.target.value)}
-                            size="sm"
-                        >
-                            <option value="">Select Account</option>
-                            {accountNames.map(AccountName => (
-                                <option key={AccountName.act_cd} value={AccountName.act_cd}>{AccountName.act_name}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className='d-flex justify-content-end'>
-                        <button className="btn btn-primary me-3 btn-sm btn_height" onClick={handleSearch} >Search</button>
-                    </div>
-
+                <div className='d-flex justify-content-end' style={{ float: 'right', marginBottom: '20px', marginTop: '10px' }}>
+                    <button className="btn btn-primary me-3 btn-sm btn_height" onClick={handleSearch}>Search</button>
+                    <button className="btn btn-primary me-3 btn-sm btn_height" onClick={onClose}
+                        style={{ backgroundColor: '#dc3545' }}>Close</button>
                 </div>
                 <div className=' table-container'>
                     <table className="table mt-3 table-wrapper">
                         <thead className='table-primary'>
                             <tr>
                                 <th>Fin year</th>
-                                <th>Voucher No</th>
-                                <th>Book Type</th>
-                                <th >Trans_Date</th>
-                                <th>Effective_Date</th>
                                 <th>Account Name</th>
-                                <th>Amount</th>
+                                <th>Opening Balance</th>
                                 <th>Dr/Cr</th>
-                                <th>Segment</th>
-                                <th>Exchange</th>
-                                <th>Branch</th>
-                                <th>Company</th>
-                                <th>Normal/Depositor</th>
-                                <th>Account Code</th>
-                                <th>Narration</th>
-                                <th>analyzer_code</th>
-
-
-
+                                <th>As on Date</th>
                             </tr>
-
                         </thead>
                         <tbody>
                             {searchResults.map((result, index) => (
-                                <tr key={index} onClick={() => onRowSelect(result.fin_year,result.voucher_no,result.book_type,result.trans_date,result.eff_date,result.cb_act_cd ,result.amount,result.drcr,result.segment,result.exc_cd,result.branch_cd,result.cmp_cd,result.nor_depos,result.act_cd,result.narration,result.narr_code)} style={{ cursor: 'pointer' }}>
+                                <tr key={index} onClick={() => handleSendData(result)} style={{ cursor: 'pointer' }}>
                                     <td>{result.fin_year}</td>
-                                    <td>{result.voucher_no}</td>
-                                    <td>{result.book_type}</td>
-                                    <td>{new Date(result.trans_date).toLocaleDateString()}</td>
-                                    <td>{new Date(result.eff_date).toLocaleDateString()}</td>
-                                    <td>{result.cb_act_cd}</td>
-                                    <td>{result.amount}</td>
+                                    <td>{result.account_name}</td>
+                                    <td>{result.open_bal_amt}</td>
                                     <td>{result.drcr}</td>
-                                    <td>{result.segment}</td>
-                                    <td>{result.exc_cd}</td>
-                                    <td>{result.branch_cd}</td>
-                                    <td>{result.cmp_cd}</td>
-                                    <td>{result.nor_depos}</td>
-                                    <td>{result.act_cd}</td>
-                                    <td>{result.narration}</td>
-                                    <td>{result.narr_code}</td>
+                                    <td>{result.bal_as_on_date}</td>
+                                    <td hidden>{result.act_cd ? result.act_cd : result.cb_act_cd}</td>
+                                    <td hidden>{result.exc_cd}</td>
+                                    <td hidden>{result.segment}</td>
+                                    <td hidden>{result.activity_cd}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
 
-               
+
             </div>
-            <button className="btn btn-secondary close_btn" onClick={onClose}>Close</button>
+            
         </div>
     );
 }

@@ -12,6 +12,7 @@ import searchIcon from './image/search.png';
 import deleteIcon from './image/delete.png';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { BASE_URL } from "../constants";
+import Select from 'react-select';
 
 function Payment_Voucher({ details, setDetails }) {
     const [drCrType, setDrCrType] = useState('');
@@ -65,12 +66,24 @@ function Payment_Voucher({ details, setDetails }) {
     }, []);
 
     useEffect(() => {
-        //'http://localhost:3001/api/cash_bank_master 
         axios.get(`${BASE_URL}/api/cash_bank_master`)
             .then(response => setCBAccounts(response.data))
             .catch(error => console.error('Error fetching cash bank accounts:', error));
     }, []);
-    //console.log('vendordetails', vendorDetails);
+
+    // useEffect(() => {
+    //     axios.get(`${BASE_URL}/api/cash_bank_master`)
+    //         .then(response => {
+    //             const transformedData = response.data.map(item => ({
+    //               value: item.cb_act_cd,   // Adjust these to match your API response fields
+    //               label: item.bank_ac_name  // Adjust these to match your API response fields
+    //             }));
+    //             setCBAccounts(transformedData);
+    //           })
+    //             //(response.data))
+    //         .catch(error => console.error('Error fetching cash bank accounts:', error));
+    // }, []);
+
     useEffect(() => {
         axios.get(`${BASE_URL}/api/bookType`)
             .then(response => setBookTypes(response.data))
@@ -878,10 +891,7 @@ function Payment_Voucher({ details, setDetails }) {
             name: 'Debit Amount',
             selector: row => row.dr_amount,
             cell: (row, index) => {
-                // Format the amount for display
-                //const formattedAmount = parseFloat(row.dr_amount || '0').toLocaleString('en-IN', { maximumFractionDigits: 2 });
                 const formattedAmount = row.dr_amount;
-
                 return (
                     <input
                         type="text"
@@ -903,16 +913,12 @@ function Payment_Voucher({ details, setDetails }) {
             name: 'Credit Amount',
             selector: row => row.cr_amount,
             cell: (row, index) => {
-                // Format the amount for display
-                // const formattedAmount = parseFloat(row.cr_amount || '0').toLocaleString('en-IN', { maximumFractionDigits: 2 });
                 const formattedAmount = row.cr_amount;
-
                 return (
                     <input
                         type="text"
                         value={formattedAmount}
                         onChange={e => {
-                            // Convert formatted value back to number
                             const rawValue = e.target.value.replace(/,/g, ''); // Remove commas for parsing
                             handleInputChange(index, 'cr_amount', rawValue);
                         }}
@@ -1060,9 +1066,7 @@ function Payment_Voucher({ details, setDetails }) {
         },
     };
 
-
     const isAccountNamePresent = details.some(row => row.act_name && row.act_name.trim() !== '');
-
 
     return (
         <div className="container-common">
@@ -1096,6 +1100,16 @@ function Payment_Voucher({ details, setDetails }) {
                     <div className="row">
                         <div className="col-md-6 mb-2 d-flex">
                             <label htmlFor="cbaccount" className="form-label form-label-pv label-color-common">Cash/Bank A/c</label>
+                            {/* <Select
+                                id="cbaccount"
+                                name="cbaccount"
+                                value={cbaccount}
+                                // onChange={(e) => handleCashBank(e.target.value)}
+                                onChange={(e) => handleCashBank(e.target.value)}
+                                options={cbaccounts}
+                                isDisabled={editMode}
+                                placeholder="Select Cash Bank A/c"
+                            /> */}
                             <select id="cbaccount" className="form-select form-control-standard" name='cbaccount' value={cbaccount}
                                 onChange={(e) => handleCashBank(e.target.value)} disabled={editMode === true}>
                                 <option value="">Select Cash Bank A/c</option>

@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainPanel from './MainPanel';
 import { useNavigate } from 'react-router-dom';
-import { FaAngleDown, FaAngleRight, FaHome, FaUpload, FaFileAlt, FaRupeeSign, FaFileInvoiceDollar, FaBook, FaBookOpen, FaCogs, FaExchangeAlt, FaUserTie } from "react-icons/fa";
-import { FaArrowsUpToLine, FaBuildingColumns, FaHandHoldingDollar, FaScaleBalanced, FaPlusMinus, FaChartPie, FaUserTag, FaUserPen, FaLink } from "react-icons/fa6";
+import { FaAngleDown, FaAngleRight, FaHome, FaUpload, FaFileAlt, FaRupeeSign, FaFileInvoiceDollar, FaBook, FaBookOpen, FaCogs, FaExchangeAlt,  FaUserTie, FaHive,FaUserShield } from "react-icons/fa";
+import { FaArrowsUpToLine, FaBuildingColumns, FaHandHoldingDollar, FaScaleBalanced, FaPlusMinus, FaChartPie, FaUserTag, FaUserPen, FaLink, FaBookOpenReader } from "react-icons/fa6";
 import { BsLayoutTextWindow, BsCloudUpload, BsFillJournalBookmarkFill, BsJournals, BsJournalCode, BsGraphUpArrow, BsListColumns, BsPercent, 
           BsBookmarkCheck, BsBookmarkCheckFill, BsBuildings, BsDiagram3 } from "react-icons/bs";
+          import { GrShieldSecurity } from "react-icons/gr";
+import { HiUsers } from "react-icons/hi2";
+import { HiReceiptTax } from "react-icons/hi";
 
 import { Link } from 'react-router-dom';
 // FaDollarSign
@@ -130,7 +133,9 @@ const toggleMenu = (menuName) => {
             {openMenus.masters && (
               <div className="submenu">
                   <div className="submenu-item"><Link to="/dashboard/mii_master/MII_MasterApp" className="sidebar_link"><BsBuildings style={{ marginRight: '8px' }} />MII Master</Link></div>
-                  <div className="submenu-item"><Link to="/dashboard/" className="sidebar_link"><FaUserTag style={{ marginRight: '8px' }} />Vendor Master</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/vendor_master/Vendor_MasterApp" className="sidebar_link"><FaUserTag style={{ marginRight: '8px' }} />Vendor Master</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/activity_master/Activity_MasterApp" className="sidebar_link"><GrShieldSecurity style={{ marginRight: '8px' }} />Activity Master</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/segment_master/Segment_MasterApp" className="sidebar_link"><FaHive style={{ marginRight: '8px' }} />Segment Master</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/doc_mapp_master/Doc_Mapp_Master_MasterApp" className="sidebar_link"><FaUserTag style={{ marginRight: '8px' }} />Doc Mapp Master</Link></div>
                 {/* Additional financial submenu items here */}
               </div>
@@ -149,9 +154,10 @@ const toggleMenu = (menuName) => {
                   <div className="submenu-item"><Link to="/dashboard/Client_Master/client_masterApp" className="sidebar_link"><FaUserPen style={{ marginRight: '8px' }} />Client Registration</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/brok_slab/Brok_slab_masterApp" className="sidebar_link"><BsPercent style={{ marginRight: '8px' }} />Brokerage Slab</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/client_link_slab/Client_link_slab_masterApp" className="sidebar_link"><FaLink style={{ marginRight: '8px' }} />Link Client/Slab</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/dealer_sub_dealer/Dealer_Sub_DealerApp" className="sidebar_link"><HiUsers style={{ marginRight: '8px' }} />Dealer Sub-Dealer</Link></div>
+                  <div className="submenu-item"><Link to="/dashboard/dealer_slab_master/Dealer_Slab_MasterApp" className="sidebar_link"><HiReceiptTax style={{ marginRight: '8px' }} />Dealer Slab Master</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/family_grp/FamGrp_MasterApp" className="sidebar_link"><FaLink style={{ marginRight: '8px' }} />Family Group</Link></div>
                   <div className="submenu-item"><Link to="/dashboard/client_grp/ClientGrp_MasterApp" className="sidebar_link"><FaLink style={{ marginRight: '8px' }} />Client Group</Link></div>
-
               </div>
             )}
           </div>
@@ -165,6 +171,7 @@ const toggleMenu = (menuName) => {
             </div>
             {openMenus.reports && (
               <div className="submenu">
+                <div className="submenu-item"><Link to="/dashboard/day_book/daybookapp" className="sidebar_link"><FaBookOpenReader style={{ marginRight: '8px' }} />Day Book</Link></div>
                 <div className="submenu-item"><Link to="/dashboard/trial_balance/tb_mainapp" className="sidebar_link"><FaChartPie style={{ marginRight: '8px' }} />Trial Balance</Link></div>
                 <div className="submenu-item"><Link to="/dashboard/ledger/l_mainapp" className="sidebar_link"><BsListColumns style={{ marginRight: '8px' }} />Ledger</Link></div>
                 <div className="submenu-item"><Link to="/dashboard/pdfGenerate/SettlementReport" className="sidebar_link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} />Contract Notes</Link></div>

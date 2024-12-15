@@ -5,8 +5,9 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^3.0.2",
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.1.10",
     "@react-pdf/renderer": "^4.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -27,6 +28,7 @@
     "react-router-dom": "^6.26.0",
     "react-script": "^2.0.5",
     "react-scripts": "5.0.1",
+    "react-select": "^5.8.3",
     "react-table": "^7.8.0",
     "reactstrap": "^9.2.2",
     "web-vitals": "^2.1.4"

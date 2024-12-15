@@ -3,15 +3,16 @@ import DataTable from 'react-data-table-component';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
 import './journal.css';
+import { BASE_URL } from "../constants";
 
-const PopupSearch = ({ onSelectRow, exchange, segment }) => {
+const PopupSearch = ({ onSelectRow, exchange, segment, AccountType, activity }) => {
   const [searchText, setSearchText] = useState('');
   const [searchData, setSearchData] = useState([]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/searchAccount', {
-        params: { name: searchText, exchange: exchange, segment: segment },
+      const response = await axios.get(`${BASE_URL}/api/searchOpenBalAccount`, {
+        params: { name: searchText, exchange: exchange, segment: segment, AccountType, activity },
       });
       setSearchData(response.data); 
     } catch (error) {
@@ -29,12 +30,11 @@ const PopupSearch = ({ onSelectRow, exchange, segment }) => {
 
   const handleRowClick = (row) => {
     // Pass all necessary data fields to onSelectRow function
+    // console.log('row ', row)
     onSelectRow({
       act_name: row.act_name,
-      act_cd: row.act_cd,
-      branch_cd: row.branch_cd,
-      cmp_cd: row.cmp_cd,
-      type_cd: row.type_cd,
+      act_cd: AccountType === 'account' ? row.act_cd : row.cb_act_cd,
+      account_type: AccountType === 'account' ? 'account' : 'cb_account'
     });
   };
 

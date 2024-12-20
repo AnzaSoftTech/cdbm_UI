@@ -173,7 +173,7 @@ const toggleMenu = (menuName) => {
               <div className="submenu">
                 <div className="submenu-item"><Link to="/dashboard/day_book/daybookapp" className="sidebar_link"><FaBookOpenReader style={{ marginRight: '8px' }} />Day Book</Link></div>
                 <div className="submenu-item"><Link to="/dashboard/trial_balance/tb_mainapp" className="sidebar_link"><FaChartPie style={{ marginRight: '8px' }} />Trial Balance</Link></div>
-                <div className="submenu-item"><Link to="/dashboard/ledger/l_mainapp" className="sidebar_link"><BsListColumns style={{ marginRight: '8px' }} />Ledger</Link></div>
+                <div className="submenu-item"><Link to="/dashboard/ledger_report/ledger_report_app" className="sidebar_link"><BsListColumns style={{ marginRight: '8px' }} />Ledger</Link></div>
                 <div className="submenu-item"><Link to="/dashboard/pdfGenerate/SettlementReport" className="sidebar_link"><FaFileInvoiceDollar style={{ marginRight: '8px' }} />Contract Notes</Link></div>
                 {/* <div className="submenu-item" ><Link to="/dashboard/page2" className="nav-link">page 2</Link></div> */}              </div>
             )}

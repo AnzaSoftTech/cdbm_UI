@@ -64,7 +64,7 @@ const DataTable = ({ columns, data }) => {
         setIsUploading(true);
 
         try {
-            await axios.post(`${BASE_URL}/api/sendEmails`, formData, {
+            await axios.post(`${BASE_URL}/api/sendEmails_Contr_Notes`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -266,10 +266,10 @@ const DataTable = ({ columns, data }) => {
                                         aria-hidden="true"
                                         className="me-2"
                                     />
-                                    Uploading Files...
+                                    eMailing Files...
                                 </>
                             ) : (
-                                'Import Files'
+                                'eMail Files'
                             )}
                         </Button>
                     </Col>

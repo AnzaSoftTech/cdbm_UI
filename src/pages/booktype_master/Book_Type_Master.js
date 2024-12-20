@@ -32,11 +32,16 @@ function Book_Type_Master() {
     // const [showModalBkM, setShowModalBkM] = useState(false);
 
     useEffect(() => {
+        axios.get(`${BASE_URL}/api/ddl_activity_master`)
+            .then(response => setActivityCodes(response.data))
+            .catch(error => console.error('Error fetching activity:', error));
+        clearBookType();
+    }, []);
+
+    useEffect(() => {
         axios.get(`${BASE_URL}/api/ddl_segment_master`)
             .then(response => setSegments(response.data))
             .catch(error => console.error('Error fetching segment:', error));
-        setUserId(1);
-        clearBookType();
     }, []);
 
     const handleSegment = async (p_Segment) => {
@@ -62,36 +67,13 @@ function Book_Type_Master() {
         }
     }
 
-    // const handleSearchBookTypeMas = () => {
-    //     setShowModalBkM(true); // Opens the modal
-    // };
-    /*
-        const handleStatus = async (p_Status) => {
-            try {
-    
-            }
-            catch (error) {
-                console.error("Error in Status! ", error);
-            }
-        }
-    
-        const handleAcctCatg = async (p_AcctType) => {
-            try {
-    
-            }
-            catch (error) {
-                console.error("Error in Account Type Selection! ", error);
-            }
-        }
-    */
-
     const handleFinalSave = () => {
-        if (!segment) {
-            alert('Please select Segment.');
-            return;
-        }
         if (!activityCode) {
             alert('Please select Activity.');
+            return;
+        }
+        if (!segment) {
+            alert('Please select Segment.');
             return;
         }
         if (!bookType) {
@@ -204,22 +186,22 @@ function Book_Type_Master() {
     }
 
     return (
-        <div className="container mt-5">
+        <div className="container-common">
             <div className="card">
                 <div className="card-header-css">
-                    <h3 className="text-center">Book Type </h3>
+                    <h5 className="text-center">Book Type </h5>
                 </div>
                 <div className="card-body">
                     {/*  ****************************************************************************
                                        FIN YEAR
             **************************************************************************** */}
-                    <div className="row ">
+                    {/* <div className="row ">
                         <div className="col-md-6 mb-3 d-flex">
                             <label htmlFor="finYear" className="form-label label-width">Fin Year</label>
                             <input id="finYear" disabled={true} type="text" className="form-control size_input_cashbank"
                                 value={finYear} />
                         </div>
-                    </div>
+                    </div> */}
 
                     {/*  ****************************************************************************
                                    Segment & Activity Code
@@ -302,15 +284,17 @@ function Book_Type_Master() {
                                 Curr JV No &  End Date
             **************************************************************************** */}
                         <div className="col-md-6 mb-3 d-flex">
-                            <label htmlFor="jvNo" className="form-label label-width">Curr JV No</label>
-                            <input id="jvNo" disabled={addMode} type="text" className="form-control size_input_cashbank"
-                                value={jvNo} onChange={(e) => setJVNo(e.target.value)} />
-                        </div>
-                        <div className="col-md-6 mb-3 d-flex">
                             <label htmlFor="endDate" className="form-label label-width">End Date</label>
                             <input id="endDate" disabled={addMode} type="date" className="form-control size_input_cashbank" style={{ marginLeft: '0px' }}
                                 value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                         </div>
+
+                        {/* <div className="col-md-6 mb-3 d-flex">
+                            <label htmlFor="jvNo" className="form-label label-width">Curr JV No</label>
+                            <input id="jvNo" disabled={addMode} type="text" className="form-control size_input_cashbank"
+                                value={jvNo} onChange={(e) => setJVNo(e.target.value)} />
+                        </div> */}
+                       
 
                     </div>
 

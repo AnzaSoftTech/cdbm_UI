@@ -43,6 +43,7 @@ function CashBank_Master() {
     const [bankBranchCode, setBankBranchCode] = useState('');
     const [bankBranch, setBankBranch] = useState();
     const [acctCatg, setAcctCatg] = useState();
+    const [acctCatgs, setAcctCatgs] = useState();
     const [pan, setPan] = useState('');
     const [gstNo, setGstNo] = useState('');
     const [ifscCode, setIFSCCode] = useState();
@@ -79,6 +80,12 @@ function CashBank_Master() {
         axios.get(`${BASE_URL}/api/ddl_fin_group_level2`)
             .then(response => setGroupCodes(response.data))
             .catch(error => console.error('Error fetching exchanges:', error));
+    }, []);
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/api/ddl_mii_bank_types`)
+            .then(response => { setAcctCatgs(response.data)})
+            .catch(error => console.error('Error fetching MII bank types:', error));
     }, []);
 
     const handleAccountType = async (p_AcctType) => {
@@ -431,10 +438,10 @@ function CashBank_Master() {
     }
 
     return (
-        <div className="container mt-5">
-            <div className="card main-box">
+        <div className="container-common">
+            <div className="card">
                 <div className="card-header-css">
-                    <h3 className="text-center">Cash/Bank Master </h3>
+                    <h5 className="text-center">Cash/Bank Master </h5>
                 </div>
                 <div className="card-body">
                     {/*  ****************************************************************************
@@ -684,7 +691,7 @@ function CashBank_Master() {
                             <div className="col-md-6 mb-3 d-flex">
                                 <label htmlFor="acctCatg" className="form-label label-width">Account Category</label>
 
-                                <select id="acctCatg" className="form-select size_input_cashbank" name='acctCatg' value={acctCatg}
+                                {/* <select id="acctCatg" className="form-select size_input_cashbank" name='acctCatg' value={acctCatg}
                                     onChange={(e) => setAcctCatg(e.target.value)}>
                                     <option value=" ">Select Account Category</option>
                                     <option value="CLIENT">Client</option>
@@ -693,7 +700,15 @@ function CashBank_Master() {
                                     <option value="EXCDUES">Exchange Dues</option>
                                     <option value="MARGIN">Margin</option>
                                     <option value="MTF">MTF</option>
-                                </select>
+                                </select> */}
+
+                                <select id="acctCatg" className="form-select size_input_cashbank" name='acctCatg' value={acctCatg}
+                                onChange={(e) => setAcctCatg(e.target.value)}>
+                                <option value="">Select Account Category</option>
+                                {acctCatgs.map(BnkType => (
+                                    <option key={BnkType.bank_type_id} value={BnkType.bank_type_id}>{BnkType.type_name}</option>
+                                ))}
+                            </select>
 
                             </div>
                         </div>

@@ -4,7 +4,8 @@ import SU_MainApp from '../pages/sauda_upload/SU_MainApp';
 //import Page2 from '../pages/Page2';
 import MF_MainApp from '../pages/master_file_upload/mf_mainapp';
 import TB_MainApp from '../pages/trial_balance/tb_mainapp';
-import L_MainApp from '../pages/ledger/l_mainapp';
+//import L_MainApp from '../pages/ledger/l_mainapp';
+import LEDGER_REPORTAPP from '../pages/ledger_report/ledger_report_app';
 import PDF_FILE from '../pages/pdfGenerate/SettlementReport';
 import CNP_MainApp from '../pages/cash_net_position/cnp_mainapp';
 import SR_MainApp from '../pages/sauda_report/sr_mainapp';
@@ -40,7 +41,8 @@ function MainPanel() {
         <Route path="sauda_upload/SU_MainApp" element={<SU_MainApp />}/>
         <Route path="main_file_upload/mf_mainapp" element={<MF_MainApp />}/>
         <Route path="trial_balance/tb_mainapp" element={<TB_MainApp />}/>
-        <Route path="ledger/l_mainapp" element={<L_MainApp />}/>
+        {/* <Route path="ledger/l_mainapp" element={<L_MainApp />}/> */}
+        <Route path="ledger_report/ledger_report_app" element={<LEDGER_REPORTAPP />}/>
         <Route path="pdfGenerate/SettlementReport" element={<PDF_FILE />}/>
         <Route path="cash_net_position/cnp_mainapp" element={<CNP_MainApp />}/>
         <Route path="sauda_report/sr_mainapp" element={<SR_MainApp />}/>

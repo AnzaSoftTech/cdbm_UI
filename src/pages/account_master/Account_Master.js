@@ -28,15 +28,15 @@ function Account_Master() {
     const [subgroupCodes, setSubGroupCodes] = useState([]);
     const [subsubgroupCode, setSubSubGroupCode] = useState();
     const [subsubgroupCodes, setSubSubGroupCodes] = useState([]);
-    const [actstatus, setActStatus] = useState('');
+    const [actstatus, setActStatus] = useState('A');
     const [crn, setCrn] = useState('');
     const [userId, setUserId] = useState(1);
     const [showEditPopup, setShowEditPopup] = useState(false);
     const [showAddrPopup, setShowAddrPopup] = useState(false);
     const [showBankPopup, setShowBankPopup] = useState(false);
     // const [partyClick, setPartyClick] = useState(true);
-    const [editMode, setEditMode] = useState(false);
-    const [addMode, setAddMode] = useState(false);
+    const [editMode, setEditMode] = useState(true);
+    const [addMode, setAddMode] = useState(true);
     const [isAuto, setIsAuto] = useState(false);
     const [panNo, setPanNo] = useState('');
 
@@ -51,20 +51,20 @@ function Account_Master() {
     // const [ChqBookPopup, setShowChqBookPopup] = useState(false);
     // const [showModal, setShowModal] = useState(false);
 
-    useEffect(() => {
-        axios.get(`${BASE_URL}/api/ddl_MI_master`)
-            .then(response => setExchanges(response.data))
-            .catch(error => console.error('Error fetching exchanges:', error));
-    }, []);
+    // useEffect(() => {
+    //     axios.get(`${BASE_URL}/api/ddl_MI_master`)
+    //         .then(response => setExchanges(response.data))
+    //         .catch(error => console.error('Error fetching exchanges:', error));
+    // }, []);
 
-    useEffect(() => {
-        axios.get(`${BASE_URL}/api/ddl_segment_master`)
-            .then(response => setSegments(response.data))
-            .catch(error => console.error('Error fetching segment:', error));
-        handleClearClick();
-        setUserId(1);
-        setActStatus('A');
-    }, []);
+    // useEffect(() => {
+    //     axios.get(`${BASE_URL}/api/ddl_segment_master`)
+    //         .then(response => setSegments(response.data))
+    //         .catch(error => console.error('Error fetching segment:', error));
+    //     handleClearClick();
+    //     setUserId(1);
+    //     setActStatus('A');
+    // }, []);
 
     useEffect(() => {
         axios.get(`${BASE_URL}/api/ddl_fin_group_level2`)
@@ -72,21 +72,74 @@ function Account_Master() {
             .catch(error => console.error('Error fetching exchanges:', error));
     }, []);
 
+    useEffect(() => {
+        axios.get(`${BASE_URL}/api/ddl_activity_master`)
+        .then(response => setActivityCodes(response.data))
+        .catch(error => console.error('Error fetching activity:', error));
+    }, []);
+
+    
+    const handleActivityChange = async (p_activity) => {
+        try {
+
+            setActivityCode(p_activity);
+
+            if (p_activity) {
+                setExchanges([]);
+                setSegments([]);
+                await axios.get(`${BASE_URL}/api/ddl_activitywise_exchange`, {params: {p_activity_cd: p_activity} })
+                    .then(response => setExchanges(response.data))
+                    .catch(error => console.error('Error fetching activity:', error));
+            }
+            else {
+                setExchanges([]);
+                setSegments([]);
+            }
+
+        }
+        catch (error) {
+            console.error("Error in Activity Selection! ", error);
+        }
+    }
+
+    const handleExchangeChange = async (p_exc_code) => {
+        
+        try {
+
+            setExchange(p_exc_code);
+
+            if (p_exc_code) {
+                setSegments([]);
+                await axios.get(`${BASE_URL}/api/ddl_exchangewise_segment`, {params: {p_Exc_Code: p_exc_code} })
+                    .then(response => setSegments(response.data))
+                    .catch(error => console.error('Error fetching segment:', error));
+            }
+            else {
+                setSegments([]);
+            }
+
+        }
+        catch (error) {
+            console.error("Error in Exchange Selection! ", error);
+        }
+
+    }
+
 
     const handleSegment = async (p_Segment) => {
         try {
 
             setSegment(p_Segment);
 
-            if (p_Segment) {
-                setActivityCodes([]);
-                await axios.get(`${BASE_URL}/api/ddl_activity_master?p_segment_cd=` + p_Segment)
-                    .then(response => setActivityCodes(response.data))
-                    .catch(error => console.error('Error fetching activity:', error));
-            }
-            else {
-                setActivityCodes([]);
-            }
+            // if (p_Segment) {
+            //     setActivityCodes([]);
+            //     await axios.get(`${BASE_URL}/api/ddl_activity_master`)
+            //         .then(response => setActivityCodes(response.data))
+            //         .catch(error => console.error('Error fetching activity:', error));
+            // }
+            // else {
+            //     setActivityCodes([]);
+            // }
 
         }
         catch (error) {
@@ -221,7 +274,6 @@ function Account_Master() {
         setSubSubGroupCode('');
         setActStatus('A');
         setCrn('');
-        // setPartyClick(true);
         setAddMode(true);
         setEditMode(true);
         setPanNo('');
@@ -339,10 +391,10 @@ function Account_Master() {
     }
 
     return (
-        <div className="container mt-5">
+        <div className="container-common">
             <div className="card ">
                 <div className="card-header-css">
-                    <h3 className="text-center">Account Master </h3>
+                    <h5 className="text-center">Account Master </h5>
                 </div>
                 <div className="card-body">
                     {/*  ****************************************************************************
@@ -365,24 +417,7 @@ function Account_Master() {
                             <input id="acctName" disabled={addMode} type="text" className="form-control size_input_cashbank"
                                 value={acctName} onChange={(e) => setAcctName(e.target.value.toUpperCase())} />
                         </div>
-                    </div>
 
-
-                    {/*  ****************************************************************************
-                                  Account Name & Exchange
-            **************************************************************************** */}
-
-                    <div className="row">
-                        <div className="col-md-6 mb-3 d-flex">
-                            <label htmlFor="exchange" className="form-label label-width">Exchange</label>
-                            <select id="exchange" disabled={addMode} className="form-select size_input_cashbank" name='exchange' value={exchange}
-                                onChange={(e) => setExchange(e.target.value)}>
-                                <option value=" ">Select Exchange</option>
-                                {exchanges.map(Exc => (
-                                    <option key={Exc.exc_cd} value={Exc.exc_cd}>{Exc.exc_name}</option>
-                                ))}
-                            </select>
-                        </div>
                         <div className="col-md-6 mb-3 d-flex">
                             <label htmlFor="actstatus" className="form-label label-width">Status</label>
                             <select id="actstatus" disabled={addMode} className="form-select size_input_cashbank" name='actstatus' value={actstatus}
@@ -394,6 +429,37 @@ function Account_Master() {
                             </select>
                         </div>
 
+                    </div>
+
+
+                    {/*  ****************************************************************************
+                                  Acitivty & Exchange
+            **************************************************************************** */}
+                  
+
+                    <div className="row">
+                        <div className="col-md-6 mb-3 d-flex">
+                            <label htmlFor="activityCode" className="form-label label-width">Activity Code</label>
+                            <select id="activityCode" disabled={addMode} className="form-select size_input_cashbank"
+                             name='activityCode' value={activityCode}
+                                onChange={(e) => handleActivityChange(e.target.value)}>
+                                <option value=" ">Select Activity Code</option>
+                                {activityCodes.map(Act_Code => (
+                                    <option key={Act_Code.activity_cd} value={Act_Code.activity_cd}>{Act_Code.act_name}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="col-md-6 mb-3 d-flex">
+                            <label htmlFor="exchange" className="form-label label-width">Exchange</label>
+                            <select id="exchange" disabled={addMode} className="form-select size_input_cashbank" name='exchange' value={exchange}
+                                onChange={(e) => handleExchangeChange(e.target.value)}>
+                                <option value=" ">Select Exchange</option>
+                                {exchanges.map(Exc => (
+                                    <option key={Exc.exc_cd} value={Exc.exc_cd}>{Exc.exc_name}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
 
@@ -413,16 +479,7 @@ function Account_Master() {
                             </select>
                         </div>
 
-                        <div className="col-md-6 mb-3 d-flex">
-                            <label htmlFor="activityCode" className="form-label label-width">Activity Code</label>
-                            <select id="activityCode" disabled={addMode} className="form-select size_input_cashbank" name='activityCode' value={activityCode}
-                                onChange={(e) => setActivityCode(e.target.value)}>
-                                <option value=" ">Select Activity Code</option>
-                                {activityCodes.map(Act_Code => (
-                                    <option key={Act_Code.activity_cd} value={Act_Code.activity_cd}>{Act_Code.act_name}</option>
-                                ))}
-                            </select>
-                        </div>
+                       
 
                     </div>
                     {/*  ****************************************************************************

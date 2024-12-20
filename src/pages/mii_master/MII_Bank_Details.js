@@ -24,7 +24,7 @@ function MII_Bank_Detl({ onCloseClick, p_MII_code }) {
     const [booktypes, setBookTypes] = useState([]);
     const [bankname, setBankName] = useState('');
     const [bankacctno, setBankActNo] = useState('');
-    const [status, setStatus] = useState('Active');
+    const [status, setStatus] = useState('A');
     const [fromdate, setFromDate] = useState('');
     const [todate, setToDate] = useState('');
     const [bankdetlResults, setBankDtlResults] = useState([]);
@@ -253,8 +253,8 @@ function MII_Bank_Detl({ onCloseClick, p_MII_code }) {
 
                             <select id="status" className="form-select size_input_cashbank" name='status' value={status}
                                 onChange={(e) => setStatus(e.target.value)}>
-                                <option value="Active">Active</option>
-                                <option value="Closed">Closed</option>
+                                <option value="A">Active</option>
+                                <option value="C">Closed</option>
                             </select>
                         </div>
                     </div>

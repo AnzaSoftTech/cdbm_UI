@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './MII_Master.css';
 import EditPopup from './EditPopup.js';
 import Branch_Contacts from "./Branch_Contacts";
+import MII_Segments from './MII_Segments.js';
 import MII_Bank_Detl from './MII_Bank_Details.js';
 import MII_Deemat_Detl from './MII_Deemat_Details.js';
 import { BASE_URL } from ".././constants";
@@ -21,13 +22,14 @@ function MII_Master() {
     const [header, setHeader] = useState({});
     const [showEditPopup, setShowEditPopup] = useState(false);
     const [showBankDtl, setShowBankDtl] = useState(false);
+    const [showSegment, setShowSegment] = useState(false);
+
     const [showBranchPopup, setShowBranchPopup] = useState(false);
     const [showDeematDtl, setShowDeematDtl] = useState(false);
     const [miiCode, setMiiCode] = useState('');
-    const [status, setStatus] = useState('ACTIVE');
-    const [activity, setActivity] = useState('');
-    const [segment, setSegment] = useState('');
-    const [segments, setSegments] = useState([]);
+    const [status, setStatus] = useState('A');
+    // const [segment, setSegment] = useState('');
+    // const [segments, setSegments] = useState([]);
     const [mii_cc_id, setMii_cc_id] = useState('');
     const [mii_cc_ids, setMii_cc_ids] = useState([]);
     const [sebiRegNo, setSebiRegNo] = useState('');
@@ -43,6 +45,9 @@ function MII_Master() {
     const [miiCatgCC, setMiiCatgCC] = useState(true);
     const [editMode, setEditMode] = useState(false);
     const [addMode, setAddMode] = useState(true);
+    
+    const [activityCode, setActivityCode] = useState();
+    const [activityCodes, setActivityCodes] = useState([]);
 
 
     useEffect(() => {
@@ -57,16 +62,22 @@ function MII_Master() {
     }, []);
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/ddl_segment_master`)
-            .then(response => { setSegments(response.data) })
-            .catch(error => console.error('Error fetching segments:', error));
+        axios.get(`${BASE_URL}/api/ddl_activity_master`)
+        .then(response => setActivityCodes(response.data))
+        .catch(error => console.error('Error fetching activity:', error));
         setUserId(1);
-        setStatus('ACTIVE');
+        setStatus('A');
     }, []);
+
+    // useEffect(() => {
+    //     axios.get(`${BASE_URL}/api/ddl_segment_master`)
+    //         .then(response => { setSegments(response.data) })
+    //         .catch(error => console.error('Error fetching segments:', error));
+        
+    // }, []);
 
     const handleMiiCat = async (p_mii_cat) => {
         try {
-            
 
             setMiiCat(p_mii_cat);
 
@@ -152,8 +163,9 @@ function MII_Master() {
             tan,
             sebiRegNo,
             mii_cc_id,
-            segment,
-            activity,
+            //segment,
+            //activity,
+            activityCode,
             status,
             userId
         };
@@ -190,9 +202,9 @@ function MII_Master() {
         setSebiRegNo('');
         setMii_cc_id('');
         setMii_cc_ids([]);
-        setSegment('');
-        setActivity('');
-        setStatus('ACTIVE');
+       // setSegment('');
+        setActivityCode('');
+        setStatus('A');
         setMiiCatgCC(true); 
         setAddMode(true);
         setEditMode(true);
@@ -211,6 +223,15 @@ function MII_Master() {
         setShowBankDtl(true);
     };
 
+    const handleSegmentClick = () => {
+
+        if (!miiCode) {
+            alert('Save the MII first or Edit the existing one to enter/view Bank Details.');
+            return;
+        }
+        setShowSegment(true);
+    };
+
     const handleDeematDtlClick = () => {
 
         if (!miiCode) {
@@ -224,6 +245,10 @@ function MII_Master() {
         setShowBankDtl(false);
     };
 
+    const handleCloseSegments = () => {
+        setShowSegment(false);
+    };
+    
     const handleCloseDeematDtl = () => {
         setShowDeematDtl(false);
     };
@@ -258,8 +283,8 @@ function MII_Master() {
         setStatus(mii_master_data[0].status);
         setMiiName(mii_master_data[0].mii_name);
         setMiiShortName(mii_master_data[0].mii_short_name);
-        setSegment(mii_master_data[0].seg_code);
-        setActivity(mii_master_data[0].activity);
+        //setSegment(mii_master_data[0].seg_code);
+        setActivityCode(mii_master_data[0].activity);
         setTan(mii_master_data[0].tan);
         setPanNo(mii_master_data[0].pan);
         setGstNo(mii_master_data[0].gst_no);
@@ -279,81 +304,11 @@ function MII_Master() {
         setEditMode(false);
     }
 
-    // const handleBranchRowSelect = (acc_master_data) => {
-
-
-    //     // console.log('Selected row in acc_master_data.ledg_type ', acc_master_data[0].ledg_type);
-
-    //     setActCode(acc_master_data[0].act_cd);
-    //     setLedgType(acc_master_data[0].ledg_type);
-    //     console.log('ledg type>>>>',acc_master_data[0].ledg_type)
-
-    //     // if (acc_master_data[0].ledg_type === 'P' || acc_master_data[0].ledg_type === 'G') {
-    //     //     document.getElementsByClassName('');
-    //     // }
-    //     // else {
-    //     //     setVisible_tf(false);
-    //     // }
-
-    //     setActStatus(acc_master_data[0].status);
-    //     setCrn(acc_master_data[0].crn);
-    //     console.log('acc_master_data[0].crn>>>>>>>>', acc_master_data[0].crn);
-    //     setAcctName(acc_master_data[0].account_name);
-
-    //     setExchange(acc_master_data[0].exc_cd);
-    //     setSegment(acc_master_data[0].segment);
-
-
-    //     if (acc_master_data[0].segment) {
-    //         setActivityCodes([]);
-    //         axios.get(`http://localhost:3001/api/ddl_activity_master?p_segment_cd=` + acc_master_data[0].segment)
-    //             .then(response => setActivityCodes(response.data))
-    //             .catch(error => console.error('Error fetching activity:', error));
-    //     }
-
-    //     setActivityCode(acc_master_data[0].activity_cd);
-
-    //     setTypeAcc(acc_master_data[0].type_acct);
-    //     setGroupCode(acc_master_data[0].grp_code);
-
-
-    //     if (acc_master_data[0].grp_code) {
-    //         setSubGroupCodes([]);
-    //         axios.get(`http://localhost:3001/api/ddl_fin_group_level3?p_grp_lvl2=` + acc_master_data[0].grp_code)
-    //             .then(response => setSubGroupCodes(response.data))
-    //             .catch(error => console.error('Error fetching sub-groups:', error));
-    //     }
-
-    //     setSubGroupCode(acc_master_data[0].sub_grp_code);
-
-    //     if (acc_master_data[0].sub_grp_code) {
-    //         setSubSubGroupCodes([]);
-    //         axios.get(`http://localhost:3001/api/ddl_fin_group_level4?p_grp_lvl3=` + acc_master_data[0].sub_grp_code)
-    //             .then(response => setSubSubGroupCodes(response.data))
-    //             .catch(error => console.error('Error fetching sub-groups:', error));
-    //     }
-
-    //     setSubSubGroupCode(acc_master_data[0].sub_sub_grp_code);
-    //     // setFromDate(acc_master_data[0].act_start_date);
-    //     // setToDate(acc_master_data[0].act_end_date);
-    //     // setBankName(acc_master_data[0].bank_name);
-    //     // setAcctNo(acc_master_data[0].acct_no);
-    //     // setBankBranchCode(acc_master_data[0].bank_branch_cd); 
-    //     // setBankBranch(acc_master_data[0].branch_name); 
-    //     // setAcctCatg(acc_master_data[0].act_catg);
-    //     // setIFSCCode(acc_master_data[0].ifsc);
-    //     // setMICR(acc_master_data[0].micr);
-    //     // setExcClearNo(acc_master_data[0].exc_clearing_no);
-
-    //     setShowEditPopup(false);
-
-    // }
-
     return (
         <div className="container mt-2">
             <div className="card">
                 <div className="card-header-css">
-                    <h3 className="text-center">MII Master </h3>
+                    <h5 className="text-center">MII Master </h5>
                 </div>
                 <div className="card-body">
                     {/*  ****************************************************************************
@@ -362,19 +317,22 @@ function MII_Master() {
                     <div className="row">
                         <div className="col-md-6 mb-3 d-flex">
                             <label htmlFor="activity" className="form-label label-width">Activity</label>
-                            <select id="activity" disabled={addMode} className="form-select size_input_cashbank" name='activity' value={activity} onChange={(e) => setActivity(e.target.value)}>
+                            <select id="activity" disabled={addMode} className="form-select size_input_cashbank" name='activity' value={activityCode} onChange={(e) => setActivityCode(e.target.value)}>
                                 <option value="">Select Activity</option>
-                                <option value="BROKING">Broking</option>
+                                {activityCodes.map(Act_Code => (
+                                    <option key={Act_Code.activity_cd} value={Act_Code.activity_cd}>{Act_Code.act_name}</option>
+                                ))}
+                                {/* <option value="BROKING">Broking</option>
                                 <option value="SETTLEMENT">Settlement</option>
                                 <option value="DP_SERVICES">DP Services</option>
-                                <option value="KYC">KYC</option>
+                                <option value="KYC">KYC</option> */}
                             </select>
                         </div>
                         <div className="col-md-6 mb-3 d-flex">
                             <label htmlFor="status" className="form-label label-width">Status</label>
                             <select id="status" disabled={addMode} className="form-select size_input_cashbank" name='status' value={status} onChange={(e) => setStatus(e.target.value)}>
-                                <option value="ACTIVE">Active </option>
-                                <option value="CLOSED ">Closed </option>
+                                <option value="A">Active </option>
+                                <option value="C">Closed </option>
                             </select>
                         </div>
                        
@@ -394,6 +352,7 @@ function MII_Master() {
                                 <option value="CC">Clearing Corp</option>
                                 <option value="DEPOS ">Depository</option>
                                 <option value="KRA ">KRA</option>
+                                <option value="CORP ">Corporate</option>
                             </select>
 
                         </div>
@@ -474,7 +433,7 @@ function MII_Master() {
                                 ))}
                             </select>
                         </div>
-                        <div className="col-md-6 mb-3 d-flex">
+                        {/* <div className="col-md-6 mb-3 d-flex">
                             <label htmlFor="segment" className="form-label label-width">Segment</label>
                             <select id="segment" disabled={addMode} className="form-select size_input_cashbank" name='segment' value={segment} onChange={(e) => setSegment(e.target.value)}>
                                 <option value="">Select Segment</option>
@@ -482,7 +441,7 @@ function MII_Master() {
                                     <option key={Seg.seg_code} value={Seg.seg_code}>{Seg.seg_name}</option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
                     </div>
 
 
@@ -492,6 +451,9 @@ function MII_Master() {
                     <div className="row mt-3">
                         <div className="col-lg-10  col-md-6 mb-3 d-flex  justify-content-end ">
                             <button className="btn  btn-primary me-2" onClick={handleAddClick}>Add</button>
+                            <button className="btn  btn-primary me-2" onClick={handleSegmentClick} disabled={addMode}>Segments</button>
+                            {showSegment && <MII_Segments p_MII_code={miiCode} onClose={handleCloseBankDtl} onCloseClick={handleCloseSegments} />}
+
                             <button className="btn  btn-primary me-2" onClick={handleBankDtlClick} disabled={addMode}>Bank Details</button>
                             {showBankDtl && <MII_Bank_Detl p_MII_code={miiCode} onClose={handleCloseBankDtl} onCloseClick={handleCloseBankDtl} />}
                             <button className="btn btn-primary me-2"
